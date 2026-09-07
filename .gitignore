@@ -104,11 +104,14 @@ coverage/
 # ==========================================
 # Environment & Secret Files
 # ==========================================
-# Frontend environment files (keep .env.example)
+.env
+.env.*
 .env.local
 .env.*.local
 *.env
 *.env.local
+!.env.example
+!**/.env.example
 
 # Backend local configuration overrides
 **/src/main/resources/application-local.properties
