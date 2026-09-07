@@ -1,0 +1,116 @@
+# ==========================================
+# Operating System & IDE Files
+# ==========================================
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.settings/
+.project
+.classpath
+.factorypath
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# ==========================================
+# Backend: Spring Boot (Maven & Gradle)
+# ==========================================
+# Maven build directory
+target/
+**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Gradle build directory
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Spring Boot logs & crash reports
+*.log
+logs/
+**/logs/
+hs_err_pid*
+replay_pid*
+
+# Database / temporary local files
+*.h2.db
+
+# ==========================================
+# Frontend: React + Vite (JavaScript)
+# ==========================================
+# Node dependencies
+node_modules/
+**/node_modules/
+
+# Vite production build
+dist/
+**/dist/
+dist-ssr/
+**/dist-ssr/
+
+# Vite cache & temp directories
+.vite/
+**/.vite/
+*.tsbuildinfo
+
+# Package manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing & Coverage
+coverage/
+**/coverage/
+*.lcov
+.nyc_output/
+
+# ==========================================
+# Environment & Secret Files
+# ==========================================
+# Frontend environment files (keep .env.example)
+.env.local
+.env.*.local
+*.env
+*.env.local
+
+# Backend local configuration overrides
+**/src/main/resources/application-local.properties
+**/src/main/resources/application-local.yml
+**/src/main/resources/application-local.yaml
