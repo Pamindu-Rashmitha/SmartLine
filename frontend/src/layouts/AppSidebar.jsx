@@ -28,7 +28,7 @@ const ROLE_MENUS = {
   APPLICANT: [
     { key: '/dashboard', icon: <LayoutDashboard className="w-4 h-4" />, label: 'My Dashboard' },
     { key: '/applications/new', icon: <FileText className="w-4 h-4" />, label: 'Apply for Loan' },
-    { key: '/loans', icon: <CreditCard className="w-4 h-4" />, label: 'My Active Loans' },
+    { key: '/applications', icon: <CreditCard className="w-4 h-4" />, label: 'My Applications' },
     { key: '/documents', icon: <FolderLock className="w-4 h-4" />, label: 'Document Vault' },
   ],
   LOAN_OFFICER: [

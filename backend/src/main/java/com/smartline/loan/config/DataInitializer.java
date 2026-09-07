@@ -21,13 +21,16 @@ public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final ApplicantRepository applicantRepository;
+    private final com.smartline.loan.repository.ApplicationRepository applicationRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataInitializer(UserRepository userRepository,
                            ApplicantRepository applicantRepository,
+                           com.smartline.loan.repository.ApplicationRepository applicationRepository,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.applicantRepository = applicantRepository;
+        this.applicationRepository = applicationRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -64,7 +67,121 @@ public class DataInitializer implements CommandLineRunner {
             logger.info("Initialized default demo applicant profile for Saman Kumara");
         }
 
-        logger.info("Data initialization complete. 9 demo accounts ready.");
+        seedInitialApplications();
+
+        logger.info("Data initialization complete. 9 demo accounts and sample applications ready.");
+    }
+
+    private void seedInitialApplications() {
+        if (applicationRepository.count() == 0) {
+            applicantRepository.findAll().stream().findFirst().ifPresent(applicant -> {
+                // Application 1: Money Loan (Submitted)
+                com.smartline.loan.entity.Application app1 = new com.smartline.loan.entity.Application(
+                        "APP-2026-00001",
+                        applicant,
+                        com.smartline.loan.entity.enums.ApplicationType.LOAN,
+                        new BigDecimal("750000.00"),
+                        "Home renovation and solar panel installation"
+                );
+                app1.setStatus(com.smartline.loan.entity.enums.ApplicationStatus.SUBMITTED);
+                app1.setSubmittedAt(java.time.LocalDateTime.now().minusDays(1));
+
+                com.smartline.loan.entity.LoanDetail ld = new com.smartline.loan.entity.LoanDetail(
+                        app1,
+                        "Home Renovation",
+                        24,
+                        new BigDecimal("14.50"),
+                        "None",
+                        BigDecimal.ZERO
+                );
+                ld.setCalculatedMonthlyEmi(new BigDecimal("40312.50"));
+                ld.setCalculatedTotalRepayable(new BigDecimal("967500.00"));
+                app1.setLoanDetail(ld);
+
+                com.smartline.loan.entity.Guarantor g1 = new com.smartline.loan.entity.Guarantor(
+                        app1,
+                        "Sunil Kumara",
+                        "196815401234",
+                        "+94712345678",
+                        "Father",
+                        "No. 42, Galle Road, Colombo",
+                        "Retired Government Officer",
+                        "Pension Department",
+                        new BigDecimal("85000.00")
+                );
+                app1.addGuarantor(g1);
+
+                com.smartline.loan.entity.Document d1 = new com.smartline.loan.entity.Document(
+                        app1,
+                        com.smartline.loan.entity.enums.DocumentType.NIC_FRONT,
+                        "saman_nic_front.pdf",
+                        "demo_nic_front.pdf",
+                        "./uploads/documents/demo_nic_front.pdf",
+                        102400L,
+                        "application/pdf"
+                );
+                com.smartline.loan.entity.Document d2 = new com.smartline.loan.entity.Document(
+                        app1,
+                        com.smartline.loan.entity.enums.DocumentType.SALARY_SLIP,
+                        "saman_salary_slip.pdf",
+                        "demo_salary_slip.pdf",
+                        "./uploads/documents/demo_salary_slip.pdf",
+                        204800L,
+                        "application/pdf"
+                );
+                app1.addDocument(d1);
+                app1.addDocument(d2);
+
+                applicationRepository.save(app1);
+
+                // Application 2: Vehicle Lease (Under Verification)
+                com.smartline.loan.entity.Application app2 = new com.smartline.loan.entity.Application(
+                        "APP-2026-00002",
+                        applicant,
+                        com.smartline.loan.entity.enums.ApplicationType.VEHICLE_LEASE,
+                        new BigDecimal("1200000.00"),
+                        "Commercial motorcycle delivery fleet addition"
+                );
+                app2.setStatus(com.smartline.loan.entity.enums.ApplicationStatus.UNDER_VERIFICATION);
+                app2.setSubmittedAt(java.time.LocalDateTime.now().minusHours(12));
+                userRepository.findByUsername("loanofficer").ifPresent(app2::setVerifiedBy);
+
+                com.smartline.loan.entity.VehicleLeaseDetail vld = new com.smartline.loan.entity.VehicleLeaseDetail(
+                        app2,
+                        com.smartline.loan.entity.enums.VehicleCategory.MOTORCYCLE,
+                        "Yamaha",
+                        "FZ-S V3.0",
+                        2024,
+                        new BigDecimal("1600000.00"),
+                        new BigDecimal("400000.00"),
+                        36,
+                        new BigDecimal("15.00")
+                );
+                vld.setRegistrationNumber("WP BHY-4820");
+                vld.setVehicleCondition("NEW");
+                vld.setDealerName("Yamaha Plaza Colombo");
+                vld.setDealerContact("+94112345678");
+                vld.setCalculatedMonthlyEmi(new BigDecimal("48333.33"));
+                vld.setCalculatedTotalRepayable(new BigDecimal("1740000.00"));
+                app2.setVehicleLeaseDetail(vld);
+
+                com.smartline.loan.entity.Guarantor g2 = new com.smartline.loan.entity.Guarantor(
+                        app2,
+                        "Rohan Jayawardena",
+                        "199012301987",
+                        "+94776543210",
+                        "Colleague",
+                        "15/2, Kandy Road, Kelaniya",
+                        "Senior Engineer",
+                        "Apex Software Solutions PLC",
+                        new BigDecimal("210000.00")
+                );
+                app2.addGuarantor(g2);
+
+                applicationRepository.save(app2);
+                logger.info("Seeded initial demo applications: APP-2026-00001 (LOAN) and APP-2026-00002 (VEHICLE_LEASE)");
+            });
+        }
     }
 
     private User createOrUpdateUser(String username, String email, String password, String fullName, String phone, Role role) {

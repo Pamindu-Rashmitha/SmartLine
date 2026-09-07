@@ -38,6 +38,10 @@ app:
     # 512-bit HMAC-SHA secure base64 secret
     secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970337336763979244226452948404D6351655468576D5A7134743777217A25432A}
     expiration-ms: 86400000 # 24 hours
+  file:
+    upload-dir: ${UPLOAD_DIR:./uploads/documents}
+    max-file-size: 5242880 # 5MB in bytes
+
 
 # SpringDoc / Swagger OpenAPI
 springdoc:
