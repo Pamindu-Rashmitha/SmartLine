@@ -22,6 +22,10 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     Page<Application> findByStatusInOrderByCreatedAtDesc(List<ApplicationStatus> statuses, Pageable pageable);
 
+    List<Application> findByStatusInOrderByCreatedAtAsc(List<ApplicationStatus> statuses);
+
+    List<Application> findByStatusInOrderByCreatedAtDesc(List<ApplicationStatus> statuses);
+
     @Query("SELECT a FROM Application a WHERE " +
            "(:status IS NULL OR a.status = :status) AND " +
            "(:type IS NULL OR a.type = :type) AND " +

@@ -60,7 +60,7 @@ const ROLE_MENUS = {
   FINANCE_OFFICER: [
     { key: '/dashboard', icon: <LayoutDashboard className="w-4 h-4" />, label: 'Disbursement Desk' },
     { key: '/disbursements', icon: <DollarSign className="w-4 h-4" />, label: 'Fund Transfers' },
-    { key: '/reconciliations', icon: <Banknote className="w-4 h-4" />, label: 'Repayment Ledger' },
+    { key: '/facilities', icon: <Banknote className="w-4 h-4" />, label: 'Active Facilities' },
   ],
   CREDIT_CONTROL_OFFICER: [
     { key: '/dashboard', icon: <LayoutDashboard className="w-4 h-4" />, label: 'Recovery Overview' },

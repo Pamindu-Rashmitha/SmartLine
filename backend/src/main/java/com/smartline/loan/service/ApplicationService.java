@@ -450,6 +450,18 @@ public class ApplicationService {
             res.setVehicleInspection(mapVehicleInspection(app.getVehicleInspection()));
         }
 
+        if (app.getAgreement() != null) {
+            res.setAgreement(com.smartline.loan.dto.response.AgreementResponse.fromEntity(app.getAgreement()));
+        }
+
+        if (app.getDownPayment() != null) {
+            res.setDownPayment(com.smartline.loan.dto.response.DownPaymentResponse.fromEntity(app.getDownPayment()));
+        }
+
+        if (app.getFacility() != null) {
+            res.setFacility(com.smartline.loan.dto.response.FacilityResponse.fromEntity(app.getFacility()));
+        }
+
         res.setSubmittedAt(app.getSubmittedAt());
         res.setCreatedAt(app.getCreatedAt());
         res.setUpdatedAt(app.getUpdatedAt());

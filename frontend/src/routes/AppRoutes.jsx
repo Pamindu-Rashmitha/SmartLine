@@ -16,6 +16,10 @@ import InspectionQueuePage from '../pages/field-officer/InspectionQueuePage';
 import VehicleInspectionPage from '../pages/field-officer/VehicleInspectionPage';
 import AuthorizationQueuePage from '../pages/senior-manager/AuthorizationQueuePage';
 import AuthorizationDetailPage from '../pages/senior-manager/AuthorizationDetailPage';
+import LegalQueuePage from '../pages/legal-officer/LegalQueuePage';
+import AgreementPreparationPage from '../pages/legal-officer/AgreementPreparationPage';
+import FinanceDisbursalDesk from '../pages/finance-officer/FinanceDisbursalDesk';
+import FacilityListPage from '../pages/finance-officer/FacilityListPage';
 import { useAuth } from '../contexts/AuthContext';
 
 // Dispatcher for /applications index route
@@ -32,6 +36,12 @@ const ApplicationsIndexDispatcher = () => {
   }
   if (user?.role === 'SENIOR_MANAGER') {
     return <AuthorizationQueuePage />;
+  }
+  if (user?.role === 'LEGAL_OFFICER') {
+    return <LegalQueuePage />;
+  }
+  if (user?.role === 'FINANCE_OFFICER') {
+    return <FinanceDisbursalDesk />;
   }
   return <LoanPipelinePage />;
 };
@@ -75,14 +85,23 @@ const AppRoutes = () => {
         <Route path="approvals" element={<AuthorizationQueuePage />} />
         <Route path="applications/:id/authorize" element={<AuthorizationDetailPage />} />
 
+        {/* EP03: Legal Agreement Preparation & Verification Routes */}
+        <Route path="legal-agreements" element={<LegalQueuePage />} />
+        <Route path="compliance" element={<LegalQueuePage />} />
+        <Route path="applications/:id/agreement" element={<AgreementPreparationPage />} />
+
+        {/* EP03: Finance Down-Payment & Disbursal Routes */}
+        <Route path="disbursements" element={<FinanceDisbursalDesk />} />
+        <Route path="facilities" element={<FacilityListPage />} />
+        <Route path="portfolio" element={<FacilityListPage />} />
+        <Route path="reconciliations" element={<FacilityListPage />} />
+
         {/* Role-Specific Pipeline Direct Aliases */}
         <Route path="loan-officer/applications" element={<LoanPipelinePage />} />
         <Route path="loans" element={<ApplicationsIndexDispatcher />} />
         <Route path="loans/*" element={<RoleDashboardHub />} />
         <Route path="documents/*" element={<RoleDashboardHub />} />
         <Route path="customers/*" element={<RoleDashboardHub />} />
-        <Route path="legal-agreements/*" element={<RoleDashboardHub />} />
-        <Route path="disbursements/*" element={<RoleDashboardHub />} />
         <Route path="arrears/*" element={<RoleDashboardHub />} />
         <Route path="users/*" element={<RoleDashboardHub />} />
         <Route path="settings/*" element={<RoleDashboardHub />} />

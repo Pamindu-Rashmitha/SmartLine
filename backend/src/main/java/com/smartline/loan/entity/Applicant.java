@@ -197,6 +197,33 @@ public class Applicant {
     }
 
     // Builder
+    public String getFullName() {
+        return user != null ? user.getFullName() : null;
+    }
+
+    public String getPhone() {
+        return user != null ? user.getPhoneNumber() : null;
+    }
+
+    public String getNic() {
+        return nicNumber;
+    }
+
+    public String getAddress() {
+        if (addressLine1 == null) return null;
+        return addressLine2 != null && !addressLine2.isBlank()
+                ? addressLine1 + ", " + addressLine2 + (city != null ? ", " + city : "")
+                : addressLine1 + (city != null ? ", " + city : "");
+    }
+
+    public String getEmploymentType() {
+        return employmentStatus;
+    }
+
+    public String getOccupation() {
+        return employmentStatus;
+    }
+
     public static ApplicantBuilder builder() {
         return new ApplicantBuilder();
     }

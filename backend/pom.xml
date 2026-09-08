@@ -23,6 +23,7 @@
         <jjwt.version>0.12.5</jjwt.version>
         <springdoc.version>2.5.0</springdoc.version>
         <lombok.version>1.18.32</lombok.version>
+        <itext.version>7.2.5</itext.version>
     </properties>
 
     <dependencies>
@@ -77,6 +78,18 @@
             <version>${springdoc.version}</version>
         </dependency>
 
+        <!-- PDF Generation (iText 7) -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
+
 
         <!-- DevTools -->
         <dependency>
@@ -102,6 +115,11 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

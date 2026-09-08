@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, Table, Button, Tag, Progress } from 'antd';
 import {
   FileText,
@@ -88,6 +89,7 @@ const SAMPLE_APPLICATIONS = [
 
 const RoleDashboardHub = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const role = user?.role || 'APPLICANT';
   const metrics = ROLE_METRICS[role] || ROLE_METRICS.APPLICANT;
 
@@ -171,6 +173,8 @@ const RoleDashboardHub = () => {
                   if (role === 'CREDIT_MANAGER') navigate('/underwriting');
                   else if (role === 'FIELD_OFFICER') navigate('/field-visits');
                   else if (role === 'SENIOR_MANAGER') navigate('/approvals');
+                  else if (role === 'LEGAL_OFFICER') navigate('/legal-agreements');
+                  else if (role === 'FINANCE_OFFICER') navigate('/disbursements');
                   else navigate('/applications');
                 }}
                 className="bg-blue-600 hover:bg-blue-500 font-semibold border-0 shadow-lg shadow-blue-600/30 flex items-center gap-2 h-11"

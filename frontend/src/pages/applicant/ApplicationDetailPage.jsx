@@ -35,9 +35,14 @@ import {
   Calendar,
   ShieldCheck,
   Wrench,
+  Scale,
+  FileDown,
+  Receipt,
+  Sparkles,
 } from 'lucide-react';
 import applicationApi from '../../api/applicationApi';
 import documentApi from '../../api/documentApi';
+import agreementApi from '../../api/agreementApi';
 import StatusBadge from '../../components/common/StatusBadge';
 import dayjs from 'dayjs';
 
@@ -45,8 +50,9 @@ const STATUS_STEPS = [
   { key: 'SUBMITTED', title: 'Submitted' },
   { key: 'UNDER_VERIFICATION', title: 'Verification' },
   { key: 'UNDER_CREDIT_ASSESSMENT', title: 'Credit Appraisal' },
-  { key: 'APPROVED', title: 'Approved' },
-  { key: 'DISBURSED', title: 'Disbursed' },
+  { key: 'AGREEMENT_PENDING', title: 'Legal Agreement' },
+  { key: 'PENDING_DISBURSAL', title: 'Disbursal & Down-Pay' },
+  { key: 'DISBURSED', title: 'Active Facility' },
 ];
 
 const getStepCurrent = (status) => {
@@ -59,8 +65,12 @@ const getStepCurrent = (status) => {
     case 'PENDING_FIELD_INSPECTION':
     case 'FIELD_INSPECTION_COMPLETED':
     case 'PENDING_SENIOR_APPROVAL': return 2;
-    case 'APPROVED': return 3;
-    case 'DISBURSED': return 4;
+    case 'APPROVED':
+    case 'AGREEMENT_PENDING':
+    case 'AGREEMENT_VERIFIED': return 3;
+    case 'PENDING_DOWN_PAYMENT':
+    case 'PENDING_DISBURSAL': return 4;
+    case 'DISBURSED': return 5;
     case 'REJECTED': return 2;
     case 'CANCELLED': return 0;
     default: return 1;
@@ -118,13 +128,36 @@ const ApplicationDetailPage = () => {
     }
   };
 
-  const handleDownloadDoc = async (docId, originalFilename) => {
+  const handleDownloadDoc = async (docId, filename) => {
     try {
-      message.loading({ content: 'Downloading document...', key: 'dl' });
-      await documentApi.downloadDocument(docId, originalFilename);
-      message.success({ content: 'Download complete', key: 'dl' });
+      const blob = await documentApi.downloadDocument(docId);
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
     } catch (err) {
-      message.error({ content: 'Failed to download document file', key: 'dl' });
+      message.error('Failed to download file');
+    }
+  };
+
+  const handleDownloadAgreementPdf = async (agreementId, agreementNumber) => {
+    try {
+      message.loading({ content: 'Generating official agreement PDF...', key: 'pdf' });
+      const blob = await agreementApi.downloadAgreementPdf(agreementId);
+      const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `Agreement_${agreementNumber || id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      message.success({ content: 'Agreement PDF downloaded successfully', key: 'pdf' });
+    } catch (err) {
+      console.error('Failed to download PDF:', err);
+      message.error({ content: 'Failed to download agreement PDF', key: 'pdf' });
     }
   };
 
@@ -240,6 +273,68 @@ const ApplicationDetailPage = () => {
           />
         )}
       </Card>
+
+      {/* Down-Payment Notification Banner */}
+      {app.status === 'PENDING_DOWN_PAYMENT' && (
+        <div className="p-4 bg-amber-950/30 border border-amber-500/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              <Receipt className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-sm font-bold text-slate-100">
+                Pre-Disbursal Down-Payment Required
+              </div>
+              <div className="text-xs text-slate-300 mt-0.5">
+                Required Deposit:{' '}
+                <span className="font-mono font-bold text-amber-400">
+                  LKR {Number(app.downPayment?.requiredAmount || app.agreement?.downPaymentRequired || 0).toLocaleString()}
+                </span>{' '}
+                — Please transfer funds to Smart Line BOC Account (009841284) and notify your finance officer.
+              </div>
+            </div>
+          </div>
+          <Tag color="warning" className="font-semibold text-xs py-1 px-3">
+            AWAITING RECEIPT
+          </Tag>
+        </div>
+      )}
+
+      {/* Active Facility Notification Banner */}
+      {app.facility && (
+        <div className="p-5 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-blue-950/40 border border-emerald-500/40 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+          <div className="flex items-center gap-3.5">
+            <div className="p-3 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <CheckCircle2 className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-base font-bold text-slate-100">Active Credit Facility</span>
+                <span className="font-mono font-bold text-emerald-400 text-sm bg-emerald-950/60 px-2.5 py-0.5 rounded-md border border-emerald-500/30">
+                  {app.facility.facilityNumber}
+                </span>
+                <Tag color="success" className="font-semibold text-xs">
+                  {app.facility.status}
+                </Tag>
+              </div>
+              <div className="text-xs text-slate-300 mt-1 flex flex-wrap gap-x-4 gap-y-1">
+                <span>
+                  Principal: <strong className="text-slate-100 font-mono">LKR {Number(app.facility.principalAmount).toLocaleString()}</strong>
+                </span>
+                <span>
+                  Outstanding: <strong className="text-emerald-400 font-mono">LKR {Number(app.facility.outstandingBalance).toLocaleString()}</strong>
+                </span>
+                <span>
+                  Monthly EMI: <strong className="text-blue-400 font-mono">LKR {Number(app.facility.installmentAmount).toLocaleString()}/mo</strong>
+                </span>
+                <span>
+                  Matures: <strong className="text-slate-200">{dayjs(app.facility.endDate).format('DD MMM YYYY')}</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Tabs of detailed sections */}
       <Card className="bg-slate-900/80 border-slate-800 shadow-xl rounded-2xl">
@@ -603,6 +698,110 @@ const ApplicationDetailPage = () => {
               key: '6',
               label: (
                 <span className="flex items-center gap-2">
+                  <Scale className="w-4 h-4" /> Legal Agreement
+                </span>
+              ),
+              children: (
+                <div className="pt-2">
+                  {app.agreement ? (
+                    <div className="space-y-6">
+                      <div className="flex flex-wrap gap-3 items-center justify-between p-4 rounded-xl bg-slate-800/40 border border-slate-700/60">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-blue-600/20 text-blue-400 border border-blue-500/30">
+                            <Scale className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-bold text-slate-100">
+                                {app.agreement.agreementNumber}
+                              </span>
+                              <Tag color={app.agreement.status === 'VERIFIED' ? 'success' : 'warning'}>
+                                {app.agreement.status}
+                              </Tag>
+                            </div>
+                            <div className="text-xs text-slate-400">
+                              Prepared by {app.agreement.preparedByName || 'Legal Officer'} on{' '}
+                              {dayjs(app.agreement.preparedDate).format('DD MMM YYYY')}
+                            </div>
+                          </div>
+                        </div>
+
+                        <Button
+                          type="primary"
+                          icon={<FileDown className="w-4 h-4" />}
+                          onClick={() => handleDownloadAgreementPdf(app.agreement.id, app.agreement.agreementNumber)}
+                          className="bg-blue-600 hover:bg-blue-500 flex items-center gap-1.5 font-medium text-xs"
+                        >
+                          Download Official PDF Agreement
+                        </Button>
+                      </div>
+
+                      <Descriptions
+                        title={<span className="text-slate-200 text-sm font-semibold">Legally Binding Parameters</span>}
+                        bordered
+                        column={{ xs: 1, sm: 2, md: 3 }}
+                        size="small"
+                      >
+                        <Descriptions.Item label="Principal Amount">
+                          <span className="font-mono text-slate-100 font-bold">
+                            LKR {Number(app.agreement.principalAmount || 0).toLocaleString()}
+                          </span>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Interest Rate">
+                          <span className="font-mono text-slate-200 font-semibold">
+                            {app.agreement.interestRate}% p.a.
+                          </span>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Tenor">
+                          {app.agreement.tenureMonths} Months
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Monthly Installment">
+                          <span className="font-mono text-blue-400 font-bold">
+                            LKR {Number(app.agreement.installmentAmount || 0).toLocaleString()}/mo
+                          </span>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Gross Total Payable">
+                          <span className="font-mono text-slate-100 font-bold">
+                            LKR {Number(app.agreement.totalPayable || 0).toLocaleString()}
+                          </span>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Required Down-Payment">
+                          <span className="font-mono text-amber-400 font-bold">
+                            LKR {Number(app.agreement.downPaymentRequired || 0).toLocaleString()}
+                          </span>
+                        </Descriptions.Item>
+                        {app.agreement.termsAndConditions && (
+                          <Descriptions.Item label="Standard Covenants" span={3}>
+                            <div className="text-xs text-slate-300 font-mono whitespace-pre-line leading-relaxed max-h-48 overflow-y-auto p-2 bg-slate-950/60 rounded border border-slate-800">
+                              {app.agreement.termsAndConditions}
+                            </div>
+                          </Descriptions.Item>
+                        )}
+                        {app.agreement.specialConditions && (
+                          <Descriptions.Item label="Special Conditions" span={3}>
+                            <div className="text-xs text-amber-300/90 font-mono whitespace-pre-line leading-relaxed p-2 bg-slate-950/60 rounded border border-slate-800">
+                              {app.agreement.specialConditions}
+                            </div>
+                          </Descriptions.Item>
+                        )}
+                      </Descriptions>
+                    </div>
+                  ) : (
+                    <div className="text-center py-10 text-slate-400">
+                      <Scale className="w-10 h-10 mx-auto mb-2 opacity-30 text-slate-400" />
+                      <div>Legal agreement has not been prepared yet.</div>
+                      <div className="text-xs text-slate-500 mt-1">
+                        The Legal Officer will prepare the financing contract upon final credit appraisal approval.
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ),
+            },
+            {
+              key: '7',
+              label: (
+                <span className="flex items-center gap-2">
                   <Clock className="w-4 h-4" /> Audit & Status History
                 </span>
               ),
@@ -611,7 +810,7 @@ const ApplicationDetailPage = () => {
                   <Timeline
                     items={app.statusHistory?.map((h) => ({
                       color:
-                        h.toStatus === 'VERIFIED' || h.toStatus === 'APPROVED'
+                        h.toStatus === 'VERIFIED' || h.toStatus === 'APPROVED' || h.toStatus === 'DISBURSED'
                           ? 'green'
                           : h.toStatus === 'REJECTED'
                           ? 'red'

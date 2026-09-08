@@ -237,4 +237,24 @@ public class VehicleLeaseDetail {
     public void setCalculatedTotalRepayable(BigDecimal calculatedTotalRepayable) {
         this.calculatedTotalRepayable = calculatedTotalRepayable;
     }
+
+    public Integer getYear() {
+        return yearOfManufacture;
+    }
+
+    public BigDecimal getMarketValue() {
+        return estimatedMarketValue;
+    }
+
+    public BigDecimal getDownPayment() {
+        return downPaymentAmount;
+    }
+
+    public BigDecimal getCalculatedMonthlyInstallment() {
+        return calculatedMonthlyEmi;
+    }
+
+    public BigDecimal getTotalLeasePayable() {
+        return calculatedTotalRepayable;
+    }
 }

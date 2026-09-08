@@ -110,6 +110,10 @@ public class LoanDetail {
         return calculatedMonthlyEmi;
     }
 
+    public BigDecimal getCalculatedEmi() {
+        return calculatedMonthlyEmi;
+    }
+
     public void setCalculatedMonthlyEmi(BigDecimal calculatedMonthlyEmi) {
         this.calculatedMonthlyEmi = calculatedMonthlyEmi;
     }
@@ -120,5 +124,9 @@ public class LoanDetail {
 
     public void setCalculatedTotalRepayable(BigDecimal calculatedTotalRepayable) {
         this.calculatedTotalRepayable = calculatedTotalRepayable;
+    }
+
+    public BigDecimal getTotalRepayable() {
+        return calculatedTotalRepayable;
     }
 }

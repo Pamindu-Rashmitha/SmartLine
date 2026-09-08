@@ -32,6 +32,9 @@ public class ApplicationDetailResponse {
     private VehicleLeaseDetailResponse vehicleLeaseDetail;
     private CreditAssessmentResponse creditAssessment;
     private VehicleInspectionResponse vehicleInspection;
+    private AgreementResponse agreement;
+    private DownPaymentResponse downPayment;
+    private FacilityResponse facility;
     private List<GuarantorResponse> guarantors = new ArrayList<>();
     private List<DocumentResponse> documents = new ArrayList<>();
     private List<ApplicationStatusHistoryResponse> statusHistory = new ArrayList<>();
@@ -301,5 +304,29 @@ public class ApplicationDetailResponse {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public AgreementResponse getAgreement() {
+        return agreement;
+    }
+
+    public void setAgreement(AgreementResponse agreement) {
+        this.agreement = agreement;
+    }
+
+    public DownPaymentResponse getDownPayment() {
+        return downPayment;
+    }
+
+    public void setDownPayment(DownPaymentResponse downPayment) {
+        this.downPayment = downPayment;
+    }
+
+    public FacilityResponse getFacility() {
+        return facility;
+    }
+
+    public void setFacility(FacilityResponse facility) {
+        this.facility = facility;
     }
 }

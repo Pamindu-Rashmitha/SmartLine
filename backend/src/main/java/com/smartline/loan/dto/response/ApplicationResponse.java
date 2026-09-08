@@ -28,6 +28,41 @@ public class ApplicationResponse {
     public ApplicationResponse() {
     }
 
+    public static ApplicationResponse fromEntity(com.smartline.loan.entity.Application app) {
+        if (app == null) return null;
+        ApplicationResponse res = new ApplicationResponse();
+        res.setId(app.getId());
+        res.setApplicationNumber(app.getApplicationNumber());
+        if (app.getApplicant() != null) {
+            res.setApplicantId(app.getApplicant().getId());
+            if (app.getApplicant().getUser() != null) {
+                res.setApplicantName(app.getApplicant().getUser().getFullName());
+                res.setApplicantPhone(app.getApplicant().getUser().getPhoneNumber());
+            }
+            res.setApplicantNic(app.getApplicant().getNicNumber());
+        }
+        res.setType(app.getType());
+        res.setStatus(app.getStatus());
+        res.setRequestedAmount(app.getRequestedAmount());
+        res.setPurpose(app.getPurpose());
+        if (app.getLoanDetail() != null) {
+            res.setTenureMonths(app.getLoanDetail().getRequestedTenure());
+            res.setMonthlyEmi(app.getLoanDetail().getCalculatedMonthlyEmi());
+        } else if (app.getVehicleLeaseDetail() != null) {
+            res.setTenureMonths(app.getVehicleLeaseDetail().getRequestedTenure());
+            res.setMonthlyEmi(app.getVehicleLeaseDetail().getCalculatedMonthlyEmi());
+        }
+        res.setGuarantorCount(app.getGuarantors() != null ? app.getGuarantors().size() : 0);
+        res.setDocumentCount(app.getDocuments() != null ? app.getDocuments().size() : 0);
+        if (app.getVerifiedBy() != null) {
+            res.setVerifiedByName(app.getVerifiedBy().getFullName());
+        }
+        res.setVerifiedAt(app.getVerifiedAt());
+        res.setSubmittedAt(app.getSubmittedAt());
+        res.setCreatedAt(app.getCreatedAt());
+        return res;
+    }
+
     public Long getId() {
         return id;
     }

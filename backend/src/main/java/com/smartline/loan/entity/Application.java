@@ -71,6 +71,15 @@ public class Application {
     @OneToOne(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private VehicleInspection vehicleInspection;
 
+    @OneToOne(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Agreement agreement;
+
+    @OneToOne(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private DownPayment downPayment;
+
+    @OneToOne(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Facility facility;
+
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Guarantor> guarantors = new ArrayList<>();
 
@@ -309,5 +318,38 @@ public class Application {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Agreement getAgreement() {
+        return agreement;
+    }
+
+    public void setAgreement(Agreement agreement) {
+        this.agreement = agreement;
+        if (agreement != null) {
+            agreement.setApplication(this);
+        }
+    }
+
+    public DownPayment getDownPayment() {
+        return downPayment;
+    }
+
+    public void setDownPayment(DownPayment downPayment) {
+        this.downPayment = downPayment;
+        if (downPayment != null) {
+            downPayment.setApplication(this);
+        }
+    }
+
+    public Facility getFacility() {
+        return facility;
+    }
+
+    public void setFacility(Facility facility) {
+        this.facility = facility;
+        if (facility != null) {
+            facility.setApplication(this);
+        }
     }
 }
