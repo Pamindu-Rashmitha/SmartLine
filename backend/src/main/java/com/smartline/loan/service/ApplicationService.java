@@ -436,10 +436,77 @@ public class ApplicationService {
             res.setVerifiedByName(app.getVerifiedBy().getFullName());
         }
         res.setVerifiedAt(app.getVerifiedAt());
+
+        if (app.getDecidedBy() != null) {
+            res.setDecidedByName(app.getDecidedBy().getFullName());
+        }
+        res.setDecidedAt(app.getDecidedAt());
+
+        if (app.getCreditAssessment() != null) {
+            res.setCreditAssessment(mapCreditAssessment(app.getCreditAssessment()));
+        }
+
+        if (app.getVehicleInspection() != null) {
+            res.setVehicleInspection(mapVehicleInspection(app.getVehicleInspection()));
+        }
+
         res.setSubmittedAt(app.getSubmittedAt());
         res.setCreatedAt(app.getCreatedAt());
         res.setUpdatedAt(app.getUpdatedAt());
 
+        return res;
+    }
+
+    private com.smartline.loan.dto.response.CreditAssessmentResponse mapCreditAssessment(com.smartline.loan.entity.CreditAssessment ca) {
+        if (ca == null) return null;
+        com.smartline.loan.dto.response.CreditAssessmentResponse res = new com.smartline.loan.dto.response.CreditAssessmentResponse();
+        res.setId(ca.getId());
+        res.setApplicationId(ca.getApplication().getId());
+        if (ca.getAssessedBy() != null) {
+            res.setAssessedById(ca.getAssessedBy().getId());
+            res.setAssessedByName(ca.getAssessedBy().getFullName());
+        }
+        res.setAssessmentDate(ca.getAssessmentDate());
+        res.setIncomeVerified(ca.getIncomeVerified());
+        res.setIncomeRemarks(ca.getIncomeRemarks());
+        res.setEmploymentVerified(ca.getEmploymentVerified());
+        res.setEmploymentRemarks(ca.getEmploymentRemarks());
+        res.setDebtToIncomeNotes(ca.getDebtToIncomeNotes());
+        res.setCreditHistoryNotes(ca.getCreditHistoryNotes());
+        res.setCollateralNotes(ca.getCollateralNotes());
+        res.setOverallRiskLevel(ca.getOverallRiskLevel());
+        res.setRecommendation(ca.getRecommendation());
+        res.setDecision(ca.getDecision());
+        res.setDecisionReason(ca.getDecisionReason());
+        if (ca.getDecidedBy() != null) {
+            res.setDecidedById(ca.getDecidedBy().getId());
+            res.setDecidedByName(ca.getDecidedBy().getFullName());
+        }
+        res.setDecidedAt(ca.getDecidedAt());
+        res.setCreatedAt(ca.getCreatedAt());
+        res.setUpdatedAt(ca.getUpdatedAt());
+        return res;
+    }
+
+    private com.smartline.loan.dto.response.VehicleInspectionResponse mapVehicleInspection(com.smartline.loan.entity.VehicleInspection vi) {
+        if (vi == null) return null;
+        com.smartline.loan.dto.response.VehicleInspectionResponse res = new com.smartline.loan.dto.response.VehicleInspectionResponse();
+        res.setId(vi.getId());
+        res.setApplicationId(vi.getApplication().getId());
+        if (vi.getInspectedBy() != null) {
+            res.setInspectedById(vi.getInspectedBy().getId());
+            res.setInspectedByName(vi.getInspectedBy().getFullName());
+        }
+        res.setInspectionDate(vi.getInspectionDate());
+        res.setPhysicalCondition(vi.getPhysicalCondition());
+        res.setMechanicalCondition(vi.getMechanicalCondition());
+        res.setEstimatedMarketValue(vi.getEstimatedMarketValue());
+        res.setForcedSaleValue(vi.getForcedSaleValue());
+        res.setRecommendedValue(vi.getRecommendedValue());
+        res.setOverallRating(vi.getOverallRating());
+        res.setRemarks(vi.getRemarks());
+        res.setCreatedAt(vi.getCreatedAt());
+        res.setUpdatedAt(vi.getUpdatedAt());
         return res;
     }
 }

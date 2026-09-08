@@ -33,6 +33,8 @@ import {
   DollarSign,
   UserCheck,
   Calendar,
+  ShieldCheck,
+  Wrench,
 } from 'lucide-react';
 import applicationApi from '../../api/applicationApi';
 import documentApi from '../../api/documentApi';
@@ -42,7 +44,7 @@ import dayjs from 'dayjs';
 const STATUS_STEPS = [
   { key: 'SUBMITTED', title: 'Submitted' },
   { key: 'UNDER_VERIFICATION', title: 'Verification' },
-  { key: 'VERIFIED', title: 'Verified' },
+  { key: 'UNDER_CREDIT_ASSESSMENT', title: 'Credit Appraisal' },
   { key: 'APPROVED', title: 'Approved' },
   { key: 'DISBURSED', title: 'Disbursed' },
 ];
@@ -50,12 +52,15 @@ const STATUS_STEPS = [
 const getStepCurrent = (status) => {
   switch (status) {
     case 'DRAFT': return 0;
-    case 'SUBMITTED': return 1;
-    case 'UNDER_VERIFICATION': return 2;
-    case 'VERIFIED': return 3;
-    case 'UNDER_CREDIT_ASSESSMENT': return 3;
-    case 'APPROVED': return 4;
-    case 'DISBURSED': return 5;
+    case 'SUBMITTED': return 0;
+    case 'UNDER_VERIFICATION': return 1;
+    case 'VERIFIED':
+    case 'UNDER_CREDIT_ASSESSMENT':
+    case 'PENDING_FIELD_INSPECTION':
+    case 'FIELD_INSPECTION_COMPLETED':
+    case 'PENDING_SENIOR_APPROVAL': return 2;
+    case 'APPROVED': return 3;
+    case 'DISBURSED': return 4;
     case 'REJECTED': return 2;
     case 'CANCELLED': return 0;
     default: return 1;
@@ -420,6 +425,184 @@ const ApplicationDetailPage = () => {
               key: '4',
               label: (
                 <span className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4" /> Credit Appraisal
+                </span>
+              ),
+              children: (
+                <div className="pt-2">
+                  {app.creditAssessment ? (
+                    <div className="space-y-6">
+                      <div className="flex flex-wrap gap-3 items-center p-3 rounded-xl bg-slate-800/40 border border-slate-700/60">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-slate-400">Risk Assessment:</span>
+                          <Tag
+                            color={
+                              app.creditAssessment.overallRiskLevel === 'LOW'
+                                ? 'success'
+                                : app.creditAssessment.overallRiskLevel === 'MEDIUM'
+                                ? 'warning'
+                                : 'error'
+                            }
+                            className="font-bold uppercase"
+                          >
+                            {app.creditAssessment.overallRiskLevel} RISK
+                          </Tag>
+                        </div>
+                        {app.creditAssessment.recommendation && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-slate-400">Recommendation:</span>
+                            <Tag color="purple">{app.creditAssessment.recommendation}</Tag>
+                          </div>
+                        )}
+                        {app.creditAssessment.decision && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-slate-400">Decision:</span>
+                            <Tag color={app.creditAssessment.decision === 'APPROVED' ? 'success' : 'error'}>
+                              {app.creditAssessment.decision}
+                            </Tag>
+                          </div>
+                        )}
+                        {app.creditAssessment.assessedByName && (
+                          <span className="text-xs text-slate-400 ml-auto">
+                            Assessed by: <span className="text-slate-200">{app.creditAssessment.assessedByName}</span>
+                          </span>
+                        )}
+                      </div>
+
+                      <Descriptions
+                        title={<span className="text-slate-200 text-sm font-semibold">Underwriting Evaluation</span>}
+                        bordered
+                        column={{ xs: 1, sm: 2 }}
+                        size="small"
+                      >
+                        <Descriptions.Item label="Income Verification">
+                          <div className="flex items-center gap-2">
+                            <Tag color={app.creditAssessment.incomeVerified ? 'success' : 'error'}>
+                              {app.creditAssessment.incomeVerified ? 'Verified' : 'Not Verified'}
+                            </Tag>
+                            <span className="text-xs text-slate-300">{app.creditAssessment.incomeRemarks || '—'}</span>
+                          </div>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Employment Check">
+                          <div className="flex items-center gap-2">
+                            <Tag color={app.creditAssessment.employmentVerified ? 'success' : 'error'}>
+                              {app.creditAssessment.employmentVerified ? 'Confirmed' : 'Unconfirmed'}
+                            </Tag>
+                            <span className="text-xs text-slate-300">{app.creditAssessment.employmentRemarks || '—'}</span>
+                          </div>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Debt-to-Income (DTI) Assessment" span={2}>
+                          {app.creditAssessment.debtToIncomeNotes || '—'}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="CRIB / Credit History Notes" span={2}>
+                          {app.creditAssessment.creditHistoryNotes || '—'}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Collateral & Valuation Notes" span={2}>
+                          {app.creditAssessment.collateralNotes || '—'}
+                        </Descriptions.Item>
+                        {app.creditAssessment.decisionReason && (
+                          <Descriptions.Item label="Decision Remarks" span={2}>
+                            <span className="text-amber-400">{app.creditAssessment.decisionReason}</span>
+                          </Descriptions.Item>
+                        )}
+                      </Descriptions>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-slate-400">
+                      Credit appraisal has not yet been conducted for this application.
+                    </div>
+                  )}
+                </div>
+              ),
+            },
+            ...(app.type === 'VEHICLE_LEASE' || app.vehicleInspection
+              ? [
+                  {
+                    key: '5',
+                    label: (
+                      <span className="flex items-center gap-2">
+                        <Car className="w-4 h-4" /> Vehicle Inspection
+                      </span>
+                    ),
+                    children: (
+                      <div className="pt-2">
+                        {app.vehicleInspection ? (
+                          <div className="space-y-6">
+                            <div className="flex flex-wrap gap-3 items-center p-3 rounded-xl bg-slate-800/40 border border-slate-700/60">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs text-slate-400">Rating:</span>
+                                <Tag
+                                  color={
+                                    app.vehicleInspection.overallRating === 'EXCELLENT' ||
+                                    app.vehicleInspection.overallRating === 'GOOD'
+                                      ? 'success'
+                                      : 'warning'
+                                  }
+                                  className="font-bold"
+                                >
+                                  {app.vehicleInspection.overallRating}
+                                </Tag>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs text-slate-400">Inspection Date:</span>
+                                <span className="text-xs font-mono text-slate-200">
+                                  {app.vehicleInspection.inspectionDate}
+                                </span>
+                              </div>
+                              {app.vehicleInspection.inspectedByName && (
+                                <span className="text-xs text-slate-400 ml-auto">
+                                  Inspector:{' '}
+                                  <span className="text-slate-200">{app.vehicleInspection.inspectedByName}</span>
+                                </span>
+                              )}
+                            </div>
+
+                            <Descriptions
+                              title={<span className="text-slate-200 text-sm font-semibold">Technical Valuation Report</span>}
+                              bordered
+                              column={{ xs: 1, sm: 2, md: 3 }}
+                              size="small"
+                            >
+                              <Descriptions.Item label="Market Valuation">
+                                <span className="font-mono text-emerald-400 font-bold">
+                                  LKR {Number(app.vehicleInspection.estimatedMarketValue || 0).toLocaleString()}
+                                </span>
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Forced Sale Value">
+                                <span className="font-mono text-amber-400 font-bold">
+                                  LKR {Number(app.vehicleInspection.forcedSaleValue || 0).toLocaleString()}
+                                </span>
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Recommended Max Financing">
+                                <span className="font-mono text-blue-400 font-bold">
+                                  LKR {Number(app.vehicleInspection.recommendedValue || 0).toLocaleString()}
+                                </span>
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Physical Condition" span={2}>
+                                {app.vehicleInspection.physicalCondition || '—'}
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Mechanical Condition">
+                                {app.vehicleInspection.mechanicalCondition || '—'}
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Inspector Remarks" span={3}>
+                                {app.vehicleInspection.remarks || '—'}
+                              </Descriptions.Item>
+                            </Descriptions>
+                          </div>
+                        ) : (
+                          <div className="text-center py-8 text-slate-400">
+                            Vehicle inspection has been scheduled and is pending field officer review.
+                          </div>
+                        )}
+                      </div>
+                    ),
+                  },
+                ]
+              : []),
+            {
+              key: '6',
+              label: (
+                <span className="flex items-center gap-2">
                   <Clock className="w-4 h-4" /> Audit & Status History
                 </span>
               ),
@@ -427,7 +610,12 @@ const ApplicationDetailPage = () => {
                 <div className="pt-4 px-2">
                   <Timeline
                     items={app.statusHistory?.map((h) => ({
-                      color: h.toStatus === 'VERIFIED' || h.toStatus === 'APPROVED' ? 'green' : h.toStatus === 'REJECTED' ? 'red' : 'blue',
+                      color:
+                        h.toStatus === 'VERIFIED' || h.toStatus === 'APPROVED'
+                          ? 'green'
+                          : h.toStatus === 'REJECTED'
+                          ? 'red'
+                          : 'blue',
                       children: (
                         <div>
                           <div className="flex items-center gap-2">
@@ -436,8 +624,12 @@ const ApplicationDetailPage = () => {
                               {dayjs(h.changedAt).format('YYYY-MM-DD HH:mm:ss')}
                             </span>
                           </div>
-                          <p className="text-xs text-slate-200 mt-1 mb-0 font-medium">{h.remarks || 'Status transition'}</p>
-                          <span className="text-[11px] text-slate-500">Action performed by: {h.changedByName} ({h.changedByRole})</span>
+                          <p className="text-xs text-slate-200 mt-1 mb-0 font-medium">
+                            {h.remarks || 'Status transition'}
+                          </p>
+                          <span className="text-[11px] text-slate-500">
+                            Action performed by: {h.changedByName} ({h.changedByRole})
+                          </span>
                         </div>
                       ),
                     }))}

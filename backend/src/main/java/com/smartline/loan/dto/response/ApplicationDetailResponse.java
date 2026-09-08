@@ -30,12 +30,16 @@ public class ApplicationDetailResponse {
 
     private LoanDetailResponse loanDetail;
     private VehicleLeaseDetailResponse vehicleLeaseDetail;
+    private CreditAssessmentResponse creditAssessment;
+    private VehicleInspectionResponse vehicleInspection;
     private List<GuarantorResponse> guarantors = new ArrayList<>();
     private List<DocumentResponse> documents = new ArrayList<>();
     private List<ApplicationStatusHistoryResponse> statusHistory = new ArrayList<>();
 
     private String verifiedByName;
     private LocalDateTime verifiedAt;
+    private String decidedByName;
+    private LocalDateTime decidedAt;
     private LocalDateTime submittedAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -233,6 +237,38 @@ public class ApplicationDetailResponse {
 
     public void setVerifiedByName(String verifiedByName) {
         this.verifiedByName = verifiedByName;
+    }
+
+    public CreditAssessmentResponse getCreditAssessment() {
+        return creditAssessment;
+    }
+
+    public void setCreditAssessment(CreditAssessmentResponse creditAssessment) {
+        this.creditAssessment = creditAssessment;
+    }
+
+    public VehicleInspectionResponse getVehicleInspection() {
+        return vehicleInspection;
+    }
+
+    public void setVehicleInspection(VehicleInspectionResponse vehicleInspection) {
+        this.vehicleInspection = vehicleInspection;
+    }
+
+    public String getDecidedByName() {
+        return decidedByName;
+    }
+
+    public void setDecidedByName(String decidedByName) {
+        this.decidedByName = decidedByName;
+    }
+
+    public LocalDateTime getDecidedAt() {
+        return decidedAt;
+    }
+
+    public void setDecidedAt(LocalDateTime decidedAt) {
+        this.decidedAt = decidedAt;
     }
 
     public LocalDateTime getVerifiedAt() {

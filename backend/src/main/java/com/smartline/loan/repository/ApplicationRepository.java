@@ -38,4 +38,13 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     @Query("SELECT COUNT(a) FROM Application a WHERE a.status IN ('SUBMITTED', 'UNDER_VERIFICATION')")
     long countPendingVerification();
+
+    @Query("SELECT COUNT(a) FROM Application a WHERE a.status IN ('VERIFIED', 'UNDER_CREDIT_ASSESSMENT', 'FIELD_INSPECTION_COMPLETED')")
+    long countPendingCreditAssessment();
+
+    @Query("SELECT COUNT(a) FROM Application a WHERE a.status = 'PENDING_FIELD_INSPECTION'")
+    long countPendingFieldInspection();
+
+    @Query("SELECT COUNT(a) FROM Application a WHERE a.status = 'PENDING_SENIOR_APPROVAL'")
+    long countPendingSeniorApproval();
 }

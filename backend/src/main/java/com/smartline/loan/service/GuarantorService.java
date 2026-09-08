@@ -106,6 +106,20 @@ public class GuarantorService {
         }
     }
 
+    @Transactional
+    public GuarantorResponse verifyGuarantor(Long guarantorId, com.smartline.loan.dto.request.GuarantorVerifyRequest request, User officer) {
+        Guarantor guarantor = guarantorRepository.findById(guarantorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Guarantor", "id", guarantorId));
+
+        guarantor.setVerificationStatus(request.getStatus());
+        guarantor.setVerifiedBy(officer);
+        guarantor.setVerifiedAt(java.time.LocalDateTime.now());
+        guarantor.setVerificationRemarks(request.getRemarks());
+
+        Guarantor saved = guarantorRepository.save(guarantor);
+        return mapToResponse(saved);
+    }
+
     public GuarantorResponse mapToResponse(Guarantor g) {
         GuarantorResponse res = new GuarantorResponse();
         res.setId(g.getId());

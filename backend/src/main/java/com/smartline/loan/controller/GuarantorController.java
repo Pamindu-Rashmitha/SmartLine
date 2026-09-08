@@ -67,6 +67,18 @@ public class GuarantorController {
         return ResponseEntity.ok(ApiResponse.success("Guarantor removed successfully", null));
     }
 
+    @PutMapping("/guarantors/{id}/verify")
+    @PreAuthorize("hasAnyRole('CREDIT_MANAGER', 'LOAN_OFFICER', 'ADMIN')")
+    @Operation(summary = "Verify or reject guarantor (US08)")
+    public ResponseEntity<ApiResponse<GuarantorResponse>> verifyGuarantor(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable Long id,
+            @Valid @RequestBody com.smartline.loan.dto.request.GuarantorVerifyRequest request) {
+        User currentUser = getCurrentUser(userPrincipal);
+        GuarantorResponse response = guarantorService.verifyGuarantor(id, request, currentUser);
+        return ResponseEntity.ok(ApiResponse.success("Guarantor verification updated", response));
+    }
+
     private User getCurrentUser(UserPrincipal principal) {
         return userRepository.findById(principal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", principal.getId()));

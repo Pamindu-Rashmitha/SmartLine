@@ -158,6 +158,7 @@ const RoleDashboardHub = () => {
               <Button
                 type="primary"
                 size="large"
+                onClick={() => navigate('/applications/new')}
                 className="bg-blue-600 hover:bg-blue-500 font-semibold border-0 shadow-lg shadow-blue-600/30 flex items-center gap-2 h-11"
               >
                 <Plus className="w-4 h-4" /> Apply for New Loan
@@ -166,6 +167,12 @@ const RoleDashboardHub = () => {
               <Button
                 type="primary"
                 size="large"
+                onClick={() => {
+                  if (role === 'CREDIT_MANAGER') navigate('/underwriting');
+                  else if (role === 'FIELD_OFFICER') navigate('/field-visits');
+                  else if (role === 'SENIOR_MANAGER') navigate('/approvals');
+                  else navigate('/applications');
+                }}
                 className="bg-blue-600 hover:bg-blue-500 font-semibold border-0 shadow-lg shadow-blue-600/30 flex items-center gap-2 h-11"
               >
                 <FileText className="w-4 h-4" /> View Queue

@@ -15,6 +15,11 @@ export const guarantorApi = {
     const res = await axiosClient.delete(`/guarantors/${guarantorId}`);
     return res.data;
   },
+
+  verifyGuarantor: async (guarantorId, data) => {
+    const res = await axiosClient.put(`/guarantors/${guarantorId}/verify`, data);
+    return res.data;
+  },
 };
 
 export default guarantorApi;

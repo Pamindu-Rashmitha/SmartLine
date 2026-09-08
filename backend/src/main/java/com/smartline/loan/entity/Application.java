@@ -50,6 +50,12 @@ public class Application {
 
     private LocalDateTime verifiedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "decided_by")
+    private User decidedBy;
+
+    private LocalDateTime decidedAt;
+
     @Column(length = 1000)
     private String rejectionReason;
 
@@ -58,6 +64,12 @@ public class Application {
 
     @OneToOne(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private VehicleLeaseDetail vehicleLeaseDetail;
+
+    @OneToOne(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private CreditAssessment creditAssessment;
+
+    @OneToOne(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private VehicleInspection vehicleInspection;
 
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Guarantor> guarantors = new ArrayList<>();
@@ -109,6 +121,20 @@ public class Application {
         this.vehicleLeaseDetail = vehicleLeaseDetail;
         if (vehicleLeaseDetail != null) {
             vehicleLeaseDetail.setApplication(this);
+        }
+    }
+
+    public void setCreditAssessment(CreditAssessment creditAssessment) {
+        this.creditAssessment = creditAssessment;
+        if (creditAssessment != null) {
+            creditAssessment.setApplication(this);
+        }
+    }
+
+    public void setVehicleInspection(VehicleInspection vehicleInspection) {
+        this.vehicleInspection = vehicleInspection;
+        if (vehicleInspection != null) {
+            vehicleInspection.setApplication(this);
         }
     }
 
@@ -213,6 +239,22 @@ public class Application {
         this.verifiedAt = verifiedAt;
     }
 
+    public User getDecidedBy() {
+        return decidedBy;
+    }
+
+    public void setDecidedBy(User decidedBy) {
+        this.decidedBy = decidedBy;
+    }
+
+    public LocalDateTime getDecidedAt() {
+        return decidedAt;
+    }
+
+    public void setDecidedAt(LocalDateTime decidedAt) {
+        this.decidedAt = decidedAt;
+    }
+
     public String getRejectionReason() {
         return rejectionReason;
     }
@@ -227,6 +269,14 @@ public class Application {
 
     public VehicleLeaseDetail getVehicleLeaseDetail() {
         return vehicleLeaseDetail;
+    }
+
+    public CreditAssessment getCreditAssessment() {
+        return creditAssessment;
+    }
+
+    public VehicleInspection getVehicleInspection() {
+        return vehicleInspection;
     }
 
     public List<Guarantor> getGuarantors() {

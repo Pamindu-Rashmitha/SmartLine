@@ -10,6 +10,12 @@ import MyApplicationsPage from '../pages/applicant/MyApplicationsPage';
 import ApplicationDetailPage from '../pages/applicant/ApplicationDetailPage';
 import LoanPipelinePage from '../pages/loan-officer/LoanPipelinePage';
 import ApplicationReviewPage from '../pages/loan-officer/ApplicationReviewPage';
+import CreditQueuePage from '../pages/credit-manager/CreditQueuePage';
+import CreditAssessmentPage from '../pages/credit-manager/CreditAssessmentPage';
+import InspectionQueuePage from '../pages/field-officer/InspectionQueuePage';
+import VehicleInspectionPage from '../pages/field-officer/VehicleInspectionPage';
+import AuthorizationQueuePage from '../pages/senior-manager/AuthorizationQueuePage';
+import AuthorizationDetailPage from '../pages/senior-manager/AuthorizationDetailPage';
 import { useAuth } from '../contexts/AuthContext';
 
 // Dispatcher for /applications index route
@@ -17,6 +23,15 @@ const ApplicationsIndexDispatcher = () => {
   const { user } = useAuth();
   if (user?.role === 'APPLICANT') {
     return <MyApplicationsPage />;
+  }
+  if (user?.role === 'CREDIT_MANAGER') {
+    return <CreditQueuePage />;
+  }
+  if (user?.role === 'FIELD_OFFICER') {
+    return <InspectionQueuePage />;
+  }
+  if (user?.role === 'SENIOR_MANAGER') {
+    return <AuthorizationQueuePage />;
   }
   return <LoanPipelinePage />;
 };
@@ -46,15 +61,26 @@ const AppRoutes = () => {
         <Route path="applications/:id" element={<ApplicationDetailPage />} />
         <Route path="applications/:id/verify" element={<ApplicationReviewPage />} />
 
+        {/* EP02: Credit Assessment & Risk Evaluation Routes */}
+        <Route path="underwriting" element={<CreditQueuePage />} />
+        <Route path="credit-assessment" element={<CreditQueuePage />} />
+        <Route path="applications/:id/assess" element={<CreditAssessmentPage />} />
+
+        {/* EP02: Field Inspection Routes */}
+        <Route path="field-visits" element={<InspectionQueuePage />} />
+        <Route path="verifications" element={<InspectionQueuePage />} />
+        <Route path="applications/:id/inspect" element={<VehicleInspectionPage />} />
+
+        {/* EP02: Senior Manager Higher-Level Sanction Routes */}
+        <Route path="approvals" element={<AuthorizationQueuePage />} />
+        <Route path="applications/:id/authorize" element={<AuthorizationDetailPage />} />
+
         {/* Role-Specific Pipeline Direct Aliases */}
         <Route path="loan-officer/applications" element={<LoanPipelinePage />} />
         <Route path="loans" element={<ApplicationsIndexDispatcher />} />
         <Route path="loans/*" element={<RoleDashboardHub />} />
         <Route path="documents/*" element={<RoleDashboardHub />} />
         <Route path="customers/*" element={<RoleDashboardHub />} />
-        <Route path="field-visits/*" element={<RoleDashboardHub />} />
-        <Route path="underwriting/*" element={<RoleDashboardHub />} />
-        <Route path="approvals/*" element={<RoleDashboardHub />} />
         <Route path="legal-agreements/*" element={<RoleDashboardHub />} />
         <Route path="disbursements/*" element={<RoleDashboardHub />} />
         <Route path="arrears/*" element={<RoleDashboardHub />} />
