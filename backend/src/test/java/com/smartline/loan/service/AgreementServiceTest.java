@@ -40,6 +40,9 @@ class AgreementServiceTest {
     @Mock
     private ApplicationStatusHistoryRepository statusHistoryRepository;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private AgreementService agreementService;
 

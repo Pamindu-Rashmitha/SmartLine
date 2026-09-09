@@ -8,6 +8,7 @@ import com.smartline.loan.entity.Facility;
 import com.smartline.loan.entity.Installment;
 import com.smartline.loan.entity.User;
 import com.smartline.loan.entity.enums.InstallmentStatus;
+import com.smartline.loan.entity.enums.NotificationType;
 import com.smartline.loan.exception.ResourceNotFoundException;
 import com.smartline.loan.repository.CollectionFollowUpRepository;
 import com.smartline.loan.repository.InstallmentRepository;
@@ -23,11 +24,14 @@ public class CollectionService {
 
     private final InstallmentRepository installmentRepository;
     private final CollectionFollowUpRepository collectionFollowUpRepository;
+    private final NotificationService notificationService;
 
     public CollectionService(InstallmentRepository installmentRepository,
-                             CollectionFollowUpRepository collectionFollowUpRepository) {
+                             CollectionFollowUpRepository collectionFollowUpRepository,
+                             NotificationService notificationService) {
         this.installmentRepository = installmentRepository;
         this.collectionFollowUpRepository = collectionFollowUpRepository;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -67,6 +71,17 @@ public class CollectionService {
         followUp.setRecordedBy(officer);
 
         CollectionFollowUp saved = collectionFollowUpRepository.save(followUp);
+
+        if (facility != null && facility.getApplication() != null &&
+                facility.getApplication().getApplicant() != null &&
+                facility.getApplication().getApplicant().getUser() != null) {
+            notificationService.sendToUser(facility.getApplication().getApplicant().getUser(),
+                    "Overdue Payment Notice",
+                    "A follow-up was recorded regarding installment #" + installment.getInstallmentNumber() +
+                    " (Due: " + installment.getDueDate() + ", Overdue: LKR " + installment.getRemainingAmount() +
+                    "). Please ensure prompt settlement.",
+                    NotificationType.WARNING, "FACILITY", facility.getId());
+        }
 
         return CollectionFollowUpResponse.fromEntity(saved);
     }

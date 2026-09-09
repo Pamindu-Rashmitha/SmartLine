@@ -17,6 +17,8 @@ import com.smartline.loan.repository.ApplicationStatusHistoryRepository;
 import com.smartline.loan.repository.CreditAssessmentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import com.smartline.loan.entity.Role;
+import com.smartline.loan.entity.enums.NotificationType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,15 +34,18 @@ public class SeniorAuthorizationService {
     private final CreditAssessmentRepository creditAssessmentRepository;
     private final ApplicationStatusHistoryRepository statusHistoryRepository;
     private final ApplicationService applicationService;
+    private final NotificationService notificationService;
 
     public SeniorAuthorizationService(ApplicationRepository applicationRepository,
                                       CreditAssessmentRepository creditAssessmentRepository,
                                       ApplicationStatusHistoryRepository statusHistoryRepository,
-                                      ApplicationService applicationService) {
+                                      ApplicationService applicationService,
+                                      NotificationService notificationService) {
         this.applicationRepository = applicationRepository;
         this.creditAssessmentRepository = creditAssessmentRepository;
         this.statusHistoryRepository = statusHistoryRepository;
         this.applicationService = applicationService;
+        this.notificationService = notificationService;
     }
 
     @Transactional(readOnly = true)
@@ -124,6 +129,23 @@ public class SeniorAuthorizationService {
                 historyNote
         );
         statusHistoryRepository.save(history);
+
+        if (newStatus == ApplicationStatus.APPROVED) {
+            notificationService.sendToRole(Role.LEGAL_OFFICER, "Agreement Preparation Required",
+                    "Application #" + updated.getApplicationNumber() + " received senior sanction. Ready for agreement preparation.",
+                    NotificationType.ACTION_REQUIRED, "APPLICATION", updated.getId());
+            if (updated.getApplicant() != null && updated.getApplicant().getUser() != null) {
+                notificationService.sendToUser(updated.getApplicant().getUser(), "Senior Sanction Granted!",
+                        "Congratulations! Executive approval granted for your application #" + updated.getApplicationNumber() + ".",
+                        NotificationType.STATUS_UPDATE, "APPLICATION", updated.getId());
+            }
+        } else if (newStatus == ApplicationStatus.REJECTED) {
+            if (updated.getApplicant() != null && updated.getApplicant().getUser() != null) {
+                notificationService.sendToUser(updated.getApplicant().getUser(), "Application Declined",
+                        "Your application #" + updated.getApplicationNumber() + " was not approved during executive review.",
+                        NotificationType.WARNING, "APPLICATION", updated.getId());
+            }
+        }
 
         return applicationService.getApplicationDetail(updated.getId(), seniorManager);
     }

@@ -7,6 +7,7 @@ import com.smartline.loan.entity.*;
 import com.smartline.loan.entity.enums.AgreementStatus;
 import com.smartline.loan.entity.enums.ApplicationStatus;
 import com.smartline.loan.entity.enums.FacilityStatus;
+import com.smartline.loan.entity.enums.NotificationType;
 import com.smartline.loan.exception.BadRequestException;
 import com.smartline.loan.exception.ResourceNotFoundException;
 import com.smartline.loan.repository.AgreementRepository;
@@ -29,15 +30,18 @@ public class DisbursalService {
     private final AgreementRepository agreementRepository;
     private final FacilityRepository facilityRepository;
     private final ApplicationStatusHistoryRepository statusHistoryRepository;
+    private final NotificationService notificationService;
 
     public DisbursalService(ApplicationRepository applicationRepository,
                             AgreementRepository agreementRepository,
                             FacilityRepository facilityRepository,
-                            ApplicationStatusHistoryRepository statusHistoryRepository) {
+                            ApplicationStatusHistoryRepository statusHistoryRepository,
+                            NotificationService notificationService) {
         this.applicationRepository = applicationRepository;
         this.agreementRepository = agreementRepository;
         this.facilityRepository = facilityRepository;
         this.statusHistoryRepository = statusHistoryRepository;
+        this.notificationService = notificationService;
     }
 
     @Transactional(readOnly = true)
@@ -109,6 +113,13 @@ public class DisbursalService {
                 financeOfficer,
                 remarks
         ));
+
+        if (application.getApplicant() != null && application.getApplicant().getUser() != null) {
+            notificationService.sendToUser(application.getApplicant().getUser(), "Funds Disbursed!",
+                    "Your loan facility #" + savedFacility.getFacilityNumber() + " (LKR " + savedFacility.getPrincipalAmount() +
+                    ") has been disbursed. First installment is now scheduled.",
+                    NotificationType.STATUS_UPDATE, "FACILITY", savedFacility.getId());
+        }
 
         return FacilityResponse.fromEntity(savedFacility);
     }

@@ -47,6 +47,12 @@ class CreditAssessmentServiceTest {
     @Mock
     private ApplicationService applicationService;
 
+    @Mock
+    private SystemConfigService systemConfigService;
+
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private CreditAssessmentService creditAssessmentService;
 

@@ -6,9 +6,11 @@ import com.smartline.loan.dto.response.DownPaymentResponse;
 import com.smartline.loan.entity.Application;
 import com.smartline.loan.entity.ApplicationStatusHistory;
 import com.smartline.loan.entity.DownPayment;
+import com.smartline.loan.entity.Role;
 import com.smartline.loan.entity.User;
 import com.smartline.loan.entity.enums.ApplicationStatus;
 import com.smartline.loan.entity.enums.DownPaymentStatus;
+import com.smartline.loan.entity.enums.NotificationType;
 import com.smartline.loan.exception.BadRequestException;
 import com.smartline.loan.exception.ForbiddenException;
 import com.smartline.loan.exception.ResourceNotFoundException;
@@ -28,13 +30,16 @@ public class DownPaymentService {
     private final DownPaymentRepository downPaymentRepository;
     private final ApplicationRepository applicationRepository;
     private final ApplicationStatusHistoryRepository statusHistoryRepository;
+    private final NotificationService notificationService;
 
     public DownPaymentService(DownPaymentRepository downPaymentRepository,
                               ApplicationRepository applicationRepository,
-                              ApplicationStatusHistoryRepository statusHistoryRepository) {
+                              ApplicationStatusHistoryRepository statusHistoryRepository,
+                              NotificationService notificationService) {
         this.downPaymentRepository = downPaymentRepository;
         this.applicationRepository = applicationRepository;
         this.statusHistoryRepository = statusHistoryRepository;
+        this.notificationService = notificationService;
     }
 
     @Transactional(readOnly = true)
@@ -87,6 +92,15 @@ public class DownPaymentService {
                 financeOfficer,
                 remarks
         ));
+
+        notificationService.sendToRole(Role.FINANCE_OFFICER, "Disbursal Required",
+                "Down payment verified for application #" + application.getApplicationNumber() + ". Ready for fund disbursal.",
+                NotificationType.ACTION_REQUIRED, "APPLICATION", application.getId());
+        if (application.getApplicant() != null && application.getApplicant().getUser() != null) {
+            notificationService.sendToUser(application.getApplicant().getUser(), "Down Payment Confirmed",
+                    "Down payment of LKR " + saved.getPaidAmount() + " confirmed. Application is queued for disbursal.",
+                    NotificationType.STATUS_UPDATE, "APPLICATION", application.getId());
+        }
 
         return DownPaymentResponse.fromEntity(saved);
     }

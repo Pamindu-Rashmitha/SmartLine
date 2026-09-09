@@ -57,6 +57,9 @@ class ApplicationServiceTest {
     @Mock
     private DocumentService documentService;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private ApplicationService applicationService;
 

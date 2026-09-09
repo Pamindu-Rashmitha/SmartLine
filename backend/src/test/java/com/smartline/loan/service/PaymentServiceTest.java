@@ -41,6 +41,9 @@ class PaymentServiceTest {
     @Mock
     private FacilityRepository facilityRepository;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private PaymentService paymentService;
 

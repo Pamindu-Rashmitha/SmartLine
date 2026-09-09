@@ -4,10 +4,12 @@ import com.smartline.loan.dto.request.AgreementCreateRequest;
 import com.smartline.loan.dto.response.AgreementResponse;
 import com.smartline.loan.dto.response.ApplicationResponse;
 import com.smartline.loan.entity.*;
+import com.smartline.loan.entity.Role;
 import com.smartline.loan.entity.enums.AgreementStatus;
 import com.smartline.loan.entity.enums.ApplicationStatus;
 import com.smartline.loan.entity.enums.ApplicationType;
 import com.smartline.loan.entity.enums.DownPaymentStatus;
+import com.smartline.loan.entity.enums.NotificationType;
 import com.smartline.loan.exception.BadRequestException;
 import com.smartline.loan.exception.ForbiddenException;
 import com.smartline.loan.exception.ResourceNotFoundException;
@@ -30,15 +32,18 @@ public class AgreementService {
     private final ApplicationRepository applicationRepository;
     private final DownPaymentRepository downPaymentRepository;
     private final ApplicationStatusHistoryRepository statusHistoryRepository;
+    private final NotificationService notificationService;
 
     public AgreementService(AgreementRepository agreementRepository,
                             ApplicationRepository applicationRepository,
                             DownPaymentRepository downPaymentRepository,
-                            ApplicationStatusHistoryRepository statusHistoryRepository) {
+                            ApplicationStatusHistoryRepository statusHistoryRepository,
+                            NotificationService notificationService) {
         this.agreementRepository = agreementRepository;
         this.applicationRepository = applicationRepository;
         this.downPaymentRepository = downPaymentRepository;
         this.statusHistoryRepository = statusHistoryRepository;
+        this.notificationService = notificationService;
     }
 
     @Transactional(readOnly = true)
@@ -191,6 +196,23 @@ public class AgreementService {
                 legalOfficer,
                 remarks
         ));
+
+        if (nextStatus == ApplicationStatus.PENDING_DOWN_PAYMENT) {
+            if (application.getApplicant() != null && application.getApplicant().getUser() != null) {
+                notificationService.sendToUser(application.getApplicant().getUser(), "Agreement Ready — Down Payment Required",
+                        "Your loan agreement has been sealed. Please submit your down payment of LKR " + downPaymentReq + " to proceed.",
+                        NotificationType.ACTION_REQUIRED, "APPLICATION", application.getId());
+            }
+        } else if (nextStatus == ApplicationStatus.PENDING_DISBURSAL) {
+            notificationService.sendToRole(Role.FINANCE_OFFICER, "Disbursal Required",
+                    "Agreement sealed for application #" + application.getApplicationNumber() + ". Ready for fund disbursal.",
+                    NotificationType.ACTION_REQUIRED, "APPLICATION", application.getId());
+            if (application.getApplicant() != null && application.getApplicant().getUser() != null) {
+                notificationService.sendToUser(application.getApplicant().getUser(), "Agreement Finalized",
+                        "Your agreement #" + savedAgreement.getAgreementNumber() + " is sealed and routed for fund disbursal.",
+                        NotificationType.STATUS_UPDATE, "APPLICATION", application.getId());
+            }
+        }
 
         return AgreementResponse.fromEntity(savedAgreement);
     }

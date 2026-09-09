@@ -17,6 +17,8 @@ import com.smartline.loan.repository.ApplicationStatusHistoryRepository;
 import com.smartline.loan.repository.VehicleInspectionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import com.smartline.loan.entity.Role;
+import com.smartline.loan.entity.enums.NotificationType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,15 +34,18 @@ public class VehicleInspectionService {
     private final ApplicationRepository applicationRepository;
     private final ApplicationStatusHistoryRepository statusHistoryRepository;
     private final ApplicationService applicationService;
+    private final NotificationService notificationService;
 
     public VehicleInspectionService(VehicleInspectionRepository vehicleInspectionRepository,
                                     ApplicationRepository applicationRepository,
                                     ApplicationStatusHistoryRepository statusHistoryRepository,
-                                    ApplicationService applicationService) {
+                                    ApplicationService applicationService,
+                                    NotificationService notificationService) {
         this.vehicleInspectionRepository = vehicleInspectionRepository;
         this.applicationRepository = applicationRepository;
         this.statusHistoryRepository = statusHistoryRepository;
         this.applicationService = applicationService;
+        this.notificationService = notificationService;
     }
 
     @Transactional(readOnly = true)
@@ -107,6 +112,16 @@ public class VehicleInspectionService {
                     " | Recommended Value: LKR " + saved.getRecommendedValue()
             );
             statusHistoryRepository.save(history);
+
+            notificationService.sendToRole(Role.CREDIT_MANAGER, "Vehicle Inspection Completed",
+                    "Inspection report filed for application #" + application.getApplicationNumber() +
+                    " (Recommended Value: LKR " + saved.getRecommendedValue() + "). Ready for credit assessment.",
+                    NotificationType.ACTION_REQUIRED, "APPLICATION", application.getId());
+            if (application.getApplicant() != null && application.getApplicant().getUser() != null) {
+                notificationService.sendToUser(application.getApplicant().getUser(), "Vehicle Inspection Completed",
+                        "Vehicle inspection has been completed for your application #" + application.getApplicationNumber() + ".",
+                        NotificationType.STATUS_UPDATE, "APPLICATION", application.getId());
+            }
         }
 
         return mapToResponse(saved);

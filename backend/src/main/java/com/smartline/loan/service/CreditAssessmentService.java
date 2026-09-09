@@ -9,11 +9,13 @@ import com.smartline.loan.dto.response.PageResponse;
 import com.smartline.loan.entity.Application;
 import com.smartline.loan.entity.ApplicationStatusHistory;
 import com.smartline.loan.entity.CreditAssessment;
+import com.smartline.loan.entity.Role;
 import com.smartline.loan.entity.User;
 import com.smartline.loan.entity.enums.ApplicationStatus;
 import com.smartline.loan.entity.enums.ApplicationType;
 import com.smartline.loan.entity.enums.CreditDecision;
 import com.smartline.loan.entity.enums.CreditRecommendation;
+import com.smartline.loan.entity.enums.NotificationType;
 import com.smartline.loan.entity.enums.RiskLevel;
 import com.smartline.loan.exception.BadRequestException;
 import com.smartline.loan.exception.ResourceNotFoundException;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -41,17 +44,20 @@ public class CreditAssessmentService {
     private final ApplicationStatusHistoryRepository statusHistoryRepository;
     private final ApplicationService applicationService;
     private final SystemConfigService systemConfigService;
+    private final NotificationService notificationService;
 
     public CreditAssessmentService(CreditAssessmentRepository creditAssessmentRepository,
                                    ApplicationRepository applicationRepository,
                                    ApplicationStatusHistoryRepository statusHistoryRepository,
                                    ApplicationService applicationService,
-                                   SystemConfigService systemConfigService) {
+                                   SystemConfigService systemConfigService,
+                                   NotificationService notificationService) {
         this.creditAssessmentRepository = creditAssessmentRepository;
         this.applicationRepository = applicationRepository;
         this.statusHistoryRepository = statusHistoryRepository;
         this.applicationService = applicationService;
         this.systemConfigService = systemConfigService;
+        this.notificationService = notificationService;
     }
 
     public BigDecimal getSeniorApprovalThreshold() {
@@ -264,6 +270,32 @@ public class CreditAssessmentService {
                 historyRemarks
         );
         statusHistoryRepository.save(history);
+
+        if (newStatus == ApplicationStatus.REJECTED) {
+            if (updated.getApplicant() != null && updated.getApplicant().getUser() != null) {
+                notificationService.sendToUser(updated.getApplicant().getUser(), "Credit Decision: Declined",
+                        "Your application #" + updated.getApplicationNumber() + " was not approved during credit assessment.",
+                        NotificationType.WARNING, "APPLICATION", updated.getId());
+            }
+        } else if (newStatus == ApplicationStatus.PENDING_SENIOR_APPROVAL) {
+            notificationService.sendToRole(Role.SENIOR_MANAGER, "Executive Sanction Required",
+                    "Application #" + updated.getApplicationNumber() + " (LKR " + updated.getRequestedAmount() + ") referred for senior approval.",
+                    NotificationType.ACTION_REQUIRED, "APPLICATION", updated.getId());
+            if (updated.getApplicant() != null && updated.getApplicant().getUser() != null) {
+                notificationService.sendToUser(updated.getApplicant().getUser(), "Senior Sanction Pending",
+                        "Your application #" + updated.getApplicationNumber() + " is undergoing senior management approval.",
+                        NotificationType.STATUS_UPDATE, "APPLICATION", updated.getId());
+            }
+        } else if (newStatus == ApplicationStatus.APPROVED) {
+            notificationService.sendToRole(Role.LEGAL_OFFICER, "Agreement Preparation Required",
+                    "Application #" + updated.getApplicationNumber() + " credit-approved. Ready for agreement preparation.",
+                    NotificationType.ACTION_REQUIRED, "APPLICATION", updated.getId());
+            if (updated.getApplicant() != null && updated.getApplicant().getUser() != null) {
+                notificationService.sendToUser(updated.getApplicant().getUser(), "Application Approved!",
+                        "Congratulations! Your application #" + updated.getApplicationNumber() + " has been approved.",
+                        NotificationType.STATUS_UPDATE, "APPLICATION", updated.getId());
+            }
+        }
 
         return applicationService.getApplicationDetail(updated.getId(), creditManager);
     }

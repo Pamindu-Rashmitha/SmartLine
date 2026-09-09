@@ -6,8 +6,10 @@ import com.smartline.loan.dto.request.LoanDetailRequest;
 import com.smartline.loan.dto.request.VehicleLeaseDetailRequest;
 import com.smartline.loan.dto.response.*;
 import com.smartline.loan.entity.*;
+import com.smartline.loan.entity.Role;
 import com.smartline.loan.entity.enums.ApplicationStatus;
 import com.smartline.loan.entity.enums.ApplicationType;
+import com.smartline.loan.entity.enums.NotificationType;
 import com.smartline.loan.entity.enums.VehicleCategory;
 import com.smartline.loan.exception.BadRequestException;
 import com.smartline.loan.exception.ResourceNotFoundException;
@@ -36,6 +38,7 @@ public class ApplicationService {
     private final ApplicationStatusHistoryRepository statusHistoryRepository;
     private final GuarantorService guarantorService;
     private final DocumentService documentService;
+    private final NotificationService notificationService;
 
     public ApplicationService(ApplicationRepository applicationRepository,
                               ApplicantRepository applicantRepository,
@@ -45,7 +48,8 @@ public class ApplicationService {
                               DocumentRepository documentRepository,
                               ApplicationStatusHistoryRepository statusHistoryRepository,
                               GuarantorService guarantorService,
-                              DocumentService documentService) {
+                              DocumentService documentService,
+                              NotificationService notificationService) {
         this.applicationRepository = applicationRepository;
         this.applicantRepository = applicantRepository;
         this.loanDetailRepository = loanDetailRepository;
@@ -55,6 +59,7 @@ public class ApplicationService {
         this.statusHistoryRepository = statusHistoryRepository;
         this.guarantorService = guarantorService;
         this.documentService = documentService;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -177,6 +182,17 @@ public class ApplicationService {
         );
         statusHistoryRepository.save(history);
 
+        if (saved.getStatus() == ApplicationStatus.SUBMITTED) {
+            notificationService.sendToRole(Role.LOAN_OFFICER, "New Application Submitted",
+                    "Application #" + saved.getApplicationNumber() + " submitted for review (" + saved.getType() + ").",
+                    NotificationType.ACTION_REQUIRED, "APPLICATION", saved.getId());
+            if (saved.getApplicant() != null && saved.getApplicant().getUser() != null) {
+                notificationService.sendToUser(saved.getApplicant().getUser(), "Application Submitted",
+                        "Your application #" + saved.getApplicationNumber() + " has been submitted successfully.",
+                        NotificationType.STATUS_UPDATE, "APPLICATION", saved.getId());
+            }
+        }
+
         return getApplicationDetail(saved.getId(), currentUser);
     }
 
@@ -209,6 +225,15 @@ public class ApplicationService {
                 "Submitted for loan officer verification"
         );
         statusHistoryRepository.save(history);
+
+        notificationService.sendToRole(Role.LOAN_OFFICER, "New Application Submitted",
+                "Application #" + updated.getApplicationNumber() + " submitted for review (" + updated.getType() + ").",
+                NotificationType.ACTION_REQUIRED, "APPLICATION", updated.getId());
+        if (updated.getApplicant() != null && updated.getApplicant().getUser() != null) {
+            notificationService.sendToUser(updated.getApplicant().getUser(), "Application Submitted",
+                    "Your application #" + updated.getApplicationNumber() + " has been submitted successfully.",
+                    NotificationType.STATUS_UPDATE, "APPLICATION", updated.getId());
+        }
 
         return getApplicationDetail(updated.getId(), currentUser);
     }

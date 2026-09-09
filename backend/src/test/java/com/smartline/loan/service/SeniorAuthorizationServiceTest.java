@@ -42,6 +42,9 @@ class SeniorAuthorizationServiceTest {
     @Mock
     private ApplicationService applicationService;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private SeniorAuthorizationService seniorAuthorizationService;
 

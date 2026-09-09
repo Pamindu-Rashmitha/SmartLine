@@ -9,6 +9,7 @@ import com.smartline.loan.entity.Payment;
 import com.smartline.loan.entity.User;
 import com.smartline.loan.entity.enums.FacilityStatus;
 import com.smartline.loan.entity.enums.InstallmentStatus;
+import com.smartline.loan.entity.enums.NotificationType;
 import com.smartline.loan.exception.BadRequestException;
 import com.smartline.loan.exception.ResourceNotFoundException;
 import com.smartline.loan.repository.FacilityRepository;
@@ -29,13 +30,16 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final InstallmentRepository installmentRepository;
     private final FacilityRepository facilityRepository;
+    private final NotificationService notificationService;
 
     public PaymentService(PaymentRepository paymentRepository,
                           InstallmentRepository installmentRepository,
-                          FacilityRepository facilityRepository) {
+                          FacilityRepository facilityRepository,
+                          NotificationService notificationService) {
         this.paymentRepository = paymentRepository;
         this.installmentRepository = installmentRepository;
         this.facilityRepository = facilityRepository;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -102,6 +106,14 @@ public class PaymentService {
 
         Payment saved = paymentRepository.save(payment);
 
+        if (facility.getApplication() != null && facility.getApplication().getApplicant() != null &&
+                facility.getApplication().getApplicant().getUser() != null) {
+            notificationService.sendToUser(facility.getApplication().getApplicant().getUser(), "Payment Received",
+                    "Payment of LKR " + paymentAmount + " recorded for installment #" + installment.getInstallmentNumber() +
+                    " on facility " + facility.getFacilityNumber() + ".",
+                    NotificationType.STATUS_UPDATE, "FACILITY", facility.getId());
+        }
+
         return PaymentResponse.fromEntity(saved);
     }
 
@@ -164,6 +176,14 @@ public class PaymentService {
             facility.setCompletedAt(null);
         }
         facilityRepository.save(facility);
+
+        if (facility.getApplication() != null && facility.getApplication().getApplicant() != null &&
+                facility.getApplication().getApplicant().getUser() != null) {
+            notificationService.sendToUser(facility.getApplication().getApplicant().getUser(), "Payment Reversal Notice",
+                    "Payment of LKR " + payment.getAmount() + " on facility " + facility.getFacilityNumber() +
+                    " has been reversed: " + request.getCancellationReason(),
+                    NotificationType.WARNING, "FACILITY", facility.getId());
+        }
 
         return PaymentResponse.fromEntity(payment);
     }

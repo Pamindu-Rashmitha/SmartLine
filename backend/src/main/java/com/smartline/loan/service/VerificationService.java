@@ -9,8 +9,11 @@ import com.smartline.loan.dto.response.PageResponse;
 import com.smartline.loan.entity.Application;
 import com.smartline.loan.entity.ApplicationStatusHistory;
 import com.smartline.loan.entity.Document;
+import com.smartline.loan.entity.Role;
 import com.smartline.loan.entity.User;
 import com.smartline.loan.entity.enums.ApplicationStatus;
+import com.smartline.loan.entity.enums.ApplicationType;
+import com.smartline.loan.entity.enums.NotificationType;
 import com.smartline.loan.entity.enums.VerificationStatus;
 import com.smartline.loan.exception.BadRequestException;
 import com.smartline.loan.exception.ResourceNotFoundException;
@@ -35,17 +38,20 @@ public class VerificationService {
     private final ApplicationStatusHistoryRepository statusHistoryRepository;
     private final ApplicationService applicationService;
     private final DocumentService documentService;
+    private final NotificationService notificationService;
 
     public VerificationService(ApplicationRepository applicationRepository,
                                DocumentRepository documentRepository,
                                ApplicationStatusHistoryRepository statusHistoryRepository,
                                ApplicationService applicationService,
-                               DocumentService documentService) {
+                               DocumentService documentService,
+                               NotificationService notificationService) {
         this.applicationRepository = applicationRepository;
         this.documentRepository = documentRepository;
         this.statusHistoryRepository = statusHistoryRepository;
         this.applicationService = applicationService;
         this.documentService = documentService;
+        this.notificationService = notificationService;
     }
 
     @Transactional(readOnly = true)
@@ -153,6 +159,29 @@ public class VerificationService {
                 remarks
         );
         statusHistoryRepository.save(history);
+
+        if (newStatus == ApplicationStatus.VERIFIED) {
+            if (application.getType() == ApplicationType.VEHICLE_LEASE) {
+                notificationService.sendToRole(Role.FIELD_OFFICER, "Vehicle Inspection Required",
+                        "Application #" + updated.getApplicationNumber() + " KYC verified. Inspection needed.",
+                        NotificationType.ACTION_REQUIRED, "APPLICATION", updated.getId());
+            } else {
+                notificationService.sendToRole(Role.CREDIT_MANAGER, "Credit Assessment Required",
+                        "Application #" + updated.getApplicationNumber() + " KYC verified. Ready for assessment.",
+                        NotificationType.ACTION_REQUIRED, "APPLICATION", updated.getId());
+            }
+            if (updated.getApplicant() != null && updated.getApplicant().getUser() != null) {
+                notificationService.sendToUser(updated.getApplicant().getUser(), "Verification Passed",
+                        "Your application #" + updated.getApplicationNumber() + " has completed document verification.",
+                        NotificationType.STATUS_UPDATE, "APPLICATION", updated.getId());
+            }
+        } else if (newStatus == ApplicationStatus.REJECTED) {
+            if (updated.getApplicant() != null && updated.getApplicant().getUser() != null) {
+                notificationService.sendToUser(updated.getApplicant().getUser(), "Application Declined",
+                        "Your application #" + updated.getApplicationNumber() + " was not approved during verification: " + remarks,
+                        NotificationType.WARNING, "APPLICATION", updated.getId());
+            }
+        }
 
         return applicationService.getApplicationDetail(updated.getId(), loanOfficer);
     }

@@ -10,6 +10,7 @@ import {
   PanelLeftOpen,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import NotificationBell from '../components/common/NotificationBell';
 
 const { Header } = Layout;
 
@@ -73,15 +74,8 @@ const AppHeader = ({ collapsed, setCollapsed }) => {
       </div>
 
       <div className="flex items-center gap-4">
-        {/* Notification bell */}
-        <button
-          className="relative p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-0 bg-transparent cursor-pointer"
-          title="Notifications"
-        >
-          <Bell className="w-5 h-5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-500 animate-ping" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-500" />
-        </button>
+        {/* Real-time Notification Bell */}
+        <NotificationBell />
 
         {/* User profile dropdown */}
         <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" trigger={['click']}>

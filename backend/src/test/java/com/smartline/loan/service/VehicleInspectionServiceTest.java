@@ -44,6 +44,9 @@ class VehicleInspectionServiceTest {
     @Mock
     private ApplicationService applicationService;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private VehicleInspectionService vehicleInspectionService;
 

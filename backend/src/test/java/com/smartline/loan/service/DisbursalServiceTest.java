@@ -46,6 +46,9 @@ class DisbursalServiceTest {
     @Mock
     private ApplicationStatusHistoryRepository statusHistoryRepository;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private DisbursalService disbursalService;
 

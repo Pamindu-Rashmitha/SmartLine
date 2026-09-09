@@ -38,6 +38,9 @@ class DownPaymentServiceTest {
     @Mock
     private ApplicationStatusHistoryRepository statusHistoryRepository;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private DownPaymentService downPaymentService;
 

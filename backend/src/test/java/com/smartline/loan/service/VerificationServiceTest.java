@@ -44,6 +44,9 @@ class VerificationServiceTest {
     @Mock
     private DocumentService documentService;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private VerificationService verificationService;
 

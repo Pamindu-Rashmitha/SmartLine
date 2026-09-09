@@ -35,6 +35,9 @@ class CollectionServiceTest {
     @Mock
     private CollectionFollowUpRepository collectionFollowUpRepository;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private CollectionService collectionService;
 
