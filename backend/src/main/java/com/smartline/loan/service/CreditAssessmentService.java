@@ -40,15 +40,29 @@ public class CreditAssessmentService {
     private final ApplicationRepository applicationRepository;
     private final ApplicationStatusHistoryRepository statusHistoryRepository;
     private final ApplicationService applicationService;
+    private final SystemConfigService systemConfigService;
 
     public CreditAssessmentService(CreditAssessmentRepository creditAssessmentRepository,
                                    ApplicationRepository applicationRepository,
                                    ApplicationStatusHistoryRepository statusHistoryRepository,
-                                   ApplicationService applicationService) {
+                                   ApplicationService applicationService,
+                                   SystemConfigService systemConfigService) {
         this.creditAssessmentRepository = creditAssessmentRepository;
         this.applicationRepository = applicationRepository;
         this.statusHistoryRepository = statusHistoryRepository;
         this.applicationService = applicationService;
+        this.systemConfigService = systemConfigService;
+    }
+
+    public BigDecimal getSeniorApprovalThreshold() {
+        if (systemConfigService != null) {
+            try {
+                String val = systemConfigService.getConfigValue("SENIOR_APPROVAL_THRESHOLD", "500000.00");
+                return new BigDecimal(val);
+            } catch (Exception ignored) {
+            }
+        }
+        return SENIOR_APPROVAL_THRESHOLD;
     }
 
     @Transactional(readOnly = true)
@@ -208,15 +222,16 @@ public class CreditAssessmentService {
             historyRemarks = "Application rejected: " + reason;
         } else {
             // Check if approval exceeds Senior threshold or manual referral requested
+            BigDecimal effectiveThreshold = getSeniorApprovalThreshold();
             boolean isHighValue = application.getRequestedAmount() != null &&
-                    application.getRequestedAmount().compareTo(SENIOR_APPROVAL_THRESHOLD) > 0;
+                    application.getRequestedAmount().compareTo(effectiveThreshold) > 0;
             boolean isManualReferral = Boolean.TRUE.equals(request.getReferToSenior());
 
             if (isHighValue || isManualReferral) {
                 newStatus = ApplicationStatus.PENDING_SENIOR_APPROVAL;
                 assessment.setRecommendation(CreditRecommendation.REFER_TO_SENIOR);
                 String reason = isHighValue ?
-                        "Auto-routed to Senior Manager: Amount exceeds LKR " + SENIOR_APPROVAL_THRESHOLD :
+                        "Auto-routed to Senior Manager: Amount exceeds LKR " + effectiveThreshold :
                         "Manually referred to Senior Manager for executive sanction";
                 if (request.getRemarks() != null && !request.getRemarks().isBlank()) {
                     reason += " | Notes: " + request.getRemarks();

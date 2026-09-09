@@ -29,6 +29,7 @@ public class DataInitializer implements CommandLineRunner {
     private final com.smartline.loan.repository.InstallmentRepository installmentRepository;
     private final com.smartline.loan.repository.PaymentRepository paymentRepository;
     private final com.smartline.loan.repository.CollectionFollowUpRepository collectionFollowUpRepository;
+    private final com.smartline.loan.repository.SystemConfigRepository systemConfigRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataInitializer(UserRepository userRepository,
@@ -41,6 +42,7 @@ public class DataInitializer implements CommandLineRunner {
                            com.smartline.loan.repository.InstallmentRepository installmentRepository,
                            com.smartline.loan.repository.PaymentRepository paymentRepository,
                            com.smartline.loan.repository.CollectionFollowUpRepository collectionFollowUpRepository,
+                           com.smartline.loan.repository.SystemConfigRepository systemConfigRepository,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.applicantRepository = applicantRepository;
@@ -52,6 +54,7 @@ public class DataInitializer implements CommandLineRunner {
         this.installmentRepository = installmentRepository;
         this.paymentRepository = paymentRepository;
         this.collectionFollowUpRepository = collectionFollowUpRepository;
+        this.systemConfigRepository = systemConfigRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -59,7 +62,8 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         logger.info("Checking database initialization...");
 
-        createOrUpdateUser("admin", "admin@smartline.lk", "admin123", "System Administrator", "+94771234567", Role.ADMIN);
+        User adminUser = createOrUpdateUser("admin", "admin@smartline.lk", "admin123", "System Administrator", "+94771234567", Role.ADMIN);
+        seedSystemConfigs(adminUser);
         createOrUpdateUser("loanofficer", "loanofficer@smartline.lk", "officer123", "Kasun Fernando (Loan Officer)", "+94772345678", Role.LOAN_OFFICER);
         createOrUpdateUser("fieldofficer", "fieldofficer@smartline.lk", "field123", "Ruwan Perera (Field Officer)", "+94773456789", Role.FIELD_OFFICER);
         createOrUpdateUser("creditmanager", "creditmanager@smartline.lk", "manager123", "Nimali Silva (Credit Manager)", "+94774567890", Role.CREDIT_MANAGER);
@@ -602,5 +606,25 @@ public class DataInitializer implements CommandLineRunner {
             return saved;
         }
         return userRepository.findByUsername(username).orElse(null);
+    }
+
+    private void seedSystemConfigs(User admin) {
+        createConfigIfMissing("SENIOR_APPROVAL_THRESHOLD", "500000.00", "Threshold in LKR requiring Senior Management authorization (US10)", admin);
+        createConfigIfMissing("DEFAULT_LOAN_INTEREST_RATE", "14.0", "Annual flat interest rate for personal & commercial money loans (% p.a.)", admin);
+        createConfigIfMissing("DEFAULT_LEASE_INTEREST_RATE", "16.0", "Annual flat interest rate for vehicle leasing facilities (% p.a.)", admin);
+        createConfigIfMissing("MAX_LOAN_TENURE_MONTHS", "60", "Maximum allowed repayment tenure for money loans (months)", admin);
+        createConfigIfMissing("MAX_LEASE_TENURE_MONTHS", "72", "Maximum allowed repayment tenure for vehicle leases (months)", admin);
+        createConfigIfMissing("OVERDUE_GRACE_PERIOD_DAYS", "0", "Days past due date before installment status transitions to OVERDUE", admin);
+        createConfigIfMissing("COMPANY_NAME", "Smart Line Investment (Pvt) Ltd", "Registered corporate entity name", admin);
+        createConfigIfMissing("HOTLINE_PHONE", "+94 11 234 5678", "Customer service and recovery hotline", admin);
+        createConfigIfMissing("SUPPORT_EMAIL", "support@smartline.lk", "Official customer support and documentation email", admin);
+    }
+
+    private void createConfigIfMissing(String key, String value, String description, User admin) {
+        if (!systemConfigRepository.existsByConfigKey(key)) {
+            com.smartline.loan.entity.SystemConfig config = new com.smartline.loan.entity.SystemConfig(key, value, description, admin);
+            systemConfigRepository.save(config);
+            logger.info("Seeded system config parameter: {} = {}", key, value);
+        }
     }
 }

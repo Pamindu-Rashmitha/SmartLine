@@ -22,6 +22,8 @@ import FinanceDisbursalDesk from '../pages/finance-officer/FinanceDisbursalDesk'
 import FacilityListPage from '../pages/finance-officer/FacilityListPage';
 import DelinquentAccountsDesk from '../pages/credit-control/DelinquentAccountsDesk';
 import ApplicantRepaymentsPage from '../pages/applicant/ApplicantRepaymentsPage';
+import UserManagementPage from '../pages/admin/UserManagementPage';
+import SystemConfigPage from '../pages/admin/SystemConfigPage';
 import { useAuth } from '../contexts/AuthContext';
 
 // Dispatcher for /applications index route
@@ -113,8 +115,12 @@ const AppRoutes = () => {
         <Route path="loans/*" element={<RoleDashboardHub />} />
         <Route path="documents/*" element={<RoleDashboardHub />} />
         <Route path="customers/*" element={<RoleDashboardHub />} />
-        <Route path="users/*" element={<RoleDashboardHub />} />
-        <Route path="settings/*" element={<RoleDashboardHub />} />
+        
+        {/* Admin Management Routes (Week 7) */}
+        <Route path="users" element={<UserManagementPage />} />
+        <Route path="admin/users" element={<UserManagementPage />} />
+        <Route path="settings" element={<SystemConfigPage />} />
+        <Route path="admin/config" element={<SystemConfigPage />} />
       </Route>
 
       {/* Fallback */}
