@@ -188,8 +188,10 @@ const LegalQueuePage = () => {
             title="Awaiting Agreement Preparation"
             value={approvedCount}
             subtitle="Approved applications"
-            icon={<FileText className="w-5 h-5 text-blue-400" />}
-            trend={{ text: 'Ready for Drafting', positive: true }}
+            icon={FileText}
+            color="blue"
+            trend="Ready for Drafting"
+            trendType="up"
           />
         </Col>
         <Col xs={24} sm={8}>
@@ -197,8 +199,10 @@ const LegalQueuePage = () => {
             title="Draft Agreements"
             value={pendingAgreementCount}
             subtitle="In progress with Legal"
-            icon={<FileSignature className="w-5 h-5 text-amber-400" />}
-            trend={{ text: 'Requires Verification', positive: false }}
+            icon={FileSignature}
+            color="amber"
+            trend="Requires Verification"
+            trendType="down"
           />
         </Col>
         <Col xs={24} sm={8}>
@@ -206,8 +210,10 @@ const LegalQueuePage = () => {
             title="Verified & Sealed"
             value={verifiedCount}
             subtitle="Ready for Down Payment / Disbursal"
-            icon={<FileCheck2 className="w-5 h-5 text-emerald-400" />}
-            trend={{ text: 'Legally Binding', positive: true }}
+            icon={FileCheck2}
+            color="emerald"
+            trend="Legally Binding"
+            trendType="up"
           />
         </Col>
       </Row>

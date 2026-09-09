@@ -9,7 +9,7 @@ function App() {
   return (
     <ConfigProvider theme={customThemeConfig}>
       <AuthProvider>
-        <BrowserRouter>
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <AppRoutes />
         </BrowserRouter>
       </AuthProvider>

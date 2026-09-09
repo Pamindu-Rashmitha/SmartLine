@@ -211,8 +211,10 @@ const FacilityListPage = () => {
             title="Active Facilities"
             value={activeCount}
             subtitle="Currently under repayment"
-            icon={<Layers className="w-5 h-5 text-emerald-400" />}
-            trend={{ text: 'Performing Book', positive: true }}
+            icon={Layers}
+            color="emerald"
+            trend="Performing Book"
+            trendType="up"
           />
         </Col>
         <Col xs={24} sm={12} lg={6}>
@@ -220,8 +222,10 @@ const FacilityListPage = () => {
             title="Portfolio Outstanding"
             value={`LKR ${(totalOutstanding / 1000000).toFixed(2)}M`}
             subtitle="Total receivable balance"
-            icon={<DollarSign className="w-5 h-5 text-blue-400" />}
-            trend={{ text: 'Principal + Interest', positive: true }}
+            icon={DollarSign}
+            color="blue"
+            trend="Principal + Interest"
+            trendType="up"
           />
         </Col>
         <Col xs={24} sm={12} lg={6}>
@@ -229,8 +233,10 @@ const FacilityListPage = () => {
             title="Total Disbursed Volume"
             value={`LKR ${(totalPrincipal / 1000000).toFixed(2)}M`}
             subtitle="Original funded capital"
-            icon={<TrendingUp className="w-5 h-5 text-indigo-400" />}
-            trend={{ text: 'Capital Outlay', positive: true }}
+            icon={TrendingUp}
+            color="indigo"
+            trend="Capital Outlay"
+            trendType="up"
           />
         </Col>
         <Col xs={24} sm={12} lg={6}>
@@ -238,8 +244,10 @@ const FacilityListPage = () => {
             title="Completed Facilities"
             value={completedCount}
             subtitle="Fully settled contracts"
-            icon={<CheckCircle2 className="w-5 h-5 text-purple-400" />}
-            trend={{ text: 'Matured', positive: true }}
+            icon={CheckCircle2}
+            color="purple"
+            trend="Matured"
+            trendType="up"
           />
         </Col>
       </Row>

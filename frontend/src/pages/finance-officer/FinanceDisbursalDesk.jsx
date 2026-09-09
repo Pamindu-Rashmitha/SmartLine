@@ -355,8 +355,10 @@ const FinanceDisbursalDesk = () => {
             title="Pending Down-Payments"
             value={downPaymentApps.length}
             subtitle="Awaiting borrower receipt"
-            icon={<Receipt className="w-5 h-5 text-amber-400" />}
-            trend={{ text: 'US14 Desk', positive: false }}
+            icon={Receipt}
+            color="amber"
+            trend="US14 Desk"
+            trendType="down"
           />
         </Col>
         <Col xs={24} sm={12} lg={6}>
@@ -364,8 +366,10 @@ const FinanceDisbursalDesk = () => {
             title="Pending Disbursals"
             value={disbursalApps.length}
             subtitle="Ready for fund release"
-            icon={<Send className="w-5 h-5 text-emerald-400" />}
-            trend={{ text: 'US15 Desk', positive: true }}
+            icon={Send}
+            color="emerald"
+            trend="US15 Desk"
+            trendType="up"
           />
         </Col>
         <Col xs={24} sm={12} lg={6}>
@@ -375,8 +379,10 @@ const FinanceDisbursalDesk = () => {
               disbursalApps.reduce((acc, a) => acc + Number(a.requestedAmount || 0), 0) / 1000000
             ).toFixed(2)}M`}
             subtitle="Queue total exposure"
-            icon={<DollarSign className="w-5 h-5 text-blue-400" />}
-            trend={{ text: 'Approved Funds', positive: true }}
+            icon={DollarSign}
+            color="blue"
+            trend="Approved Funds"
+            trendType="up"
           />
         </Col>
         <Col xs={24} sm={12} lg={6}>
@@ -384,8 +390,10 @@ const FinanceDisbursalDesk = () => {
             title="Operational Readiness"
             value="100%"
             subtitle="All covenants checked"
-            icon={<ShieldCheck className="w-5 h-5 text-purple-400" />}
-            trend={{ text: 'Compliant', positive: true }}
+            icon={ShieldCheck}
+            color="purple"
+            trend="Compliant"
+            trendType="up"
           />
         </Col>
       </Row>
