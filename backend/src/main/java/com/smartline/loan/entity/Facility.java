@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "facilities", indexes = {
@@ -78,6 +80,18 @@ public class Facility {
     private String disbursementReference;
 
     private LocalDateTime completedAt;
+
+    @OneToOne(mappedBy = "facility", fetch = FetchType.LAZY)
+    private InstallmentSchedule installmentSchedule;
+
+    @OneToMany(mappedBy = "facility")
+    private List<Installment> installments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "facility")
+    private List<Payment> payments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "facility")
+    private List<CollectionFollowUp> collectionFollowUps = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -265,5 +279,37 @@ public class Facility {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public InstallmentSchedule getInstallmentSchedule() {
+        return installmentSchedule;
+    }
+
+    public void setInstallmentSchedule(InstallmentSchedule installmentSchedule) {
+        this.installmentSchedule = installmentSchedule;
+    }
+
+    public List<Installment> getInstallments() {
+        return installments;
+    }
+
+    public void setInstallments(List<Installment> installments) {
+        this.installments = installments;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public List<CollectionFollowUp> getCollectionFollowUps() {
+        return collectionFollowUps;
+    }
+
+    public void setCollectionFollowUps(List<CollectionFollowUp> collectionFollowUps) {
+        this.collectionFollowUps = collectionFollowUps;
     }
 }

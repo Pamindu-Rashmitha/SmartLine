@@ -25,6 +25,10 @@ public class DataInitializer implements CommandLineRunner {
     private final com.smartline.loan.repository.AgreementRepository agreementRepository;
     private final com.smartline.loan.repository.DownPaymentRepository downPaymentRepository;
     private final com.smartline.loan.repository.FacilityRepository facilityRepository;
+    private final com.smartline.loan.repository.InstallmentScheduleRepository installmentScheduleRepository;
+    private final com.smartline.loan.repository.InstallmentRepository installmentRepository;
+    private final com.smartline.loan.repository.PaymentRepository paymentRepository;
+    private final com.smartline.loan.repository.CollectionFollowUpRepository collectionFollowUpRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataInitializer(UserRepository userRepository,
@@ -33,6 +37,10 @@ public class DataInitializer implements CommandLineRunner {
                            com.smartline.loan.repository.AgreementRepository agreementRepository,
                            com.smartline.loan.repository.DownPaymentRepository downPaymentRepository,
                            com.smartline.loan.repository.FacilityRepository facilityRepository,
+                           com.smartline.loan.repository.InstallmentScheduleRepository installmentScheduleRepository,
+                           com.smartline.loan.repository.InstallmentRepository installmentRepository,
+                           com.smartline.loan.repository.PaymentRepository paymentRepository,
+                           com.smartline.loan.repository.CollectionFollowUpRepository collectionFollowUpRepository,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.applicantRepository = applicantRepository;
@@ -40,6 +48,10 @@ public class DataInitializer implements CommandLineRunner {
         this.agreementRepository = agreementRepository;
         this.downPaymentRepository = downPaymentRepository;
         this.facilityRepository = facilityRepository;
+        this.installmentScheduleRepository = installmentScheduleRepository;
+        this.installmentRepository = installmentRepository;
+        this.paymentRepository = paymentRepository;
+        this.collectionFollowUpRepository = collectionFollowUpRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -475,18 +487,101 @@ public class DataInitializer implements CommandLineRunner {
                 fac7.setTotalPayable(new BigDecimal("339000.00"));
                 fac7.setTotalPaid(BigDecimal.ZERO);
                 fac7.setOutstandingBalance(new BigDecimal("339000.00"));
-                fac7.setStartDate(java.time.LocalDate.now().minusDays(5));
-                fac7.setEndDate(java.time.LocalDate.now().minusDays(5).plusMonths(12));
+                fac7.setStartDate(java.time.LocalDate.now().minusMonths(2).minusDays(5));
+                fac7.setEndDate(java.time.LocalDate.now().minusMonths(2).minusDays(5).plusMonths(12));
                 fac7.setStatus(com.smartline.loan.entity.enums.FacilityStatus.ACTIVE);
                 fac7.setDisbursedBy(financeOfficer != null ? financeOfficer : adminUser);
-                fac7.setDisbursedAt(java.time.LocalDateTime.now().minusDays(5));
+                fac7.setDisbursedAt(java.time.LocalDateTime.now().minusMonths(2).minusDays(5));
                 fac7.setDisbursementMethod(com.smartline.loan.entity.enums.PaymentMethod.BANK_TRANSFER);
                 fac7.setDisbursementReference("SL-TXN-102941");
                 app7.setFacility(fac7);
 
                 applicationRepository.save(app7);
 
-                logger.info("Seeded 7 comprehensive demo applications covering intake, assessment, agreement execution, and disbursal lifecycle (US01-US15).");
+                com.smartline.loan.entity.Facility savedFac7 = facilityRepository.findByApplicationId(app7.getId()).orElse(fac7);
+
+                // Phase 5: Seed Installment Schedule, Installments, Payments, and Follow-Up for FAC-2026-00001 (US16-US20)
+                com.smartline.loan.entity.InstallmentSchedule schedule7 = new com.smartline.loan.entity.InstallmentSchedule();
+                schedule7.setFacility(savedFac7);
+                schedule7.setTotalInstallments(12);
+                schedule7.setInstallmentAmount(new BigDecimal("28250.00"));
+                schedule7.setFrequency(com.smartline.loan.entity.enums.RepaymentFrequency.MONTHLY);
+                schedule7.setStartDate(java.time.LocalDate.now().minusMonths(2).minusDays(5));
+                schedule7.setCreatedBy(financeOfficer != null ? financeOfficer : adminUser);
+                installmentScheduleRepository.save(schedule7);
+
+                java.time.LocalDate baseDueDate = java.time.LocalDate.now().minusMonths(2).minusDays(5);
+                User creditControlOfficer = userRepository.findByUsername("creditcontrol").orElse(adminUser);
+
+                for (int i = 1; i <= 12; i++) {
+                    com.smartline.loan.entity.Installment inst = new com.smartline.loan.entity.Installment();
+                    inst.setSchedule(schedule7);
+                    inst.setFacility(savedFac7);
+                    inst.setInstallmentNumber(i);
+                    inst.setDueDate(baseDueDate.plusMonths(i - 1));
+                    inst.setPrincipalPortion(new BigDecimal("25000.00"));
+                    inst.setInterestPortion(new BigDecimal("3250.00"));
+                    inst.setTotalAmount(new BigDecimal("28250.00"));
+
+                    if (i == 1) {
+                        inst.setPaidAmount(new BigDecimal("28250.00"));
+                        inst.setStatus(com.smartline.loan.entity.enums.InstallmentStatus.PAID);
+                        inst.setPaidDate(baseDueDate.minusDays(1));
+                    } else if (i == 2) {
+                        inst.setPaidAmount(new BigDecimal("28250.00"));
+                        inst.setStatus(com.smartline.loan.entity.enums.InstallmentStatus.PAID);
+                        inst.setPaidDate(baseDueDate.plusMonths(1));
+                    } else if (i == 3) {
+                        inst.setPaidAmount(BigDecimal.ZERO);
+                        inst.setStatus(com.smartline.loan.entity.enums.InstallmentStatus.OVERDUE);
+                    } else {
+                        inst.setPaidAmount(BigDecimal.ZERO);
+                        inst.setStatus(com.smartline.loan.entity.enums.InstallmentStatus.PENDING);
+                    }
+
+                    com.smartline.loan.entity.Installment savedInst = installmentRepository.save(inst);
+
+                    if (i == 1) {
+                        com.smartline.loan.entity.Payment p1 = new com.smartline.loan.entity.Payment();
+                        p1.setInstallment(savedInst);
+                        p1.setFacility(savedFac7);
+                        p1.setAmount(new BigDecimal("28250.00"));
+                        p1.setPaymentDate(baseDueDate.minusDays(1));
+                        p1.setPaymentMethod(com.smartline.loan.entity.enums.PaymentMethod.BANK_TRANSFER);
+                        p1.setReferenceNumber("SLIPS-TXN-881920");
+                        p1.setRecordedBy(financeOfficer != null ? financeOfficer : adminUser);
+                        p1.setRemarks("First EMI settled on time via Commercial Bank SLIPS online transfer");
+                        paymentRepository.save(p1);
+                    } else if (i == 2) {
+                        com.smartline.loan.entity.Payment p2 = new com.smartline.loan.entity.Payment();
+                        p2.setInstallment(savedInst);
+                        p2.setFacility(savedFac7);
+                        p2.setAmount(new BigDecimal("28250.00"));
+                        p2.setPaymentDate(baseDueDate.plusMonths(1));
+                        p2.setPaymentMethod(com.smartline.loan.entity.enums.PaymentMethod.BANK_TRANSFER);
+                        p2.setReferenceNumber("SLIPS-TXN-894102");
+                        p2.setRecordedBy(financeOfficer != null ? financeOfficer : adminUser);
+                        p2.setRemarks("Second EMI payment credited via corporate banking");
+                        paymentRepository.save(p2);
+                    } else if (i == 3) {
+                        com.smartline.loan.entity.CollectionFollowUp followUp = new com.smartline.loan.entity.CollectionFollowUp();
+                        followUp.setInstallment(savedInst);
+                        followUp.setFacility(savedFac7);
+                        followUp.setFollowUpDate(java.time.LocalDate.now().minusDays(2));
+                        followUp.setContactMethod(com.smartline.loan.entity.enums.ContactMethod.PHONE_CALL);
+                        followUp.setContactOutcome(com.smartline.loan.entity.enums.ContactOutcome.PROMISED_TO_PAY);
+                        followUp.setNotes("Contacted borrower Saman Kumara (+94779012345). Borrower informed temporary salary delay and committed to deposit payment by this Friday.");
+                        followUp.setNextFollowUpDate(java.time.LocalDate.now().plusDays(2));
+                        followUp.setRecordedBy(creditControlOfficer);
+                        collectionFollowUpRepository.save(followUp);
+                    }
+                }
+
+                savedFac7.setTotalPaid(new BigDecimal("56500.00"));
+                savedFac7.setOutstandingBalance(new BigDecimal("282500.00"));
+                facilityRepository.save(savedFac7);
+
+                logger.info("Seeded 7 comprehensive demo applications covering intake, assessment, agreement execution, disbursal, and repayment lifecycle with active installment schedule, payments, and recovery follow-up (US01-US20).");
             });
         }
     }

@@ -29,6 +29,7 @@ const ROLE_MENUS = {
     { key: '/dashboard', icon: <LayoutDashboard className="w-4 h-4" />, label: 'My Dashboard' },
     { key: '/applications/new', icon: <FileText className="w-4 h-4" />, label: 'Apply for Loan' },
     { key: '/applications', icon: <CreditCard className="w-4 h-4" />, label: 'My Applications' },
+    { key: '/my-repayments', icon: <Banknote className="w-4 h-4" />, label: 'Repayments & Dues' },
     { key: '/documents', icon: <FolderLock className="w-4 h-4" />, label: 'Document Vault' },
   ],
   LOAN_OFFICER: [
@@ -130,7 +131,7 @@ const AppSidebar = ({ collapsed }) => {
           <div className="flex items-center gap-2.5">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <div className="text-xs text-slate-400">
-              <span className="font-semibold text-slate-300">Phase 1: Shell</span> v1.0.0
+              <span className="font-semibold text-slate-300">Phase 5: EP04 Ready</span> v1.0.0
             </div>
           </div>
         </div>

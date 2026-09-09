@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import financeApi from '../../api/financeApi';
 import StatCard from '../../components/common/StatCard';
+import InstallmentScheduleModal from '../../components/facility/InstallmentScheduleModal';
+import { Button } from 'antd';
 import dayjs from 'dayjs';
 
 const { Option } = Select;
@@ -23,6 +25,8 @@ const FacilityListPage = () => {
   const [statusFilter, setStatusFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [search, setSearch] = useState('');
+  const [selectedFacilityForSchedule, setSelectedFacilityForSchedule] = useState(null);
+  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
 
   const fetchFacilities = async () => {
     setLoading(true);
@@ -160,6 +164,25 @@ const FacilityListPage = () => {
         return <Tag color={color} className="font-semibold">{status}</Tag>;
       },
     },
+    {
+      title: 'Action',
+      key: 'action',
+      align: 'center',
+      render: (_, record) => (
+        <Button
+          size="small"
+          type="primary"
+          className="bg-blue-600 hover:bg-blue-500 font-semibold text-xs border-none flex items-center gap-1 mx-auto"
+          onClick={() => {
+            setSelectedFacilityForSchedule(record);
+            setScheduleModalVisible(true);
+          }}
+        >
+          <Calendar className="w-3.5 h-3.5" />
+          Schedule & Payments
+        </Button>
+      ),
+    },
   ];
 
   return (
@@ -272,6 +295,16 @@ const FacilityListPage = () => {
           className="ant-table-dark border border-slate-800 rounded-xl overflow-hidden"
         />
       </Card>
+
+      <InstallmentScheduleModal
+        visible={scheduleModalVisible}
+        facility={selectedFacilityForSchedule}
+        onClose={() => {
+          setScheduleModalVisible(false);
+          setSelectedFacilityForSchedule(null);
+        }}
+        onRefreshFacility={fetchFacilities}
+      />
     </div>
   );
 };

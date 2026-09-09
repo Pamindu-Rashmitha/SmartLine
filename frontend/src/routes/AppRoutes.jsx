@@ -20,6 +20,8 @@ import LegalQueuePage from '../pages/legal-officer/LegalQueuePage';
 import AgreementPreparationPage from '../pages/legal-officer/AgreementPreparationPage';
 import FinanceDisbursalDesk from '../pages/finance-officer/FinanceDisbursalDesk';
 import FacilityListPage from '../pages/finance-officer/FacilityListPage';
+import DelinquentAccountsDesk from '../pages/credit-control/DelinquentAccountsDesk';
+import ApplicantRepaymentsPage from '../pages/applicant/ApplicantRepaymentsPage';
 import { useAuth } from '../contexts/AuthContext';
 
 // Dispatcher for /applications index route
@@ -42,6 +44,9 @@ const ApplicationsIndexDispatcher = () => {
   }
   if (user?.role === 'FINANCE_OFFICER') {
     return <FinanceDisbursalDesk />;
+  }
+  if (user?.role === 'CREDIT_CONTROL_OFFICER') {
+    return <DelinquentAccountsDesk />;
   }
   return <LoanPipelinePage />;
 };
@@ -96,13 +101,18 @@ const AppRoutes = () => {
         <Route path="portfolio" element={<FacilityListPage />} />
         <Route path="reconciliations" element={<FacilityListPage />} />
 
+        {/* EP04: Repayment Tracking & Collection Management Routes */}
+        <Route path="my-repayments" element={<ApplicantRepaymentsPage />} />
+        <Route path="arrears" element={<DelinquentAccountsDesk />} />
+        <Route path="collections" element={<DelinquentAccountsDesk />} />
+        <Route path="follow-ups" element={<DelinquentAccountsDesk />} />
+
         {/* Role-Specific Pipeline Direct Aliases */}
         <Route path="loan-officer/applications" element={<LoanPipelinePage />} />
         <Route path="loans" element={<ApplicationsIndexDispatcher />} />
         <Route path="loans/*" element={<RoleDashboardHub />} />
         <Route path="documents/*" element={<RoleDashboardHub />} />
         <Route path="customers/*" element={<RoleDashboardHub />} />
-        <Route path="arrears/*" element={<RoleDashboardHub />} />
         <Route path="users/*" element={<RoleDashboardHub />} />
         <Route path="settings/*" element={<RoleDashboardHub />} />
       </Route>

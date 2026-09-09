@@ -14,6 +14,7 @@ public interface FacilityRepository extends JpaRepository<Facility, Long> {
     Optional<Facility> findByFacilityNumber(String facilityNumber);
     List<Facility> findByStatusOrderByCreatedAtDesc(FacilityStatus status);
     List<Facility> findAllByOrderByCreatedAtDesc();
+    List<Facility> findByApplicationApplicantUserIdOrderByCreatedAtDesc(Long userId);
     boolean existsByApplicationId(Long applicationId);
     long countByStatus(FacilityStatus status);
 }
