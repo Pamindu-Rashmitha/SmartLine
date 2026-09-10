@@ -1,6 +1,7 @@
 package com.smartline.loan.repository;
 
 import com.smartline.loan.entity.Guarantor;
+import com.smartline.loan.entity.enums.VerificationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +11,5 @@ import java.util.List;
 public interface GuarantorRepository extends JpaRepository<Guarantor, Long> {
     List<Guarantor> findByApplicationId(Long applicationId);
     long countByApplicationId(Long applicationId);
+    long countByVerificationStatus(VerificationStatus verificationStatus);
 }

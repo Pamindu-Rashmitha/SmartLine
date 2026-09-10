@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ApplicationStatusHistoryRepository extends JpaRepository<ApplicationStatusHistory, Long> {
     List<ApplicationStatusHistory> findByApplicationIdOrderByChangedAtAsc(Long applicationId);
+    List<ApplicationStatusHistory> findTop10ByOrderByChangedAtDesc();
 }

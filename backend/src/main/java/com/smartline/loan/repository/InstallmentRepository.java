@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -26,4 +27,14 @@ public interface InstallmentRepository extends JpaRepository<Installment, Long> 
 
     long countByStatus(InstallmentStatus status);
     long countByFacilityIdAndStatus(Long facilityId, InstallmentStatus status);
+
+    Optional<Installment> findFirstByFacilityApplicationApplicantUserIdAndStatusInOrderByDueDateAsc(Long userId, List<InstallmentStatus> statuses);
+
+    List<Installment> findTop5ByFacilityApplicationApplicantUserIdAndStatusInOrderByDueDateAsc(Long userId, List<InstallmentStatus> statuses);
+
+    @Query("SELECT COUNT(i) FROM Installment i WHERE i.status = 'OVERDUE' OR (i.dueDate < :today AND i.status IN ('PENDING', 'PARTIALLY_PAID'))")
+    long countOverdueInstallments(@Param("today") LocalDate today);
+
+    @Query("SELECT COALESCE(SUM(i.totalAmount - i.paidAmount), 0) FROM Installment i WHERE i.status = 'OVERDUE' OR (i.dueDate < :today AND i.status IN ('PENDING', 'PARTIALLY_PAID'))")
+    BigDecimal sumOverdueAmount(@Param("today") LocalDate today);
 }

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,4 +52,26 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     @Query("SELECT COUNT(a) FROM Application a WHERE a.status = 'PENDING_SENIOR_APPROVAL'")
     long countPendingSeniorApproval();
+
+    long countByApplicantUserId(Long userId);
+
+    long countByApplicantUserIdAndStatusNotIn(Long userId, List<ApplicationStatus> statuses);
+
+    long countByVerifiedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    long countByDecidedAtBetweenAndStatus(LocalDateTime start, LocalDateTime end, ApplicationStatus status);
+
+    long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    @Query("SELECT a.status, COUNT(a) FROM Application a GROUP BY a.status")
+    List<Object[]> countByStatusGrouped();
+
+    @Query("SELECT a.type, COUNT(a) FROM Application a GROUP BY a.type")
+    List<Object[]> countByTypeGrouped();
+
+    List<Application> findTop10ByOrderByCreatedAtDesc();
+
+    List<Application> findTop5ByApplicantUserIdOrderByCreatedAtDesc(Long userId);
+
+    List<Application> findTop10ByStatusInOrderByCreatedAtDesc(List<ApplicationStatus> statuses);
 }
