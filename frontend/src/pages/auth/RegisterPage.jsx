@@ -34,9 +34,6 @@ const RegisterPage = () => {
     <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-slate-950">
       <div className="relative w-full max-w-xl z-10 my-8">
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-600 to-sky-400 shadow-lg mb-3">
-            <span className="text-white font-black text-xl">SL</span>
-          </div>
           <h1 className="text-2xl font-bold tracking-tight text-white m-0">
             Create Borrower Account
           </h1>

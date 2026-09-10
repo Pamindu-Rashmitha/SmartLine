@@ -24,6 +24,7 @@ import DelinquentAccountsDesk from '../pages/credit-control/DelinquentAccountsDe
 import ApplicantRepaymentsPage from '../pages/applicant/ApplicantRepaymentsPage';
 import UserManagementPage from '../pages/admin/UserManagementPage';
 import SystemConfigPage from '../pages/admin/SystemConfigPage';
+import LandingPage from '../pages/public/LandingPage';
 import { useAuth } from '../contexts/AuthContext';
 
 // Dispatcher for /applications index route
@@ -56,20 +57,19 @@ const ApplicationsIndexDispatcher = () => {
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Public Authentication Routes */}
+      {/* Public Landing & Authentication Routes */}
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
       {/* Protected Dashboard & Operations Routes */}
       <Route
-        path="/"
         element={
           <ProtectedRoute>
             <DashboardLayout />
           </ProtectedRoute>
         }
       >
-        <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<RoleDashboardHub />} />
 
         {/* EP01: Application Intake & Verification Routes */}

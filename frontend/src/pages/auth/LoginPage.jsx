@@ -66,26 +66,11 @@ const LoginPage = () => {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative w-full max-w-md z-10">
-        {/* Header Branding */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-400 shadow-xl shadow-blue-500/25 mb-4">
-            <span className="text-white font-black text-2xl tracking-tighter">SL</span>
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white m-0">
-            Smart Line Investment
-          </h1>
-          <p className="text-sm font-medium text-slate-400 mt-1.5">
-            Enterprise Loan & Leasing Management System
-          </p>
-        </div>
 
         {/* Login Box */}
         <div className="rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-slate-800/90 shadow-2xl p-6 sm:p-8">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
+          <div className="flex items-center justify-center mb-6 pb-4 border-b border-slate-800">
             <h2 className="text-lg font-semibold text-white m-0">Account Sign In</h2>
-            <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium">
-              <ShieldCheck className="w-4 h-4" /> 256-bit Encrypted
-            </span>
           </div>
 
           {errorMsg && (
@@ -147,9 +132,8 @@ const LoginPage = () => {
           {/* Quick Demo Switcher */}
           <div className="mt-7 pt-5 border-t border-slate-800/80">
             <div className="flex items-center gap-1.5 mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                1-Click Demo Accounts (Fast Testing)
+                Click Demo Accounts (Fast Testing)
               </span>
             </div>
             <div className="grid grid-cols-3 gap-1.5">
