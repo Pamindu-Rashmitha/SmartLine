@@ -67,7 +67,12 @@ public class DashboardServiceImpl implements DashboardService {
         }
 
         DashboardStatsResponse response = new DashboardStatsResponse(effectiveRole);
-        populateCommonDistributions(response);
+        if (effectiveRole != Role.APPLICANT) {
+            populateCommonDistributions(response);
+        }
+        if (effectiveRole == Role.ADMIN) {
+            populateRecentAuditLogs(response);
+        }
 
         switch (effectiveRole) {
             case APPLICANT -> populateApplicantDashboard(currentUser, response);
@@ -366,6 +371,11 @@ public class DashboardServiceImpl implements DashboardService {
         summary.setActiveFacilitiesCount((int) activeFacilities);
         response.setFinancialSummary(summary);
 
+        List<Application> recent = applicationRepository.findTop10ByOrderByCreatedAtDesc();
+        response.setRecentApplications(recent.stream().map(applicationService::mapToSummaryResponse).collect(Collectors.toList()));
+    }
+
+    private void populateRecentAuditLogs(DashboardStatsResponse response) {
         List<ApplicationStatusHistory> auditLogs = statusHistoryRepository.findTop10ByOrderByChangedAtDesc();
         List<ApplicationStatusHistoryResponse> logResponses = auditLogs.stream().map(log -> {
             ApplicationStatusHistoryResponse r = new ApplicationStatusHistoryResponse();
@@ -381,9 +391,6 @@ public class DashboardServiceImpl implements DashboardService {
             return r;
         }).collect(Collectors.toList());
         response.setRecentAuditLogs(logResponses);
-
-        List<Application> recent = applicationRepository.findTop10ByOrderByCreatedAtDesc();
-        response.setRecentApplications(recent.stream().map(applicationService::mapToSummaryResponse).collect(Collectors.toList()));
     }
 
     private String formatCurrency(BigDecimal amount) {

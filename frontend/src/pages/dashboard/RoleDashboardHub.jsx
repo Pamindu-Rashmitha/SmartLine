@@ -63,6 +63,7 @@ const RoleDashboardHub = () => {
   const [selectedRole, setSelectedRole] = useState(user?.role || 'APPLICANT');
 
   const effectiveRole = user?.role === 'ADMIN' ? selectedRole : (user?.role || 'APPLICANT');
+  const hasRightColumn = effectiveRole === 'ADMIN' || effectiveRole === 'APPLICANT';
 
   // TanStack Query for dynamic dashboard stats
   const {
@@ -264,7 +265,16 @@ const RoleDashboardHub = () => {
     <div className="space-y-6">
       {/* Welcome & Command Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900/70 via-slate-900/90 to-slate-900 border border-blue-500/20 p-6 sm:p-8 shadow-xl">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Top-Right Corner Icon-Only Refresh Button */}
+        <Button
+          icon={<RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-blue-400' : ''}`} />}
+          onClick={() => refetch()}
+          title="Refresh Dashboard"
+          aria-label="Refresh Dashboard"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 h-9 w-9 p-0 flex items-center justify-center rounded-lg shadow-sm"
+        />
+
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 pr-12 md:pr-14">
           <div>
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-semibold">
@@ -299,13 +309,6 @@ const RoleDashboardHub = () => {
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
-            <Button
-              icon={<RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-blue-400' : ''}`} />}
-              onClick={() => refetch()}
-              className="bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 h-11 px-4 font-medium"
-            >
-              Refresh
-            </Button>
 
             {effectiveRole === 'APPLICANT' ? (
               <div className="flex items-center gap-2">
@@ -378,30 +381,32 @@ const RoleDashboardHub = () => {
         </div>
       )}
 
-      {/* Visual Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <DistributionChart
-            title="Application Pipeline by Lifecycle Stage"
-            subtitle="Real-time case distribution across all workflow statuses"
-            data={statusDistribution}
-            type="bar"
-          />
+      {/* Visual Charts Row (Staff Only) */}
+      {effectiveRole !== 'APPLICANT' && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <DistributionChart
+              title="Application Pipeline by Lifecycle Stage"
+              subtitle="Real-time case distribution across all workflow statuses"
+              data={statusDistribution}
+              type="bar"
+            />
+          </div>
+          <div>
+            <DistributionChart
+              title={effectiveRole === 'ADMIN' ? 'System Roles Breakdown' : 'Portfolio by Facility Type'}
+              subtitle={effectiveRole === 'ADMIN' ? 'Active registered users by assigned role' : 'Money Loan vs Vehicle Leasing balance'}
+              data={effectiveRole === 'ADMIN' ? roleDistribution : typeDistribution}
+              type="donut"
+            />
+          </div>
         </div>
-        <div>
-          <DistributionChart
-            title={effectiveRole === 'ADMIN' ? 'System Roles Breakdown' : 'Portfolio by Facility Type'}
-            subtitle={effectiveRole === 'ADMIN' ? 'Active registered users by assigned role' : 'Money Loan vs Vehicle Leasing balance'}
-            data={effectiveRole === 'ADMIN' ? roleDistribution : typeDistribution}
-            type="donut"
-          />
-        </div>
-      </div>
+      )}
 
       {/* Operational Queue & Activity Feed */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className={`grid grid-cols-1 ${hasRightColumn ? 'lg:grid-cols-3' : 'lg:grid-cols-1'} gap-6`}>
         {/* Main Table Column */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className={`${hasRightColumn ? 'lg:col-span-2' : 'lg:col-span-1'} space-y-6`}>
           {effectiveRole === 'CREDIT_CONTROL_OFFICER' ? (
             /* Delinquent Installments Table */
             <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-5 shadow-lg">
@@ -501,58 +506,41 @@ const RoleDashboardHub = () => {
           )}
         </div>
 
-        {/* Right Column: Recent Activity Feed & System Info */}
-        <div className="space-y-6">
-          {/* Audit / Transition Activity Feed */}
-          {recentAuditLogs?.length > 0 ? (
-            <RecentActivityFeed logs={recentAuditLogs} />
-          ) : (
-            /* Workflow Lifecycle Stage Visualizer */
-            <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-5 shadow-lg">
-              <h3 className="text-base font-bold text-white mb-1">Underwriting Lifecycle Chain</h3>
-              <p className="text-xs text-slate-400 mb-4">Standard 8-Stage Smart Line Governance Chain</p>
+        {/* Right Column: Recent Activity Feed (Admin Only) & Customer Support (Applicant) */}
+        {hasRightColumn && (
+          <div className="space-y-6">
+            {/* Audit / Transition Activity Feed (Admin Only with Pagination) */}
+            {effectiveRole === 'ADMIN' && (
+              <RecentActivityFeed logs={recentAuditLogs} pageSize={2} />
+            )}
 
-              <div className="space-y-2.5">
-                {[
-                  { stage: '1. Online Application Intake', role: 'Applicant', status: 'Active' },
-                  { stage: '2. Field Inspection & Valuation', role: 'Field Officer', status: 'Active' },
-                  { stage: '3. Credit Scoring & Guarantors', role: 'Credit Manager', status: 'Active' },
-                  { stage: '4. Senior Sanction (> LKR 500k)', role: 'Senior Manager', status: 'Active' },
-                  { stage: '5. Legal Deed Preparation', role: 'Legal Officer', status: 'Active' },
-                  { stage: '6. Down-Payment & Disbursal', role: 'Finance Officer', status: 'Active' },
-                  { stage: '7. Installments & Payment', role: 'Finance Officer', status: 'Active' },
-                  { stage: '8. Delinquency & Arrears', role: 'Credit Control', status: 'Active' },
-                ].map((step, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/80 text-xs">
-                    <div>
-                      <span className="font-medium text-slate-300 block">{step.stage}</span>
-                      <span className="text-[10px] text-slate-500">{step.role}</span>
-                    </div>
-                    <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-400">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      {step.status}
-                    </span>
+            {/* Contextual Info Box: Customer Support for Applicant */}
+            {effectiveRole === 'APPLICANT' && (
+              <div className="rounded-xl bg-gradient-to-br from-slate-900 to-blue-950/40 border border-slate-800 p-5">
+                <h4 className="text-sm font-bold text-white mb-1 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Borrower Support & Help Desk
+                </h4>
+                <p className="text-xs text-slate-300 leading-relaxed mb-3">
+                  Have questions regarding your loan application, vehicle lease, or upcoming repayment schedule? Our customer service team is ready to assist.
+                </p>
+                <div className="text-xs text-slate-400 bg-slate-950/80 p-3 rounded-lg border border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">Customer Hotline:</span>
+                    <span className="font-semibold text-slate-200">+94 11 234 5678</span>
                   </div>
-                ))}
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">Documentation Email:</span>
+                    <span className="font-semibold text-blue-400">support@smartline.lk</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">Working Hours:</span>
+                    <span className="text-slate-300">Mon - Fri (8:30 AM - 5:00 PM)</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
-
-          {/* Quick System Environment Box */}
-          <div className="rounded-xl bg-gradient-to-br from-slate-900 to-blue-950/40 border border-slate-800 p-5">
-            <h4 className="text-sm font-bold text-white mb-1 flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-blue-400" /> Phase 8 Dashboards Live
-            </h4>
-            <p className="text-xs text-slate-300 leading-relaxed mb-3">
-              Spring Boot REST API aggregation service connected. Dynamic KPI cards, distribution charts, and live queue integration active.
-            </p>
-            <div className="text-[11px] text-slate-400 bg-slate-950/80 p-2.5 rounded border border-slate-800 font-mono space-y-1">
-              <div>API: GET /api/dashboard/stats</div>
-              <div>RBAC Scope: {effectiveRole}</div>
-              <div>Database: MySQL 8.0 (Active)</div>
-            </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

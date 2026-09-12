@@ -18,6 +18,7 @@ import com.smartline.loan.entity.enums.ApplicationType;
 import com.smartline.loan.exception.ResourceNotFoundException;
 import com.smartline.loan.repository.AgreementRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
@@ -26,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Service
+@Transactional(readOnly = true)
 public class AgreementPdfService {
 
     private final AgreementRepository agreementRepository;
@@ -43,7 +45,8 @@ public class AgreementPdfService {
 
     public byte[] generateAgreementPdf(Long agreementId) {
         Agreement agreement = agreementRepository.findById(agreementId)
-                .orElseThrow(() -> new ResourceNotFoundException("Agreement", "id", agreementId));
+                .orElseGet(() -> agreementRepository.findByApplicationId(agreementId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Agreement", "id", agreementId)));
 
         Application application = agreement.getApplication();
         Applicant applicant = application.getApplicant();

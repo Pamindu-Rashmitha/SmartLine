@@ -1,13 +1,8 @@
 import React from 'react';
-import { Layout, Dropdown, Avatar, Badge } from 'antd';
+import { Layout, Dropdown, Avatar } from 'antd';
 import {
-  Bell,
   LogOut,
-  User as UserIcon,
-  ShieldCheck,
   ChevronDown,
-  PanelLeftClose,
-  PanelLeftOpen,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import NotificationBell from '../components/common/NotificationBell';
@@ -54,26 +49,8 @@ const AppHeader = ({ collapsed, setCollapsed }) => {
   ];
 
   return (
-    <Header className="sticky top-0 z-20 flex items-center justify-between px-6 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 h-16 leading-none">
-      <div className="flex items-center gap-4">
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-0 bg-transparent cursor-pointer"
-          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          {collapsed ? <PanelLeftOpen className="w-5 h-5" /> : <PanelLeftClose className="w-5 h-5" />}
-        </button>
-
-        <div className="hidden sm:flex items-center gap-2">
-          <span className="text-xs font-semibold px-2 py-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
-            SYSTEM ONLINE
-          </span>
-          <span className="text-slate-500 text-xs">•</span>
-          <span className="text-xs text-slate-400 font-medium">Smart Line Financial Gateway</span>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-4">
+    <Header className="sticky top-0 z-20 flex items-center justify-end px-6 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 h-16 leading-none">
+      <div className="flex items-center gap-4 ml-auto">
         {/* Real-time Notification Bell */}
         <NotificationBell />
 

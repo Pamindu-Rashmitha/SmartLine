@@ -26,6 +26,11 @@ export const applicationApi = {
     return res.data;
   },
 
+  getApplicationDetail: async (id) => {
+    const res = await axiosClient.get(`/applications/${id}`);
+    return res.data;
+  },
+
   searchApplications: async (params = {}) => {
     const res = await axiosClient.get('/applications', { params });
     return res.data;

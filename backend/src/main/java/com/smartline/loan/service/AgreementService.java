@@ -239,7 +239,8 @@ public class AgreementService {
     @Transactional(readOnly = true)
     public Agreement getAgreementById(Long agreementId, User currentUser) {
         Agreement agreement = agreementRepository.findById(agreementId)
-                .orElseThrow(() -> new ResourceNotFoundException("Agreement", "id", agreementId));
+                .orElseGet(() -> agreementRepository.findByApplicationId(agreementId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Agreement", "id", agreementId)));
 
         if (currentUser.getRole() != null && currentUser.getRole().name().equals("APPLICANT")) {
             if (agreement.getApplication().getApplicant() == null ||

@@ -75,11 +75,10 @@ const NotificationBell = () => {
         <div className="flex items-center gap-2">
           <span className="font-semibold text-sm text-slate-100">Notifications</span>
           <div
-            className={`flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full border ${
-              isConnected
+            className={`flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full border ${isConnected
                 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
                 : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
-            }`}
+              }`}
             title={isConnected ? 'Live WebSocket Connected' : 'Reconnecting...'}
           >
             <Radio className={`w-3 h-3 ${isConnected ? 'animate-pulse' : ''}`} />
@@ -147,9 +146,8 @@ const NotificationBell = () => {
               <div
                 key={notif.id}
                 onClick={() => handleItemClick(notif)}
-                className={`flex gap-3 px-4 py-3 cursor-pointer transition-all hover:bg-slate-800/60 ${
-                  !notif.read ? 'bg-blue-950/20 border-l-2 border-blue-500' : 'opacity-80 hover:opacity-100'
-                }`}
+                className={`flex gap-3 px-4 py-3 cursor-pointer transition-all hover:bg-slate-800/60 ${!notif.read ? 'bg-blue-950/20 border-l-2 border-blue-500' : 'opacity-80 hover:opacity-100'
+                  }`}
               >
                 <div className={`mt-0.5 p-1.5 rounded-lg shrink-0 border ${config.bgColor}`}>
                   <Icon className={`w-4 h-4 ${config.color}`} />
@@ -158,9 +156,8 @@ const NotificationBell = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <p
-                      className={`text-xs truncate ${
-                        !notif.read ? 'font-semibold text-slate-100' : 'font-medium text-slate-300'
-                      }`}
+                      className={`text-xs truncate ${!notif.read ? 'font-semibold text-slate-100' : 'font-medium text-slate-300'
+                        }`}
                     >
                       {notif.title}
                     </p>
@@ -217,20 +214,13 @@ const NotificationBell = () => {
         title="Notifications"
       >
         <Bell className="w-5 h-5" />
-        {unreadCount > 0 ? (
+        {unreadCount > 0 && (
           <>
             <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-blue-500 animate-ping" />
             <span className="absolute top-1 right-1 min-w-[16px] h-4 px-1 rounded-full bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center leading-none shadow">
               {unreadCount > 99 ? '99+' : unreadCount}
             </span>
           </>
-        ) : (
-          isConnected && (
-            <span
-              className="absolute bottom-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500"
-              title="Real-time connected"
-            />
-          )
         )}
       </button>
     </Popover>

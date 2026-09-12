@@ -94,7 +94,7 @@ const AppSidebar = ({ collapsed }) => {
     >
       {/* Brand Header */}
       <div className="flex items-center gap-3 px-5 py-5 border-b border-slate-800/80">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-400 flex items-center justify-center shadow-lg shadow-blue-600/30 flex-shrink-0">
+        <div className="w-10 h-10 flex items-center justify-center shadow-blue-600/30 flex-shrink-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -135,18 +135,6 @@ const AppSidebar = ({ collapsed }) => {
           className="border-r-0 bg-transparent text-slate-300 font-medium text-sm"
         />
       </div>
-
-      {/* Role Footer */}
-      {!collapsed && (
-        <div className="p-4 border-t border-slate-800 bg-slate-950/40">
-          <div className="flex items-center gap-2.5">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <div className="text-xs text-slate-400">
-              <span className="font-semibold text-slate-300">Phase 5: EP04 Ready</span> v1.0.0
-            </div>
-          </div>
-        </div>
-      )}
     </Sider>
   );
 };

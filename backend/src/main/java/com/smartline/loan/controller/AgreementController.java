@@ -14,6 +14,7 @@ import com.smartline.loan.service.AgreementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class AgreementController {
 
     @GetMapping("/queue")
     @PreAuthorize("hasAnyRole('LEGAL_OFFICER', 'ADMIN')")
-    @Operation(summary = "Get Legal Officer agreement preparation queue")
+    @Operation(summary = "Get legal review queue for applications in AGREEMENT_PENDING status (US11)")
     public ResponseEntity<ApiResponse<List<ApplicationResponse>>> getLegalQueue() {
         List<ApplicationResponse> queue = agreementService.getLegalQueue();
         return ResponseEntity.ok(ApiResponse.success(queue));
@@ -50,19 +51,19 @@ public class AgreementController {
 
     @PostMapping("/{applicationId}")
     @PreAuthorize("hasAnyRole('LEGAL_OFFICER', 'ADMIN')")
-    @Operation(summary = "Prepare draft financing agreement (US11)")
+    @Operation(summary = "Prepare and save legal agreement draft (US11)")
     public ResponseEntity<ApiResponse<AgreementResponse>> prepareAgreement(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable Long applicationId,
-            @Valid @RequestBody(required = false) AgreementCreateRequest request) {
+            @Valid @RequestBody AgreementCreateRequest request) {
         User currentUser = getCurrentUser(userPrincipal);
         AgreementResponse response = agreementService.prepareAgreement(applicationId, request, currentUser);
-        return ResponseEntity.ok(ApiResponse.success("Agreement prepared successfully", response));
+        return ResponseEntity.ok(ApiResponse.success("Agreement draft saved", response));
     }
 
     @PostMapping("/{applicationId}/verify")
     @PreAuthorize("hasAnyRole('LEGAL_OFFICER', 'ADMIN')")
-    @Operation(summary = "Verify and seal financing agreement (US12)")
+    @Operation(summary = "Verify and seal legal agreement, transitioning status to AGREEMENT_VERIFIED (US12)")
     public ResponseEntity<ApiResponse<AgreementResponse>> verifyAgreement(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable Long applicationId) {
@@ -90,11 +91,15 @@ public class AgreementController {
             @PathVariable Long id) {
         User currentUser = getCurrentUser(userPrincipal);
         Agreement agreement = agreementService.getAgreementById(id, currentUser);
-        byte[] pdfBytes = agreementPdfService.generateAgreementPdf(id);
+        byte[] pdfBytes = agreementPdfService.generateAgreementPdf(agreement.getId());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("inline", "Agreement_" + agreement.getAgreementNumber() + ".pdf");
+        headers.setContentDisposition(
+                ContentDisposition.inline()
+                        .filename("Agreement_" + agreement.getAgreementNumber() + ".pdf")
+                        .build()
+        );
         headers.setContentLength(pdfBytes.length);
 
         return ResponseEntity.ok()
