@@ -8,6 +8,7 @@ import com.smartline.loan.entity.Application;
 import com.smartline.loan.entity.ApplicationStatusHistory;
 import com.smartline.loan.entity.User;
 import com.smartline.loan.entity.VehicleInspection;
+import com.smartline.loan.entity.VehicleLeaseDetail;
 import com.smartline.loan.entity.enums.ApplicationStatus;
 import com.smartline.loan.entity.enums.ApplicationType;
 import com.smartline.loan.exception.BadRequestException;
@@ -97,6 +98,20 @@ public class VehicleInspectionService {
 
         VehicleInspection saved = vehicleInspectionRepository.save(inspection);
 
+        // Update verified identification numbers on the vehicle lease detail
+        VehicleLeaseDetail vld = application.getVehicleLeaseDetail();
+        if (vld != null) {
+            if (request.getEngineNumber() != null && !request.getEngineNumber().isBlank()) {
+                vld.setEngineNumber(request.getEngineNumber().trim());
+            }
+            if (request.getChassisNumber() != null && !request.getChassisNumber().isBlank()) {
+                vld.setChassisNumber(request.getChassisNumber().trim());
+            }
+            if (request.getRegistrationNumber() != null && !request.getRegistrationNumber().isBlank()) {
+                vld.setRegistrationNumber(request.getRegistrationNumber().trim());
+            }
+        }
+
         ApplicationStatus previousStatus = application.getStatus();
         if (previousStatus != ApplicationStatus.FIELD_INSPECTION_COMPLETED) {
             application.setStatus(ApplicationStatus.FIELD_INSPECTION_COMPLETED);
@@ -128,6 +143,14 @@ public class VehicleInspectionService {
     }
 
     @Transactional(readOnly = true)
+    public List<VehicleInspectionResponse> getAllInspections() {
+        return vehicleInspectionRepository.findAllByOrderByInspectionDateDesc()
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public VehicleInspectionResponse getInspection(Long applicationId) {
         VehicleInspection inspection = vehicleInspectionRepository.findByApplicationId(applicationId)
                 .orElseThrow(() -> new ResourceNotFoundException("VehicleInspection", "applicationId", applicationId));
@@ -153,6 +176,24 @@ public class VehicleInspectionService {
         res.setRemarks(vi.getRemarks());
         res.setCreatedAt(vi.getCreatedAt());
         res.setUpdatedAt(vi.getUpdatedAt());
+
+        if (vi.getApplication() != null) {
+            res.setApplicationNumber(vi.getApplication().getApplicationNumber());
+            if (vi.getApplication().getApplicant() != null) {
+                res.setApplicantName(vi.getApplication().getApplicant().getFullName());
+                res.setApplicantPhone(vi.getApplication().getApplicant().getPhone());
+            }
+            VehicleLeaseDetail vld = vi.getApplication().getVehicleLeaseDetail();
+            if (vld != null) {
+                res.setVehicleMake(vld.getMake());
+                res.setVehicleModel(vld.getModel());
+                res.setYearOfManufacture(vld.getYearOfManufacture());
+                res.setVehicleCategory(vld.getVehicleCategory() != null ? vld.getVehicleCategory().name() : null);
+                res.setRegistrationNumber(vld.getRegistrationNumber());
+                res.setEngineNumber(vld.getEngineNumber());
+                res.setChassisNumber(vld.getChassisNumber());
+            }
+        }
         return res;
     }
 }

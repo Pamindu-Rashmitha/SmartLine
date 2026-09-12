@@ -97,6 +97,46 @@ public class FileStorageService {
         }
     }
 
+    public StorageResult storePaymentSlip(Long facilityId, MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            throw new BadRequestException("Cannot upload an empty file");
+        }
+
+        if (file.getSize() > maxFileSize) {
+            throw new BadRequestException("File exceeds maximum allowed size of 5MB");
+        }
+
+        String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        if (originalFilename.contains("..")) {
+            throw new BadRequestException("Filename contains invalid path sequence: " + originalFilename);
+        }
+
+        String extension = "";
+        int extIndex = originalFilename.lastIndexOf(".");
+        if (extIndex > 0) {
+            extension = originalFilename.substring(extIndex + 1).toLowerCase();
+        }
+
+        if (!ALLOWED_EXTENSIONS.contains(extension)) {
+            throw new BadRequestException("Invalid file type: ." + extension + ". Allowed: " + ALLOWED_EXTENSIONS);
+        }
+
+        try {
+            Path slipFolder = Paths.get(uploadDir, "slips", String.valueOf(facilityId)).toAbsolutePath().normalize();
+            Files.createDirectories(slipFolder);
+
+            String storedFilename = UUID.randomUUID().toString() + "_" + originalFilename;
+            Path targetLocation = slipFolder.resolve(storedFilename);
+
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            return new StorageResult(originalFilename, storedFilename, targetLocation.toString(), file.getSize(), file.getContentType());
+        } catch (IOException e) {
+            log.error("Failed to store payment slip for facility ID {}: {}", facilityId, e.getMessage());
+            throw new RuntimeException("Could not store payment slip: " + originalFilename, e);
+        }
+    }
+
     public Resource loadFileAsResource(String filePath) {
         try {
             Path file = Paths.get(filePath).normalize();

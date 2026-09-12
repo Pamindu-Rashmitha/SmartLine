@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Modal, Table, Button, Tag, Spin, message, Alert, Form, Select, DatePicker, Card, Progress } from 'antd';
-import { Calendar, DollarSign, Clock, CheckCircle, AlertTriangle, Play, RefreshCw, FileText } from 'lucide-react';
+import { Calendar, DollarSign, Clock, CheckCircle, AlertTriangle, Play, RefreshCw, FileText, FileCheck } from 'lucide-react';
 import dayjs from 'dayjs';
 import repaymentApi from '../../api/repaymentApi';
 import StatusBadge from '../common/StatusBadge';
 import PaymentRecordModal from './PaymentRecordModal';
+import PaymentProofReviewModal from './PaymentProofReviewModal';
 import { useAuth } from '../../contexts/AuthContext';
 
 const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacility }) => {
@@ -18,6 +19,10 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
   // Payment recording modal state
   const [selectedInstallment, setSelectedInstallment] = useState(null);
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
+
+  // Payment proof review state
+  const [selectedProofForReview, setSelectedProofForReview] = useState(null);
+  const [reviewProofModalVisible, setReviewProofModalVisible] = useState(false);
 
   const fetchSchedule = useCallback(async () => {
     if (!facility?.id) return;
@@ -78,6 +83,28 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
   const handlePaymentSuccess = () => {
     fetchSchedule();
     if (onRefreshFacility) onRefreshFacility();
+  };
+
+  const handleReviewProofSlip = async (installment) => {
+    try {
+      if (installment.latestProofId) {
+        const res = await repaymentApi.getProofById(installment.latestProofId);
+        if (res.success && res.data) {
+          setSelectedProofForReview(res.data);
+          setReviewProofModalVisible(true);
+          return;
+        }
+      }
+      const res = await repaymentApi.getInstallmentProofs(installment.id);
+      if (res.success && res.data?.length > 0) {
+        setSelectedProofForReview(res.data[0]);
+        setReviewProofModalVisible(true);
+      } else {
+        message.info('No uploaded slip found for this installment.');
+      }
+    } catch (err) {
+      message.error('Failed to load submitted slip details');
+    }
   };
 
   const isFinanceOrAdmin = user?.role === 'FINANCE_OFFICER' || user?.role === 'ADMIN';
@@ -172,9 +199,31 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
             title: 'Action',
             key: 'action',
             align: 'center',
-            width: 110,
-            render: (_, record) =>
-              record.status !== 'PAID' ? (
+            width: 125,
+            render: (_, record) => {
+              if (record.status === 'PAID') {
+                return (
+                  <Tag color="success" className="text-xs">
+                    Settled
+                  </Tag>
+                );
+              }
+
+              if (record.status === 'PAYMENT_SUBMITTED') {
+                return (
+                  <Button
+                    size="small"
+                    type="primary"
+                    className="bg-purple-600 hover:bg-purple-500 text-xs font-semibold border-none flex items-center gap-1 mx-auto shadow-sm shadow-purple-600/20"
+                    onClick={() => handleReviewProofSlip(record)}
+                  >
+                    <FileCheck className="w-3.5 h-3.5" />
+                    Review Slip
+                  </Button>
+                );
+              }
+
+              return (
                 <Button
                   size="small"
                   type="primary"
@@ -183,11 +232,8 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
                 >
                   Pay EMI
                 </Button>
-              ) : (
-                <Tag color="success" className="text-xs">
-                  Settled
-                </Tag>
-              ),
+              );
+            },
           },
         ]
       : []),
@@ -366,6 +412,20 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
           setSelectedInstallment(null);
         }}
         onSuccess={handlePaymentSuccess}
+      />
+
+      {/* Embedded Payment Proof Review Modal */}
+      <PaymentProofReviewModal
+        visible={reviewProofModalVisible}
+        proof={selectedProofForReview}
+        onClose={() => {
+          setReviewProofModalVisible(false);
+          setSelectedProofForReview(null);
+        }}
+        onSuccess={() => {
+          fetchSchedule();
+          if (onRefreshFacility) onRefreshFacility();
+        }}
       />
     </>
   );

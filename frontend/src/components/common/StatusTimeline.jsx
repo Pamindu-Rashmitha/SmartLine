@@ -32,23 +32,23 @@ const StatusTimeline = ({ history = [] }) => {
           <Tag color={getStatusColor(item.toStatus)} className="font-mono text-[11px]">
             {item.toStatus}
           </Tag>
-          <span className="text-slate-400 font-mono text-[11px]">
+          <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">
             {dayjs(item.changedAt).format('YYYY-MM-DD HH:mm:ss')}
           </span>
           {item.fromStatus && (
-            <span className="text-slate-500 text-[10px]">
+            <span className="text-slate-500 dark:text-slate-400 text-[10px]">
               (from <span className="font-mono">{item.fromStatus}</span>)
             </span>
           )}
         </div>
         {item.remarks && (
-          <p className="text-slate-300 font-medium m-0 leading-relaxed bg-slate-950/40 p-2 rounded border border-slate-800/80">
+          <p className="text-slate-800 dark:text-slate-300 font-medium m-0 leading-relaxed bg-slate-50 dark:bg-slate-950/40 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800/80">
             {item.remarks}
           </p>
         )}
         {item.changedByName && (
-          <p className="text-slate-500 text-[11px] m-0">
-            Recorded by: <span className="text-slate-400 font-semibold">{item.changedByName}</span>
+          <p className="text-slate-500 dark:text-slate-400 text-[11px] m-0">
+            Recorded by: <span className="text-slate-700 dark:text-slate-300 font-semibold">{item.changedByName}</span>
             {item.changedByRole ? ` (${item.changedByRole})` : ''}
           </p>
         )}

@@ -51,6 +51,11 @@ const STANDARD_TEMPLATES = {
     'The Guarantor(s) hereby unconditionally and irrevocably guarantee the punctual payment and discharge of all borrower obligations under this agreement as joint and primary obligors.',
 };
 
+const sanitizeText = (val) => {
+  if (!val || val === 'null' || val === 'undefined') return '-';
+  return val;
+};
+
 const AgreementPreparationPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -131,17 +136,17 @@ const AgreementPreparationPage = () => {
 
   const handleVerifyAgreement = async () => {
     Modal.confirm({
-      title: 'Verify & Seal Legal Agreement',
+      title: <span className="text-slate-900 dark:text-white font-bold">Verify & Seal Legal Agreement</span>,
       content: (
-        <div className="space-y-2 text-slate-300">
+        <div className="space-y-2 text-slate-700 dark:text-slate-300">
           <p>
             You are about to legally verify and seal agreement{' '}
-            <strong className="text-blue-400 font-mono">
+            <strong className="text-blue-600 dark:text-blue-400 font-mono">
               {agreement?.agreementNumber || `AGR-2026-${String(id).padStart(5, '0')}`}
             </strong>
             .
           </p>
-          <div className="p-3 bg-slate-950 rounded-lg text-xs font-mono space-y-1 border border-slate-800">
+          <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-lg text-xs font-mono space-y-1 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200">
             <div>Principal: LKR {Number(application?.requestedAmount || 0).toLocaleString()}</div>
             <div>
               Down-Payment: LKR {Number(downPaymentRequired || 0).toLocaleString()}{' '}
@@ -149,19 +154,19 @@ const AgreementPreparationPage = () => {
             </div>
             <div>
               Next Workflow Stage:{' '}
-              <span className="text-emerald-400 font-semibold">
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
                 {downPaymentRequired > 0 ? 'PENDING_DOWN_PAYMENT' : 'PENDING_DISBURSAL'}
               </span>
             </div>
           </div>
-          <p className="text-xs text-slate-400 mt-2">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
             This action generates the final legal seal and moves the facility to Finance Officer execution.
           </p>
         </div>
       ),
       okText: 'Confirm & Seal Agreement',
       cancelText: 'Cancel',
-      okButtonProps: { className: 'bg-emerald-600 hover:bg-emerald-500 border-none' },
+      okButtonProps: { className: 'bg-emerald-600 hover:bg-emerald-500 font-semibold border-none' },
       onOk: async () => {
         setSubmitting(true);
         try {
@@ -232,20 +237,20 @@ const AgreementPreparationPage = () => {
   return (
     <div className="space-y-6">
       {/* Navigation Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900/60 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl backdrop-blur-sm">
         <div className="flex items-center gap-4">
           <Button
             type="text"
-            icon={<ArrowLeft className="w-5 h-5 text-slate-400" />}
+            icon={<ArrowLeft className="w-5 h-5 text-slate-500 dark:text-slate-400" />}
             onClick={() => navigate('/legal-agreements')}
-            className="hover:bg-slate-800 text-slate-400 hover:text-slate-200"
+            className="hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
           />
           <div>
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30">
+              <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30">
                 <Scale className="w-5 h-5" />
               </div>
-              <h1 className="text-xl font-bold text-slate-100 tracking-tight m-0">
+              <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight m-0">
                 Legal Agreement Preparation & Attestation
               </h1>
               <StatusBadge status={application.status} />
@@ -255,9 +260,9 @@ const AgreementPreparationPage = () => {
                 </Tag>
               )}
             </div>
-            <p className="text-slate-400 text-xs mt-1 mb-0">
-              Ref: <span className="font-mono text-blue-400 font-semibold">{application.applicationNumber}</span> |
-              Borrower: <span className="text-slate-200">{application.applicantName}</span> (NIC: {application.applicantNic})
+            <p className="text-slate-500 dark:text-slate-400 text-xs mt-1 mb-0">
+              Ref: <span className="font-mono text-blue-600 dark:text-blue-400 font-semibold">{application.applicationNumber}</span> |
+              Borrower: <span className="text-slate-800 dark:text-slate-200 font-semibold">{application.applicantName}</span> (NIC: {application.applicantNic})
             </p>
           </div>
         </div>
@@ -268,7 +273,7 @@ const AgreementPreparationPage = () => {
             <Button
               icon={<FileDown className="w-4 h-4" />}
               onClick={handleDownloadPdf}
-              className="bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 flex items-center gap-1.5 text-xs font-medium"
+              className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:border-slate-700 flex items-center gap-1.5 text-xs font-medium shadow-sm"
             >
               Download PDF Agreement
             </Button>
@@ -280,7 +285,7 @@ const AgreementPreparationPage = () => {
                 icon={<FileSignature className="w-4 h-4" />}
                 loading={submitting}
                 onClick={handleSaveDraft}
-                className="bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 flex items-center gap-1.5 text-xs font-medium"
+                className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:border-slate-700 flex items-center gap-1.5 text-xs font-medium shadow-sm"
               >
                 Save Draft
               </Button>
@@ -297,7 +302,7 @@ const AgreementPreparationPage = () => {
           )}
 
           {isVerified && (
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-950/40 border border-emerald-500/40 rounded-xl text-emerald-400 text-xs font-medium">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-500/40 rounded-xl text-emerald-700 dark:text-emerald-400 text-xs font-medium">
               <CheckCircle className="w-4 h-4" />
               <span>Agreement Sealed on {dayjs(agreement.verifiedDate).format('DD MMM YYYY, HH:mm')}</span>
             </div>
@@ -312,39 +317,39 @@ const AgreementPreparationPage = () => {
           {/* Customer Summary Card */}
           <Card
             title={
-              <div className="flex items-center gap-2 text-slate-200 text-sm font-semibold">
-                <UserCheck className="w-4 h-4 text-blue-400" />
+              <div className="flex items-center gap-2 text-slate-900 dark:text-slate-200 text-sm font-semibold">
+                <UserCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span>Borrower Particulars</span>
               </div>
             }
-            className="bg-slate-900/80 border-slate-800 shadow-lg"
+            className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-lg rounded-2xl"
           >
             <div className="space-y-3 text-xs">
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Full Name</span>
-                <span className="font-medium text-slate-200">{application.applicantName}</span>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                <span className="text-slate-500 dark:text-slate-400">Full Name</span>
+                <span className="font-medium text-slate-800 dark:text-slate-200">{application.applicantName}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">National ID (NIC)</span>
-                <span className="font-mono text-slate-200">{application.applicantNic}</span>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                <span className="text-slate-500 dark:text-slate-400">National ID (NIC)</span>
+                <span className="font-mono text-slate-800 dark:text-slate-200">{application.applicantNic}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Contact Phone</span>
-                <span className="font-mono text-slate-200">{application.applicantPhone || '-'}</span>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                <span className="text-slate-500 dark:text-slate-400">Contact Phone</span>
+                <span className="font-mono text-slate-800 dark:text-slate-200">{sanitizeText(application.applicantPhone)}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Monthly Income</span>
-                <span className="font-mono text-emerald-400 font-semibold">
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                <span className="text-slate-500 dark:text-slate-400">Monthly Income</span>
+                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
                   LKR {Number(application.applicantMonthlyIncome || 0).toLocaleString()}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Employer / Business</span>
-                <span className="text-slate-200">{application.applicantEmployer || '-'}</span>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                <span className="text-slate-500 dark:text-slate-400">Employer / Business</span>
+                <span className="text-slate-800 dark:text-slate-200">{sanitizeText(application.applicantEmployer)}</span>
               </div>
               <div className="py-1">
-                <span className="text-slate-400 block mb-1">Residential Address</span>
-                <span className="text-slate-300 leading-relaxed">{application.applicantAddress || '-'}</span>
+                <span className="text-slate-500 dark:text-slate-400 block mb-1">Residential Address</span>
+                <span className="text-slate-700 dark:text-slate-300 leading-relaxed">{sanitizeText(application.applicantAddress)}</span>
               </div>
             </div>
           </Card>
@@ -352,47 +357,47 @@ const AgreementPreparationPage = () => {
           {/* Approved Terms Summary */}
           <Card
             title={
-              <div className="flex items-center gap-2 text-slate-200 text-sm font-semibold">
-                <DollarSign className="w-4 h-4 text-emerald-400" />
+              <div className="flex items-center gap-2 text-slate-900 dark:text-slate-200 text-sm font-semibold">
+                <DollarSign className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 <span>Approved Facility Terms</span>
               </div>
             }
-            className="bg-slate-900/80 border-slate-800 shadow-lg"
+            className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-lg rounded-2xl"
           >
             <div className="space-y-3 text-xs">
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Facility Type</span>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                <span className="text-slate-500 dark:text-slate-400">Facility Type</span>
                 <Tag color={application.type === 'VEHICLE_LEASE' ? 'orange' : 'blue'}>
                   {application.type === 'VEHICLE_LEASE' ? 'Vehicle Lease' : 'Money Loan'}
                 </Tag>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Principal Financing</span>
-                <span className="font-mono font-bold text-slate-100 text-sm">
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                <span className="text-slate-500 dark:text-slate-400">Principal Financing</span>
+                <span className="font-mono font-bold text-slate-900 dark:text-slate-100 text-sm">
                   LKR {Number(application.requestedAmount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Agreed Interest Rate</span>
-                <span className="font-mono text-slate-200 font-semibold">
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                <span className="text-slate-500 dark:text-slate-400">Agreed Interest Rate</span>
+                <span className="font-mono text-slate-800 dark:text-slate-200 font-semibold">
                   {ld?.proposedInterestRate || vld?.proposedInterestRate || 14.0}% p.a.
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Repayment Tenor</span>
-                <span className="font-mono text-slate-200 font-semibold">
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                <span className="text-slate-500 dark:text-slate-400">Repayment Tenor</span>
+                <span className="font-mono text-slate-800 dark:text-slate-200 font-semibold">
                   {ld?.requestedTenure || vld?.requestedTenure || 12} Months
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Monthly Installment (EMI)</span>
-                <span className="font-mono text-blue-400 font-bold text-sm">
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                <span className="text-slate-500 dark:text-slate-400">Monthly Installment (EMI)</span>
+                <span className="font-mono text-blue-600 dark:text-blue-400 font-bold text-sm">
                   LKR {Number(ld?.calculatedMonthlyEmi || vld?.calculatedMonthlyEmi || 0).toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-slate-400">Gross Total Repayable</span>
-                <span className="font-mono text-slate-200 font-bold">
+                <span className="text-slate-500 dark:text-slate-400">Gross Total Repayable</span>
+                <span className="font-mono text-slate-900 dark:text-slate-200 font-bold">
                   LKR {Number(ld?.calculatedTotalRepayable || vld?.calculatedTotalRepayable || 0).toLocaleString()}
                 </span>
               </div>
@@ -403,35 +408,35 @@ const AgreementPreparationPage = () => {
           {application.type === 'VEHICLE_LEASE' && vld && (
             <Card
               title={
-                <div className="flex items-center gap-2 text-slate-200 text-sm font-semibold">
-                  <Car className="w-4 h-4 text-amber-400" />
+                <div className="flex items-center gap-2 text-slate-900 dark:text-slate-200 text-sm font-semibold">
+                  <Car className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   <span>Leased Asset Particulars</span>
                 </div>
               }
-              className="bg-slate-900/80 border-slate-800 shadow-lg"
+              className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-lg rounded-2xl"
             >
               <div className="space-y-2.5 text-xs">
-                <div className="flex justify-between py-1 border-b border-slate-800/80">
-                  <span className="text-slate-400">Asset</span>
-                  <span className="font-medium text-slate-200">
+                <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                  <span className="text-slate-500 dark:text-slate-400">Asset</span>
+                  <span className="font-medium text-slate-800 dark:text-slate-200">
                     {vld.make} {vld.model} ({vld.yearOfManufacture || vld.year})
                   </span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-slate-800/80">
-                  <span className="text-slate-400">Category / Condition</span>
-                  <span className="text-slate-300 font-medium">
+                <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                  <span className="text-slate-500 dark:text-slate-400">Category / Condition</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">
                     {vld.vehicleCategory} | {vld.vehicleCondition}
                   </span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-slate-800/80">
-                  <span className="text-slate-400">Registration Number</span>
-                  <span className="font-mono text-slate-200 font-semibold">
+                <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/80">
+                  <span className="text-slate-500 dark:text-slate-400">Registration Number</span>
+                  <span className="font-mono text-blue-600 dark:text-blue-400 font-semibold">
                     {vld.registrationNumber || 'UNREGISTERED'}
                   </span>
                 </div>
                 <div className="flex justify-between py-1">
-                  <span className="text-slate-400">Market Valuation</span>
-                  <span className="font-mono text-slate-100">
+                  <span className="text-slate-500 dark:text-slate-400">Market Valuation</span>
+                  <span className="font-mono text-slate-900 dark:text-slate-100 font-semibold">
                     LKR {Number(vld.estimatedMarketValue || vld.marketValue || 0).toLocaleString()}
                   </span>
                 </div>
@@ -443,24 +448,24 @@ const AgreementPreparationPage = () => {
           {application.guarantors && application.guarantors.length > 0 && (
             <Card
               title={
-                <div className="flex items-center gap-2 text-slate-200 text-sm font-semibold">
-                  <ShieldCheck className="w-4 h-4 text-sky-400" />
+                <div className="flex items-center gap-2 text-slate-900 dark:text-slate-200 text-sm font-semibold">
+                  <ShieldCheck className="w-4 h-4 text-sky-600 dark:text-sky-400" />
                   <span>Guarantor Undertaking ({application.guarantors.length})</span>
                 </div>
               }
-              className="bg-slate-900/80 border-slate-800 shadow-lg"
+              className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-lg rounded-2xl"
             >
               <div className="space-y-3">
                 {application.guarantors.map((g, idx) => (
-                  <div key={g.id || idx} className="p-2.5 bg-slate-950/60 rounded-lg border border-slate-800 text-xs">
+                  <div key={g.id || idx} className="p-2.5 bg-slate-50 dark:bg-slate-950/60 rounded-lg border border-slate-200 dark:border-slate-800 text-xs">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="font-semibold text-slate-200">{g.fullName}</span>
+                      <span className="font-semibold text-slate-900 dark:text-slate-200">{g.fullName}</span>
                       <Tag color="cyan" className="m-0 text-[10px]">
                         {g.relationship || 'Guarantor'}
                       </Tag>
                     </div>
-                    <div className="text-slate-400 font-mono text-[11px]">NIC: {g.nic}</div>
-                    <div className="text-slate-400 text-[11px] mt-0.5">
+                    <div className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">NIC: {g.nic}</div>
+                    <div className="text-slate-500 dark:text-slate-400 text-[11px] mt-0.5">
                       Income: LKR {Number(g.monthlyIncome || 0).toLocaleString()}
                     </div>
                   </div>
@@ -475,17 +480,17 @@ const AgreementPreparationPage = () => {
           {/* Down-Payment Requirement Configuration */}
           <Card
             title={
-              <div className="flex items-center gap-2 text-slate-200 text-sm font-semibold">
-                <DollarSign className="w-4 h-4 text-blue-400" />
+              <div className="flex items-center gap-2 text-slate-900 dark:text-slate-200 text-sm font-semibold">
+                <DollarSign className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span>Pre-Disbursal Down-Payment Requirement</span>
               </div>
             }
-            className="bg-slate-900/80 border-slate-800 shadow-lg"
+            className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-lg rounded-2xl"
           >
             <div className="space-y-3">
-              <p className="text-xs text-slate-400 mb-2">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
                 Specify the upfront cash down-payment required from the borrower prior to facility disbursal. Enter{' '}
-                <strong className="text-slate-200">0</strong> if down-payment is waived or not applicable.
+                <strong className="text-slate-800 dark:text-slate-200">0</strong> if down-payment is waived or not applicable.
               </p>
               <div className="flex items-center gap-4">
                 <div className="flex-1">
@@ -495,18 +500,18 @@ const AgreementPreparationPage = () => {
                     onChange={(val) => setDownPaymentRequired(val || 0)}
                     min={0}
                     step={5000}
-                    className="w-full bg-slate-950 border-slate-700 text-slate-100 font-mono text-base"
+                    className="w-full bg-white dark:bg-slate-950 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-base rounded-lg shadow-sm"
                     formatter={(value) => `LKR ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={(value) => value.replace(/\LKR\s?|(,*)/g, '')}
                   />
                 </div>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   {downPaymentRequired > 0 ? (
-                    <span className="text-amber-400 font-medium">
+                    <span className="text-amber-600 dark:text-amber-400 font-medium">
                       Will require Finance Officer down-payment confirmation
                     </span>
                   ) : (
-                    <span className="text-emerald-400 font-medium">
+                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">
                       Facility will bypass down-payment desk straight to disbursal
                     </span>
                   )}
@@ -519,8 +524,8 @@ const AgreementPreparationPage = () => {
           <Card
             title={
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-slate-200 text-sm font-semibold">
-                  <FileSignature className="w-4 h-4 text-indigo-400" />
+                <div className="flex items-center gap-2 text-slate-900 dark:text-slate-200 text-sm font-semibold">
+                  <FileSignature className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                   <span>Standard Legal Covenants & Terms</span>
                 </div>
                 {!isVerified && (
@@ -530,7 +535,7 @@ const AgreementPreparationPage = () => {
                         size="small"
                         type="dashed"
                         onClick={() => setTermsAndConditions(STANDARD_TEMPLATES.microfinance)}
-                        className="text-[11px] border-slate-700 text-slate-400"
+                        className="text-[11px] border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 bg-slate-50 dark:bg-slate-800"
                       >
                         Loan Template
                       </Button>
@@ -540,7 +545,7 @@ const AgreementPreparationPage = () => {
                         size="small"
                         type="dashed"
                         onClick={() => setTermsAndConditions(STANDARD_TEMPLATES.vehicleLease)}
-                        className="text-[11px] border-slate-700 text-slate-400"
+                        className="text-[11px] border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 bg-slate-50 dark:bg-slate-800"
                       >
                         Lease Template
                       </Button>
@@ -549,7 +554,7 @@ const AgreementPreparationPage = () => {
                 )}
               </div>
             }
-            className="bg-slate-900/80 border-slate-800 shadow-lg"
+            className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-lg rounded-2xl"
           >
             <div className="space-y-3">
               <TextArea
@@ -557,7 +562,7 @@ const AgreementPreparationPage = () => {
                 rows={8}
                 value={termsAndConditions}
                 onChange={(e) => setTermsAndConditions(e.target.value)}
-                className="bg-slate-950 border-slate-700 text-slate-200 text-xs font-mono leading-relaxed"
+                className="bg-white dark:bg-slate-950 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-200 text-xs font-mono leading-relaxed rounded-lg shadow-sm"
                 placeholder="Enter standard legal clauses and default terms..."
               />
             </div>
@@ -567,8 +572,8 @@ const AgreementPreparationPage = () => {
           <Card
             title={
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-slate-200 text-sm font-semibold">
-                  <Sparkles className="w-4 h-4 text-amber-400" />
+                <div className="flex items-center gap-2 text-slate-900 dark:text-slate-200 text-sm font-semibold">
+                  <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   <span>Special Conditions & Bespoke Covenants</span>
                 </div>
                 {!isVerified && (
@@ -581,17 +586,17 @@ const AgreementPreparationPage = () => {
                           (prev ? prev + '\n\n' : '') + STANDARD_TEMPLATES.guarantorCovenant
                       )
                     }
-                    className="text-[11px] border-slate-700 text-slate-400"
+                    className="text-[11px] border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 bg-slate-50 dark:bg-slate-800"
                   >
                     + Add Guarantor Clause
                   </Button>
                 )}
               </div>
             }
-            className="bg-slate-900/80 border-slate-800 shadow-lg"
+            className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-lg rounded-2xl"
           >
             <div className="space-y-3">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Optional: Enter facility-specific covenants, additional collateral pledges, or pre-conditions agreed during underwriting.
               </p>
               <TextArea
@@ -599,7 +604,7 @@ const AgreementPreparationPage = () => {
                 rows={4}
                 value={specialConditions}
                 onChange={(e) => setSpecialConditions(e.target.value)}
-                className="bg-slate-950 border-slate-700 text-slate-200 text-xs font-mono leading-relaxed"
+                className="bg-white dark:bg-slate-950 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-200 text-xs font-mono leading-relaxed rounded-lg shadow-sm"
                 placeholder="e.g. Borrower agrees to submit bi-annual audited statements; hypothecation of vehicle registration book No. WP AAX-8932 to Smart Line..."
               />
             </div>
@@ -607,7 +612,7 @@ const AgreementPreparationPage = () => {
 
           {/* Verification Attestation Footer */}
           {isVerified && (
-            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/30 rounded-xl flex items-center justify-between">
+            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/30 rounded-xl flex items-center justify-between shadow-sm">
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                 <div>

@@ -343,7 +343,7 @@ const FinanceDisbursalDesk = () => {
             </h1>
           </div>
           <p className="text-slate-600 dark:text-slate-400 text-sm mt-1.5 mb-0">
-            Verify down-payment collections, disburse approved credit funds, and activate active lending facilities (US14, US15).
+            Verify down-payment collections, disburse approved credit funds, and activate active lending facilities.
           </p>
         </div>
       </div>
@@ -357,7 +357,7 @@ const FinanceDisbursalDesk = () => {
             subtitle="Awaiting borrower receipt"
             icon={Receipt}
             color="amber"
-            trend="US14 Desk"
+            trend="Awaiting Receipt"
             trendType="down"
           />
         </Col>
@@ -368,7 +368,7 @@ const FinanceDisbursalDesk = () => {
             subtitle="Ready for fund release"
             icon={Send}
             color="emerald"
-            trend="US15 Desk"
+            trend="Ready for Release"
             trendType="up"
           />
         </Col>

@@ -25,6 +25,12 @@ public class VehicleInspectionRequest {
 
     private String remarks;
 
+    private String engineNumber;
+
+    private String chassisNumber;
+
+    private String registrationNumber;
+
     public VehicleInspectionRequest() {
     }
 
@@ -90,5 +96,29 @@ public class VehicleInspectionRequest {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public String getEngineNumber() {
+        return engineNumber;
+    }
+
+    public void setEngineNumber(String engineNumber) {
+        this.engineNumber = engineNumber;
+    }
+
+    public String getChassisNumber() {
+        return chassisNumber;
+    }
+
+    public void setChassisNumber(String chassisNumber) {
+        this.chassisNumber = chassisNumber;
+    }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
     }
 }

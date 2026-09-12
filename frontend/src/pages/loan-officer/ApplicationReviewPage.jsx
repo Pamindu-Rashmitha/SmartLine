@@ -175,28 +175,30 @@ const ApplicationReviewPage = () => {
   const isSubmitted = app.status === 'SUBMITTED';
   const isFinalized = app.status === 'VERIFIED' || app.status === 'REJECTED' || app.status === 'APPROVED';
 
+  const sanitizeText = (val) => (!val || val === 'null' || val === 'undefined' ? '—' : val);
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-900/80 p-6 rounded-2xl border border-slate-800 shadow-xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900/80 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl transition-colors duration-200">
         <div className="flex items-center gap-4">
           <Button
             icon={<ArrowLeft className="w-4 h-4" />}
             onClick={() => navigate('/loan-officer/applications')}
-            className="border-slate-800 text-slate-300 hover:text-white"
+            className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 hover:text-blue-600 dark:hover:text-white hover:border-blue-500 font-medium shadow-sm"
           >
             Pipeline
           </Button>
           <div>
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xl font-bold text-white">{app.applicationNumber}</span>
+              <span className="font-mono text-xl font-bold text-slate-900 dark:text-white">{app.applicationNumber}</span>
               <StatusBadge status={app.status} />
-              <Tag color={app.type === 'LOAN' ? 'blue' : 'purple'}>
+              <Tag color={app.type === 'LOAN' ? 'blue' : 'purple'} className="font-medium text-xs">
                 {app.type === 'LOAN' ? 'Money Loan' : 'Vehicle Lease'}
               </Tag>
             </div>
-            <p className="text-slate-400 text-xs mt-1">
-              Applicant: <span className="text-white font-semibold">{app.applicantName}</span> (NIC: {app.applicantNic})
+            <p className="text-slate-500 dark:text-slate-400 text-xs mt-1 mb-0">
+              Applicant: <span className="text-slate-900 dark:text-white font-semibold">{sanitizeText(app.applicantName)}</span> (NIC: <span className="font-mono text-slate-700 dark:text-slate-300">{sanitizeText(app.applicantNic)}</span>)
             </p>
           </div>
         </div>
@@ -209,7 +211,7 @@ const ApplicationReviewPage = () => {
               icon={<Lock className="w-4 h-4" />}
               loading={actionLoading}
               onClick={handleStartVerification}
-              className="bg-indigo-600 hover:bg-indigo-500"
+              className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-sm"
             >
               Lock & Start Verification
             </Button>
@@ -222,6 +224,7 @@ const ApplicationReviewPage = () => {
                 icon={<XCircle className="w-4 h-4" />}
                 onClick={() => setRejectModalVisible(true)}
                 disabled={actionLoading}
+                className="font-medium"
               >
                 Reject Application
               </Button>
@@ -236,12 +239,32 @@ const ApplicationReviewPage = () => {
                   type="primary"
                   icon={<CheckCircle2 className="w-4 h-4" />}
                   loading={actionLoading}
-                  className="bg-emerald-600 hover:bg-emerald-500 font-semibold"
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow-sm"
                 >
                   Mark as Verified
                 </Button>
               </Popconfirm>
             </>
+          )}
+
+          {isFinalized && (
+            <div className="flex items-center gap-2">
+              {app.status === 'VERIFIED' && (
+                <Tag color="success" className="px-3 py-1 text-xs font-semibold">
+                  Verification Complete
+                </Tag>
+              )}
+              {app.status === 'REJECTED' && (
+                <Tag color="error" className="px-3 py-1 text-xs font-semibold">
+                  Application Rejected
+                </Tag>
+              )}
+              {app.status === 'APPROVED' && (
+                <Tag color="cyan" className="px-3 py-1 text-xs font-semibold">
+                  Sanction Approved
+                </Tag>
+              )}
+            </div>
           )}
         </div>
       </div>
@@ -249,44 +272,60 @@ const ApplicationReviewPage = () => {
       <Row gutter={[24, 24]}>
         {/* LEFT COLUMN: BORROWER PROFILE & FACILITY SPECS */}
         <Col xs={24} lg={12} className="space-y-6">
-          <Card title={<span className="text-white font-semibold">Borrower Financial Profile</span>} className="bg-slate-900/80 border-slate-800 rounded-2xl">
+          <Card
+            title={
+              <div className="flex items-center gap-2">
+                <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span className="text-slate-900 dark:text-white font-semibold">Borrower Financial Profile</span>
+              </div>
+            }
+            className="bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-xl transition-colors duration-200"
+          >
             <Descriptions bordered column={1} size="small">
-              <Descriptions.Item label="Applicant Name">{app.applicantName}</Descriptions.Item>
+              <Descriptions.Item label="Applicant Name">{sanitizeText(app.applicantName)}</Descriptions.Item>
               <Descriptions.Item label="NIC Number">
-                <span className="font-mono text-blue-400">{app.applicantNic}</span>
+                <span className="font-mono text-blue-600 dark:text-blue-400 font-medium">{sanitizeText(app.applicantNic)}</span>
               </Descriptions.Item>
-              <Descriptions.Item label="Contact Phone">{app.applicantPhone}</Descriptions.Item>
+              <Descriptions.Item label="Contact Phone">{sanitizeText(app.applicantPhone)}</Descriptions.Item>
               <Descriptions.Item label="Monthly Net Income">
-                <span className="font-mono text-emerald-400 font-bold">
+                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">
                   LKR {Number(app.applicantMonthlyIncome || 0).toLocaleString()}
                 </span>
               </Descriptions.Item>
-              <Descriptions.Item label="Employment Status">{app.applicantEmployment}</Descriptions.Item>
-              <Descriptions.Item label="Employer Name">{app.applicantEmployer || '—'}</Descriptions.Item>
-              <Descriptions.Item label="Residential Address">{app.applicantAddress}</Descriptions.Item>
+              <Descriptions.Item label="Employment Status">{sanitizeText(app.applicantEmployment)}</Descriptions.Item>
+              <Descriptions.Item label="Employer Name">{sanitizeText(app.applicantEmployer)}</Descriptions.Item>
+              <Descriptions.Item label="Residential Address">{sanitizeText(app.applicantAddress)}</Descriptions.Item>
               <Descriptions.Item label="Pre-Score Rating">
-                <Tag color="green" className="font-mono">
+                <Tag color="green" className="font-mono font-medium">
                   {app.applicantCreditScore ? `${app.applicantCreditScore} / 850 (Good)` : '745 / 850'}
                 </Tag>
               </Descriptions.Item>
             </Descriptions>
           </Card>
 
-          <Card title={<span className="text-white font-semibold">Requested Facility Parameters</span>} className="bg-slate-900/80 border-slate-800 rounded-2xl">
+          <Card
+            title={
+              <div className="flex items-center gap-2">
+                <DollarSign className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span className="text-slate-900 dark:text-white font-semibold">Requested Facility Parameters</span>
+              </div>
+            }
+            className="bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-xl transition-colors duration-200"
+          >
             <Descriptions bordered column={1} size="small">
               <Descriptions.Item label="Financing Amount">
-                <span className="font-mono text-lg font-bold text-blue-400">
+                <span className="font-mono text-lg font-bold text-blue-600 dark:text-blue-400">
                   LKR {Number(app.requestedAmount || 0).toLocaleString()}
                 </span>
               </Descriptions.Item>
-              <Descriptions.Item label="Facility Purpose">{app.purpose}</Descriptions.Item>
+              <Descriptions.Item label="Facility Purpose">{sanitizeText(app.purpose)}</Descriptions.Item>
               {app.type === 'LOAN' && app.loanDetail && (
                 <>
                   <Descriptions.Item label="Tenure & Rate">
                     {app.loanDetail.requestedTenure} Months @ {app.loanDetail.proposedInterestRate}% p.a.
                   </Descriptions.Item>
                   <Descriptions.Item label="Monthly Installment (EMI)">
-                    <span className="font-mono text-emerald-400 font-bold">
+                    <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">
                       LKR {Number(app.loanDetail.calculatedMonthlyEmi || 0).toLocaleString()}
                     </span>
                   </Descriptions.Item>
@@ -297,8 +336,8 @@ const ApplicationReviewPage = () => {
               )}
               {app.type === 'VEHICLE_LEASE' && app.vehicleLeaseDetail && (
                 <>
-                  <Descriptions.Item label="Vehicle Category">{app.vehicleLeaseDetail.vehicleCategory}</Descriptions.Item>
-                  <Descriptions.Item label="Make & Model">{app.vehicleLeaseDetail.make} {app.vehicleLeaseDetail.model} ({app.vehicleLeaseDetail.yearOfManufacture})</Descriptions.Item>
+                  <Descriptions.Item label="Vehicle Category">{sanitizeText(app.vehicleLeaseDetail.vehicleCategory)}</Descriptions.Item>
+                  <Descriptions.Item label="Make & Model">{sanitizeText(app.vehicleLeaseDetail.make)} {sanitizeText(app.vehicleLeaseDetail.model)} ({app.vehicleLeaseDetail.yearOfManufacture})</Descriptions.Item>
                   <Descriptions.Item label="Estimated Vehicle Value">
                     LKR {Number(app.vehicleLeaseDetail.estimatedMarketValue || 0).toLocaleString()}
                   </Descriptions.Item>
@@ -306,35 +345,52 @@ const ApplicationReviewPage = () => {
                     LKR {Number(app.vehicleLeaseDetail.downPaymentAmount || 0).toLocaleString()}
                   </Descriptions.Item>
                   <Descriptions.Item label="Monthly Lease Installment">
-                    <span className="font-mono text-emerald-400 font-bold">
+                    <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">
                       LKR {Number(app.vehicleLeaseDetail.calculatedMonthlyEmi || 0).toLocaleString()}
                     </span>
                   </Descriptions.Item>
-                  <Descriptions.Item label="Dealership Contact">{app.vehicleLeaseDetail.dealerName || 'Direct Seller'}</Descriptions.Item>
+                  <Descriptions.Item label="Dealership Contact">{sanitizeText(app.vehicleLeaseDetail.dealerName) === '—' ? 'Direct Seller' : sanitizeText(app.vehicleLeaseDetail.dealerName)}</Descriptions.Item>
                 </>
               )}
             </Descriptions>
           </Card>
 
           {/* Guarantors */}
-          <Card title={<span className="text-white font-semibold">Guarantors ({app.guarantors?.length || 0})</span>} className="bg-slate-900/80 border-slate-800 rounded-2xl">
+          <Card
+            title={
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span className="text-slate-900 dark:text-white font-semibold">Guarantors ({app.guarantors?.length || 0})</span>
+              </div>
+            }
+            className="bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-xl transition-colors duration-200"
+          >
             <div className="space-y-4">
-              {app.guarantors?.map((g) => (
-                <div key={g.id} className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-xs space-y-1.5">
-                  <div className="flex justify-between font-semibold text-white">
-                    <span>{g.fullName} ({g.relationship})</span>
-                    <Tag color={g.verificationStatus === 'VERIFIED' ? 'success' : 'warning'}>{g.verificationStatus}</Tag>
+              {app.guarantors && app.guarantors.length > 0 ? (
+                app.guarantors.map((g) => (
+                  <div
+                    key={g.id}
+                    className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-xs space-y-1.5 transition-colors"
+                  >
+                    <div className="flex justify-between items-center font-semibold text-slate-900 dark:text-white">
+                      <span>{g.fullName} ({sanitizeText(g.relationship)})</span>
+                      <Tag color={g.verificationStatus === 'VERIFIED' ? 'success' : 'warning'}>{g.verificationStatus}</Tag>
+                    </div>
+                    <div className="flex justify-between text-slate-500 dark:text-slate-400">
+                      <span>NIC: <span className="text-slate-800 dark:text-slate-200 font-mono font-medium">{sanitizeText(g.nic)}</span></span>
+                      <span>Phone: <span className="text-slate-800 dark:text-slate-200 font-mono font-medium">{sanitizeText(g.phone)}</span></span>
+                    </div>
+                    <div className="flex justify-between text-slate-500 dark:text-slate-400">
+                      <span>Income: <span className="text-emerald-600 dark:text-emerald-400 font-semibold font-mono">LKR {Number(g.monthlyIncome).toLocaleString()}</span></span>
+                      <span>Employer: <span className="text-slate-700 dark:text-slate-300">{sanitizeText(g.employerName)}</span></span>
+                    </div>
                   </div>
-                  <div className="flex justify-between text-slate-400">
-                    <span>NIC: <span className="text-slate-200 font-mono">{g.nic}</span></span>
-                    <span>Phone: <span className="text-slate-200 font-mono">{g.phone}</span></span>
-                  </div>
-                  <div className="flex justify-between text-slate-400">
-                    <span>Income: <span className="text-emerald-400 font-semibold font-mono">LKR {Number(g.monthlyIncome).toLocaleString()}</span></span>
-                    <span>Employer: {g.employerName}</span>
-                  </div>
+                ))
+              ) : (
+                <div className="text-center py-6 text-slate-500 dark:text-slate-400 text-xs">
+                  No guarantors registered for this application
                 </div>
-              ))}
+              )}
             </div>
           </Card>
         </Col>
@@ -344,16 +400,16 @@ const ApplicationReviewPage = () => {
           <Card
             title={
               <div className="flex justify-between items-center">
-                <span className="text-white font-semibold flex items-center gap-2">
-                  <FileCheck className="w-5 h-5 text-blue-400" />
+                <span className="text-slate-900 dark:text-white font-semibold flex items-center gap-2">
+                  <FileCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   Document Verification Checklist
                 </span>
-                <span className="text-xs font-normal text-slate-400">
+                <span className="text-xs font-normal text-slate-500 dark:text-slate-400">
                   {app.documents?.filter((d) => d.verificationStatus === 'VERIFIED').length} / {app.documents?.length || 0} Verified
                 </span>
               </div>
             }
-            className="bg-slate-900/80 border-slate-800 rounded-2xl shadow-xl"
+            className="bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-xl transition-colors duration-200"
           >
             <div className="space-y-4">
               {app.documents && app.documents.length > 0 ? (
@@ -366,22 +422,22 @@ const ApplicationReviewPage = () => {
                       key={doc.id}
                       className={`p-4 rounded-xl border transition-all ${
                         isVerified
-                          ? 'bg-emerald-950/20 border-emerald-800/60'
+                          ? 'bg-emerald-50/70 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/60'
                           : isDocRejected
-                          ? 'bg-red-950/20 border-red-800/60'
-                          : 'bg-slate-800/60 border-slate-700/60'
+                          ? 'bg-red-50/70 dark:bg-red-950/20 border-red-200 dark:border-red-800/60'
+                          : 'bg-slate-50/80 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/60'
                       }`}
                     >
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="flex items-center gap-2">
-                            <Tag color="blue" className="text-xs font-mono">{doc.documentType}</Tag>
+                            <Tag color="blue" className="text-xs font-mono font-medium">{doc.documentType}</Tag>
                             <Tag color={isVerified ? 'success' : isDocRejected ? 'error' : 'warning'}>
                               {doc.verificationStatus}
                             </Tag>
                           </div>
-                          <p className="text-sm font-semibold text-white mt-1 mb-0">{doc.originalFilename}</p>
-                          <span className="text-[11px] text-slate-400">
+                          <p className="text-sm font-semibold text-slate-900 dark:text-white mt-1.5 mb-0">{doc.originalFilename}</p>
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400">
                             {(doc.fileSize / 1024).toFixed(1)} KB • Uploaded {dayjs(doc.uploadedAt).format('YYYY-MM-DD HH:mm')}
                           </span>
                         </div>
@@ -390,26 +446,27 @@ const ApplicationReviewPage = () => {
                           size="small"
                           icon={<Download className="w-3.5 h-3.5" />}
                           onClick={() => handleDownload(doc.id, doc.originalFilename)}
-                          className="bg-slate-700 text-slate-200 border-none hover:bg-slate-600"
+                          className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 dark:bg-slate-700 dark:text-slate-200 dark:border-transparent dark:hover:bg-slate-600 shadow-sm font-medium"
                         >
                           View File
                         </Button>
                       </div>
 
                       {doc.rejectionReason && (
-                        <div className="mt-2 text-xs text-red-300 bg-red-950/40 p-2 rounded border border-red-900/60">
-                          Rejection remark: {doc.rejectionReason}
+                        <div className="mt-2.5 text-xs text-red-700 dark:text-red-300 bg-red-100/60 dark:bg-red-950/40 p-2.5 rounded-lg border border-red-200 dark:border-red-900/60">
+                          <span className="font-semibold">Rejection remark:</span> {doc.rejectionReason}
                         </div>
                       )}
 
                       {/* Document Verification Actions (Only if application is under review) */}
                       {isUnderReview && (
-                        <div className="mt-3 pt-3 border-t border-slate-700/60 flex justify-end gap-2">
+                        <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700/60 flex justify-end gap-2">
                           <Button
                             size="small"
                             danger
                             onClick={() => handleOpenDocReject(doc.id)}
                             disabled={isDocRejected}
+                            className="font-medium"
                           >
                             Reject Doc
                           </Button>
@@ -418,7 +475,7 @@ const ApplicationReviewPage = () => {
                             type="primary"
                             onClick={() => handleVerifyDocument(doc.id, 'VERIFIED')}
                             disabled={isVerified}
-                            className="bg-emerald-600 hover:bg-emerald-500"
+                            className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium shadow-sm"
                           >
                             Approve Doc
                           </Button>
@@ -428,7 +485,7 @@ const ApplicationReviewPage = () => {
                   );
                 })
               ) : (
-                <div className="text-center py-10 text-slate-400">No documents uploaded for verification</div>
+                <div className="text-center py-10 text-slate-500 dark:text-slate-400 text-sm">No documents uploaded for verification</div>
               )}
             </div>
           </Card>
@@ -437,16 +494,15 @@ const ApplicationReviewPage = () => {
 
       {/* Modal for Application Rejection */}
       <Modal
-        title={<span className="text-white">Reject Loan Application</span>}
+        title={<span className="text-slate-900 dark:text-white font-semibold">Reject Loan Application</span>}
         open={rejectModalVisible}
         onCancel={() => setRejectModalVisible(false)}
         onOk={handleRejectApplication}
         okText="Confirm Rejection"
         okButtonProps={{ danger: true, loading: actionLoading }}
-        className="dark-modal"
       >
         <div className="space-y-3 mt-4">
-          <p className="text-xs text-slate-300">
+          <p className="text-xs text-slate-600 dark:text-slate-300">
             Please provide specific reasons for rejecting this application (e.g. fraudulent KYC, insufficient disposable income, unsatisfactory guarantor profile).
           </p>
           <Input.TextArea
@@ -460,16 +516,15 @@ const ApplicationReviewPage = () => {
 
       {/* Modal for Document Rejection */}
       <Modal
-        title={<span className="text-white">Reject Document</span>}
+        title={<span className="text-slate-900 dark:text-white font-semibold">Reject Document</span>}
         open={docRejectModalVisible}
         onCancel={() => setDocRejectModalVisible(false)}
         onOk={handleConfirmDocReject}
         okText="Reject Document"
         okButtonProps={{ danger: true }}
-        className="dark-modal"
       >
         <div className="space-y-3 mt-4">
-          <p className="text-xs text-slate-300">
+          <p className="text-xs text-slate-600 dark:text-slate-300">
             Specify why this document is unacceptable (e.g. illegible scan, expired document, blurred photograph).
           </p>
           <Input.TextArea

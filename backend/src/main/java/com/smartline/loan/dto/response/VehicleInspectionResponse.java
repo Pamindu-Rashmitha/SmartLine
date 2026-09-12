@@ -22,6 +22,17 @@ public class VehicleInspectionResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private String applicationNumber;
+    private String applicantName;
+    private String applicantPhone;
+    private String vehicleMake;
+    private String vehicleModel;
+    private String vehicleCategory;
+    private Integer yearOfManufacture;
+    private String registrationNumber;
+    private String engineNumber;
+    private String chassisNumber;
+
     public VehicleInspectionResponse() {
     }
 
@@ -135,5 +146,85 @@ public class VehicleInspectionResponse {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getApplicationNumber() {
+        return applicationNumber;
+    }
+
+    public void setApplicationNumber(String applicationNumber) {
+        this.applicationNumber = applicationNumber;
+    }
+
+    public String getApplicantName() {
+        return applicantName;
+    }
+
+    public void setApplicantName(String applicantName) {
+        this.applicantName = applicantName;
+    }
+
+    public String getApplicantPhone() {
+        return applicantPhone;
+    }
+
+    public void setApplicantPhone(String applicantPhone) {
+        this.applicantPhone = applicantPhone;
+    }
+
+    public String getVehicleMake() {
+        return vehicleMake;
+    }
+
+    public void setVehicleMake(String vehicleMake) {
+        this.vehicleMake = vehicleMake;
+    }
+
+    public String getVehicleModel() {
+        return vehicleModel;
+    }
+
+    public void setVehicleModel(String vehicleModel) {
+        this.vehicleModel = vehicleModel;
+    }
+
+    public String getVehicleCategory() {
+        return vehicleCategory;
+    }
+
+    public void setVehicleCategory(String vehicleCategory) {
+        this.vehicleCategory = vehicleCategory;
+    }
+
+    public Integer getYearOfManufacture() {
+        return yearOfManufacture;
+    }
+
+    public void setYearOfManufacture(Integer yearOfManufacture) {
+        this.yearOfManufacture = yearOfManufacture;
+    }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
+    }
+
+    public String getEngineNumber() {
+        return engineNumber;
+    }
+
+    public void setEngineNumber(String engineNumber) {
+        this.engineNumber = engineNumber;
+    }
+
+    public String getChassisNumber() {
+        return chassisNumber;
+    }
+
+    public void setChassisNumber(String chassisNumber) {
+        this.chassisNumber = chassisNumber;
     }
 }

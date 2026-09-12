@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/vehicle-inspections")
@@ -62,6 +63,14 @@ public class VehicleInspectionController {
             @PathVariable Long applicationId) {
         VehicleInspectionResponse response = vehicleInspectionService.getInspection(applicationId);
         return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAnyRole('FIELD_OFFICER', 'CREDIT_MANAGER', 'SENIOR_MANAGER', 'LOAN_OFFICER', 'ADMIN')")
+    @Operation(summary = "Get all vehicle inspection reports")
+    public ResponseEntity<ApiResponse<List<VehicleInspectionResponse>>> getAllInspections() {
+        List<VehicleInspectionResponse> reports = vehicleInspectionService.getAllInspections();
+        return ResponseEntity.ok(ApiResponse.success(reports));
     }
 
     private User getCurrentUser(UserPrincipal principal) {

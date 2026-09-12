@@ -45,7 +45,7 @@ public class InstallmentController {
     }
 
     @GetMapping("/facilities/{facilityId}/schedule")
-    @PreAuthorize("hasAnyRole('FINANCE_OFFICER', 'CREDIT_CONTROL_OFFICER', 'APPLICANT', 'SENIOR_MANAGER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('FINANCE_OFFICER', 'CREDIT_CONTROL_OFFICER', 'APPLICANT', 'SENIOR_MANAGER', 'CREDIT_MANAGER', 'LOAN_OFFICER', 'LEGAL_OFFICER', 'ADMIN')")
     @Operation(summary = "Get full installment schedule for facility (US16, US18)")
     public ResponseEntity<ApiResponse<InstallmentScheduleResponse>> getSchedule(
             @PathVariable Long facilityId) {
@@ -54,7 +54,7 @@ public class InstallmentController {
     }
 
     @GetMapping("/facilities/{facilityId}/installments")
-    @PreAuthorize("hasAnyRole('FINANCE_OFFICER', 'CREDIT_CONTROL_OFFICER', 'APPLICANT', 'SENIOR_MANAGER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('FINANCE_OFFICER', 'CREDIT_CONTROL_OFFICER', 'APPLICANT', 'SENIOR_MANAGER', 'CREDIT_MANAGER', 'LOAN_OFFICER', 'LEGAL_OFFICER', 'ADMIN')")
     @Operation(summary = "List all installments for facility")
     public ResponseEntity<ApiResponse<List<InstallmentResponse>>> getInstallments(
             @PathVariable Long facilityId) {

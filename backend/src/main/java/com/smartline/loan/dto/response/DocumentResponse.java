@@ -16,6 +16,9 @@ public class DocumentResponse {
     private String rejectionReason;
     private LocalDateTime uploadedAt;
     private String downloadUrl;
+    private Long applicationId;
+    private String applicationNumber;
+    private String applicationType;
 
     public DocumentResponse() {
     }
@@ -106,5 +109,29 @@ public class DocumentResponse {
 
     public void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;
+    }
+
+    public Long getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    public String getApplicationNumber() {
+        return applicationNumber;
+    }
+
+    public void setApplicationNumber(String applicationNumber) {
+        this.applicationNumber = applicationNumber;
+    }
+
+    public String getApplicationType() {
+        return applicationType;
+    }
+
+    public void setApplicationType(String applicationType) {
+        this.applicationType = applicationType;
     }
 }

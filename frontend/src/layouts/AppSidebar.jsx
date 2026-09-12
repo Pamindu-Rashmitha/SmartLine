@@ -18,6 +18,7 @@ import {
   Briefcase,
   Layers,
   Banknote,
+  Calculator,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -29,6 +30,7 @@ const ROLE_MENUS = {
   APPLICANT: [
     { key: '/dashboard', icon: <LayoutDashboard className="w-4 h-4" />, label: 'My Dashboard' },
     { key: '/applications/new', icon: <FileText className="w-4 h-4" />, label: 'Apply for Loan' },
+    { key: '/calculator', icon: <Calculator className="w-4 h-4" />, label: 'Loan Calculator' },
     { key: '/applications', icon: <CreditCard className="w-4 h-4" />, label: 'My Applications' },
     { key: '/my-repayments', icon: <Banknote className="w-4 h-4" />, label: 'Repayments & Dues' },
     { key: '/documents', icon: <FolderLock className="w-4 h-4" />, label: 'Document Vault' },
@@ -37,7 +39,7 @@ const ROLE_MENUS = {
     { key: '/dashboard', icon: <LayoutDashboard className="w-4 h-4" />, label: 'Officer Dashboard' },
     { key: '/applications', icon: <FileText className="w-4 h-4" />, label: 'Loan Pipeline' },
     { key: '/customers', icon: <Users className="w-4 h-4" />, label: 'Applicant Directory' },
-    { key: '/calculator', icon: <CreditCard className="w-4 h-4" />, label: 'Loan Calculator' },
+    { key: '/calculator', icon: <Calculator className="w-4 h-4" />, label: 'Loan Calculator' },
   ],
   FIELD_OFFICER: [
     { key: '/dashboard', icon: <LayoutDashboard className="w-4 h-4" />, label: 'Field Dashboard' },

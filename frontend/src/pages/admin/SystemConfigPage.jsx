@@ -24,7 +24,7 @@ const CONFIG_METADATA = {
     unit: 'LKR',
     icon: Scale,
     color: 'indigo',
-    helper: 'Facility exposures exceeding this value are automatically escalated to Senior Managers (US10).',
+    helper: 'Facility exposures exceeding this value are automatically escalated to Senior Managers.',
     format: (v) => `LKR ${Number(v).toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
   },
   OVERDUE_GRACE_PERIOD_DAYS: {

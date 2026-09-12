@@ -19,6 +19,11 @@ export const documentApi = {
     return res.data;
   },
 
+  getMyDocuments: async () => {
+    const res = await axiosClient.get('/documents/my');
+    return res.data;
+  },
+
   downloadDocument: async (documentId, filename) => {
     const res = await axiosClient.get(`/documents/${documentId}/download`, {
       responseType: 'blob',

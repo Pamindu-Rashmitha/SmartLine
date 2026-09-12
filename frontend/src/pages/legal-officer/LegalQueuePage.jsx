@@ -176,7 +176,7 @@ const LegalQueuePage = () => {
             </h1>
           </div>
           <p className="text-slate-600 dark:text-slate-400 text-sm mt-1.5 mb-0">
-            Prepare, verify, and seal binding credit contracts and hypothecation deeds for approved facilities (US11, US12).
+            Prepare, verify, and seal binding credit contracts and hypothecation deeds for approved facilities.
           </p>
         </div>
       </div>

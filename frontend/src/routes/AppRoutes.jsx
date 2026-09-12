@@ -14,6 +14,7 @@ import CreditQueuePage from '../pages/credit-manager/CreditQueuePage';
 import CreditAssessmentPage from '../pages/credit-manager/CreditAssessmentPage';
 import InspectionQueuePage from '../pages/field-officer/InspectionQueuePage';
 import VehicleInspectionPage from '../pages/field-officer/VehicleInspectionPage';
+import SiteInspectionReportsPage from '../pages/field-officer/SiteInspectionReportsPage';
 import AuthorizationQueuePage from '../pages/senior-manager/AuthorizationQueuePage';
 import AuthorizationDetailPage from '../pages/senior-manager/AuthorizationDetailPage';
 import LegalQueuePage from '../pages/legal-officer/LegalQueuePage';
@@ -25,6 +26,8 @@ import ApplicantRepaymentsPage from '../pages/applicant/ApplicantRepaymentsPage'
 import UserManagementPage from '../pages/admin/UserManagementPage';
 import SystemConfigPage from '../pages/admin/SystemConfigPage';
 import LandingPage from '../pages/public/LandingPage';
+import LoanCalculatorPage from '../pages/loan-officer/LoanCalculatorPage';
+import DocumentVaultPage from '../pages/applicant/DocumentVaultPage';
 import { useAuth } from '../contexts/AuthContext';
 
 // Dispatcher for /applications index route
@@ -71,39 +74,41 @@ const AppRoutes = () => {
         }
       >
         <Route path="dashboard" element={<RoleDashboardHub />} />
+        <Route path="calculator" element={<LoanCalculatorPage />} />
 
-        {/* EP01: Application Intake & Verification Routes */}
+        {/* Application Intake & Verification Routes */}
         <Route path="applications/new" element={<ApplyLoanPage />} />
         <Route path="applications" element={<ApplicationsIndexDispatcher />} />
         <Route path="applications/:id" element={<ApplicationDetailPage />} />
         <Route path="applications/:id/verify" element={<ApplicationReviewPage />} />
 
-        {/* EP02: Credit Assessment & Risk Evaluation Routes */}
+        {/* Credit Assessment & Risk Evaluation Routes */}
         <Route path="underwriting" element={<CreditQueuePage />} />
         <Route path="credit-assessment" element={<CreditQueuePage />} />
         <Route path="applications/:id/assess" element={<CreditAssessmentPage />} />
 
-        {/* EP02: Field Inspection Routes */}
+        {/* Field Inspection Routes */}
         <Route path="field-visits" element={<InspectionQueuePage />} />
-        <Route path="verifications" element={<InspectionQueuePage />} />
+        <Route path="verifications" element={<SiteInspectionReportsPage />} />
+        <Route path="inspection-reports" element={<SiteInspectionReportsPage />} />
         <Route path="applications/:id/inspect" element={<VehicleInspectionPage />} />
 
-        {/* EP02: Senior Manager Higher-Level Sanction Routes */}
+        {/* Senior Manager Higher-Level Sanction Routes */}
         <Route path="approvals" element={<AuthorizationQueuePage />} />
         <Route path="applications/:id/authorize" element={<AuthorizationDetailPage />} />
 
-        {/* EP03: Legal Agreement Preparation & Verification Routes */}
+        {/* Legal Agreement Preparation & Verification Routes */}
         <Route path="legal-agreements" element={<LegalQueuePage />} />
         <Route path="compliance" element={<LegalQueuePage />} />
         <Route path="applications/:id/agreement" element={<AgreementPreparationPage />} />
 
-        {/* EP03: Finance Down-Payment & Disbursal Routes */}
+        {/* Finance Down-Payment & Disbursal Routes */}
         <Route path="disbursements" element={<FinanceDisbursalDesk />} />
         <Route path="facilities" element={<FacilityListPage />} />
         <Route path="portfolio" element={<FacilityListPage />} />
         <Route path="reconciliations" element={<FacilityListPage />} />
 
-        {/* EP04: Repayment Tracking & Collection Management Routes */}
+        {/* Repayment Tracking & Collection Management Routes */}
         <Route path="my-repayments" element={<ApplicantRepaymentsPage />} />
         <Route path="arrears" element={<DelinquentAccountsDesk />} />
         <Route path="collections" element={<DelinquentAccountsDesk />} />
@@ -113,10 +118,11 @@ const AppRoutes = () => {
         <Route path="loan-officer/applications" element={<LoanPipelinePage />} />
         <Route path="loans" element={<ApplicationsIndexDispatcher />} />
         <Route path="loans/*" element={<RoleDashboardHub />} />
-        <Route path="documents/*" element={<RoleDashboardHub />} />
+        <Route path="documents" element={<DocumentVaultPage />} />
+        <Route path="documents/*" element={<DocumentVaultPage />} />
         <Route path="customers/*" element={<RoleDashboardHub />} />
         
-        {/* Admin Management Routes (Week 7) */}
+        {/* Admin Management Routes */}
         <Route path="users" element={<UserManagementPage />} />
         <Route path="admin/users" element={<UserManagementPage />} />
         <Route path="settings" element={<SystemConfigPage />} />

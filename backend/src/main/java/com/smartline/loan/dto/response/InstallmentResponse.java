@@ -24,6 +24,10 @@ public class InstallmentResponse {
     private Long daysOverdue;
     private Integer paymentCount;
     private Integer followUpCount;
+    private Long latestProofId;
+    private com.smartline.loan.entity.enums.PaymentProofStatus latestProofStatus;
+    private String latestProofRejectionReason;
+    private String latestProofReference;
 
     public InstallmentResponse() {
     }
@@ -59,6 +63,18 @@ public class InstallmentResponse {
 
         res.setPaymentCount(installment.getPayments() != null ? installment.getPayments().size() : 0);
         res.setFollowUpCount(installment.getCollectionFollowUps() != null ? installment.getCollectionFollowUps().size() : 0);
+
+        if (installment.getPaymentProofs() != null && !installment.getPaymentProofs().isEmpty()) {
+            com.smartline.loan.entity.PaymentProof latest = installment.getPaymentProofs().stream()
+                    .max(java.util.Comparator.comparing(com.smartline.loan.entity.PaymentProof::getId))
+                    .orElse(null);
+            if (latest != null) {
+                res.setLatestProofId(latest.getId());
+                res.setLatestProofStatus(latest.getStatus());
+                res.setLatestProofRejectionReason(latest.getRejectionReason());
+                res.setLatestProofReference(latest.getReferenceNumber());
+            }
+        }
 
         return res;
     }
@@ -189,5 +205,37 @@ public class InstallmentResponse {
 
     public void setFollowUpCount(Integer followUpCount) {
         this.followUpCount = followUpCount;
+    }
+
+    public Long getLatestProofId() {
+        return latestProofId;
+    }
+
+    public void setLatestProofId(Long latestProofId) {
+        this.latestProofId = latestProofId;
+    }
+
+    public com.smartline.loan.entity.enums.PaymentProofStatus getLatestProofStatus() {
+        return latestProofStatus;
+    }
+
+    public void setLatestProofStatus(com.smartline.loan.entity.enums.PaymentProofStatus latestProofStatus) {
+        this.latestProofStatus = latestProofStatus;
+    }
+
+    public String getLatestProofRejectionReason() {
+        return latestProofRejectionReason;
+    }
+
+    public void setLatestProofRejectionReason(String latestProofRejectionReason) {
+        this.latestProofRejectionReason = latestProofRejectionReason;
+    }
+
+    public String getLatestProofReference() {
+        return latestProofReference;
+    }
+
+    public void setLatestProofReference(String latestProofReference) {
+        this.latestProofReference = latestProofReference;
     }
 }

@@ -350,7 +350,7 @@ const UserManagementPage = () => {
             </h1>
           </div>
           <p className="text-slate-500 dark:text-slate-400 text-sm mt-1.5 mb-0">
-            Provision staff user accounts across 9 organizational roles, modify access permissions, and manage password policies (US20).
+            Provision staff user accounts across 9 organizational roles, modify access permissions, and manage password policies.
           </p>
         </div>
 

@@ -171,7 +171,7 @@ const AuthorizationQueuePage = () => {
               <span>SENIOR MANAGEMENT & HIGHER-LEVEL AUTHORIZATION DESK</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight m-0">
-              Executive Sanction Queue (US10)
+              Executive Sanction Queue
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 max-w-2xl leading-relaxed m-0">
               Applications with facility values exceeding the delegated LKR 500,000 threshold or referred by Credit Managers for executive authorization.

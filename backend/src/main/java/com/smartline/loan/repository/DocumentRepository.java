@@ -13,4 +13,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> findByApplicationId(Long applicationId);
     Optional<Document> findByApplicationIdAndDocumentType(Long applicationId, DocumentType documentType);
     long countByApplicationId(Long applicationId);
+    List<Document> findByApplicationApplicantIdOrderByUploadedAtDesc(Long applicantId);
+    List<Document> findAllByOrderByUploadedAtDesc();
 }

@@ -60,6 +60,16 @@ public class DocumentController {
         return ResponseEntity.ok(ApiResponse.success(documents));
     }
 
+    @GetMapping({"/documents/my", "/documents"})
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Get all documents in the user's document vault")
+    public ResponseEntity<ApiResponse<List<DocumentResponse>>> getMyDocuments(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        User currentUser = getCurrentUser(userPrincipal);
+        List<DocumentResponse> documents = documentService.getMyDocuments(currentUser);
+        return ResponseEntity.ok(ApiResponse.success(documents));
+    }
+
     @GetMapping("/documents/{id}/download")
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Download or stream a document file")

@@ -125,6 +125,23 @@ public class DocumentService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<DocumentResponse> getMyDocuments(User currentUser) {
+        if (currentUser.getRole() == Role.APPLICANT) {
+            Applicant applicant = applicantRepository.findByUserId(currentUser.getId())
+                    .orElseThrow(() -> new BadRequestException("Applicant profile not found"));
+            return documentRepository.findByApplicationApplicantIdOrderByUploadedAtDesc(applicant.getId())
+                    .stream()
+                    .map(this::mapToResponse)
+                    .collect(Collectors.toList());
+        } else {
+            return documentRepository.findAllByOrderByUploadedAtDesc()
+                    .stream()
+                    .map(this::mapToResponse)
+                    .collect(Collectors.toList());
+        }
+    }
+
     private void checkOwnershipOrStaff(Application application, User user) {
         if (user.getRole() == Role.APPLICANT) {
             Applicant applicant = applicantRepository.findByUserId(user.getId())
@@ -150,6 +167,13 @@ public class DocumentService {
         res.setRejectionReason(doc.getRejectionReason());
         res.setUploadedAt(doc.getUploadedAt());
         res.setDownloadUrl("/api/documents/" + doc.getId() + "/download");
+        if (doc.getApplication() != null) {
+            res.setApplicationId(doc.getApplication().getId());
+            res.setApplicationNumber(doc.getApplication().getApplicationNumber());
+            if (doc.getApplication().getType() != null) {
+                res.setApplicationType(doc.getApplication().getType().name());
+            }
+        }
         return res;
     }
 

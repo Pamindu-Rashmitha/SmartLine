@@ -45,7 +45,7 @@ public class PaymentController {
     }
 
     @GetMapping("/facilities/{facilityId}/payments")
-    @PreAuthorize("hasAnyRole('FINANCE_OFFICER', 'APPLICANT', 'CREDIT_CONTROL_OFFICER', 'SENIOR_MANAGER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('FINANCE_OFFICER', 'APPLICANT', 'CREDIT_CONTROL_OFFICER', 'SENIOR_MANAGER', 'CREDIT_MANAGER', 'LOAN_OFFICER', 'LEGAL_OFFICER', 'ADMIN')")
     @Operation(summary = "Get all payments recorded for a facility (US18)")
     public ResponseEntity<ApiResponse<List<PaymentResponse>>> getFacilityPayments(
             @PathVariable Long facilityId) {

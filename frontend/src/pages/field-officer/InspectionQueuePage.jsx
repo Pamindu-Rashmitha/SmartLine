@@ -66,7 +66,7 @@ const InspectionQueuePage = () => {
       key: 'applicationNumber',
       render: (text, record) => (
         <span
-          className="font-mono text-xs font-bold text-blue-400 cursor-pointer hover:underline"
+          className="font-mono text-xs font-bold text-blue-600 dark:text-blue-400 cursor-pointer hover:underline"
           onClick={() => navigate(`/applications/${record.id}/inspect`)}
         >
           {text}
@@ -149,7 +149,7 @@ const InspectionQueuePage = () => {
               <span>FIELD OPERATIONS & VEHICLE INSPECTION DESK</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight m-0">
-              Vehicle Inspection Queue (US07)
+              Vehicle Inspection Queue
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 max-w-2xl leading-relaxed m-0">
               Assigned site and showroom visits for leased vehicles. Conduct physical & mechanical inspections, verify chassis/engine numbers, and evaluate collateral values.

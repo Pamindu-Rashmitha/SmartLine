@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Card, Table, Tag, Progress, Button, Spin, message, Alert, Tabs, Modal, Descriptions } from 'antd';
+import { Card, Table, Tag, Progress, Button, Spin, message, Alert, Tabs, Modal, Descriptions, Tooltip } from 'antd';
 import {
   CreditCard,
   Calendar,
@@ -13,11 +13,15 @@ import {
   ShieldCheck,
   Receipt,
   Download,
+  UploadCloud,
+  Eye,
+  ExternalLink,
 } from 'lucide-react';
 import dayjs from 'dayjs';
 import financeApi from '../../api/financeApi';
 import repaymentApi from '../../api/repaymentApi';
 import StatusBadge from '../../components/common/StatusBadge';
+import PaymentProofUploadModal from '../../components/applicant/PaymentProofUploadModal';
 import { useAuth } from '../../contexts/AuthContext';
 
 const ApplicantRepaymentsPage = () => {
@@ -30,6 +34,11 @@ const ApplicantRepaymentsPage = () => {
   const [scheduleLoading, setScheduleLoading] = useState(false);
   const [receiptModalVisible, setReceiptModalVisible] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
+  const [proofModalVisible, setProofModalVisible] = useState(false);
+  const [selectedInstallmentForProof, setSelectedInstallmentForProof] = useState(null);
+  const [viewProofModalVisible, setViewProofModalVisible] = useState(false);
+  const [selectedProofForView, setSelectedProofForView] = useState(null);
+  const [proofLoading, setProofLoading] = useState(false);
 
   const fetchFacilities = useCallback(async () => {
     setLoading(true);
@@ -89,6 +98,36 @@ const ApplicantRepaymentsPage = () => {
   const handleOpenReceipt = (payment) => {
     setSelectedReceipt(payment);
     setReceiptModalVisible(true);
+  };
+
+  const handleOpenUploadProof = (installment) => {
+    setSelectedInstallmentForProof(installment);
+    setProofModalVisible(true);
+  };
+
+  const handleViewProof = async (installment) => {
+    setProofLoading(true);
+    try {
+      if (installment.latestProofId) {
+        const res = await repaymentApi.getProofById(installment.latestProofId);
+        if (res.success && res.data) {
+          setSelectedProofForView(res.data);
+          setViewProofModalVisible(true);
+          return;
+        }
+      }
+      const res = await repaymentApi.getInstallmentProofs(installment.id);
+      if (res.success && res.data?.length > 0) {
+        setSelectedProofForView(res.data[0]);
+        setViewProofModalVisible(true);
+      } else {
+        message.info('No uploaded slip found for this installment.');
+      }
+    } catch (err) {
+      message.error('Failed to load submitted slip details');
+    } finally {
+      setProofLoading(false);
+    }
   };
 
   const scheduleColumns = [
@@ -173,6 +212,59 @@ const ApplicantRepaymentsPage = () => {
       key: 'status',
       align: 'center',
       render: (status) => <StatusBadge status={status} />,
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      align: 'center',
+      width: 140,
+      render: (_, record) => {
+        if (record.status === 'PAID') {
+          return (
+            <Tag color="success" className="text-xs">
+              Settled
+            </Tag>
+          );
+        }
+
+        if (record.status === 'PAYMENT_SUBMITTED') {
+          return (
+            <div className="flex flex-col items-center gap-1">
+              <Button
+                size="small"
+                className="text-xs border-purple-300 dark:border-purple-700 text-purple-600 dark:text-purple-400 hover:text-purple-500 flex items-center gap-1"
+                onClick={() => handleViewProof(record)}
+                loading={proofLoading}
+              >
+                <Eye className="w-3 h-3" /> View Slip
+              </Button>
+            </div>
+          );
+        }
+
+        const isRejected = record.latestProofStatus === 'REJECTED';
+
+        return (
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              size="small"
+              type="primary"
+              className="bg-blue-600 hover:bg-blue-500 text-xs font-medium border-none flex items-center gap-1"
+              onClick={() => handleOpenUploadProof(record)}
+            >
+              <UploadCloud className="w-3 h-3" />
+              {isRejected ? 'Re-upload' : 'Upload Slip'}
+            </Button>
+            {isRejected && record.latestProofRejectionReason && (
+              <Tooltip title={`Rejection reason: ${record.latestProofRejectionReason}`}>
+                <span className="text-[10px] text-rose-500 dark:text-rose-400 cursor-pointer underline flex items-center gap-0.5">
+                  <AlertCircle className="w-2.5 h-2.5" /> Officer Note
+                </span>
+              </Tooltip>
+            )}
+          </div>
+        );
+      },
     },
   ];
 
@@ -508,6 +600,130 @@ const ApplicantRepaymentsPage = () => {
               <Descriptions.Item label="Remarks">
                 {selectedReceipt.remarks || 'Standard installment settlement'}
               </Descriptions.Item>
+            </Descriptions>
+          </div>
+        )}
+      </Modal>
+
+      {/* Payment Proof Upload Modal */}
+      <PaymentProofUploadModal
+        visible={proofModalVisible}
+        installment={selectedInstallmentForProof}
+        facility={selectedFacility}
+        onClose={() => setProofModalVisible(false)}
+        onSuccess={() => {
+          if (selectedFacility?.id) {
+            fetchScheduleAndPayments(selectedFacility.id);
+          }
+        }}
+      />
+
+      {/* View Submitted Proof Slip Modal */}
+      <Modal
+        title={
+          <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+            <Eye className="w-5 h-5 text-purple-500" />
+            <span>Submitted Payment Slip</span>
+          </div>
+        }
+        open={viewProofModalVisible}
+        onCancel={() => setViewProofModalVisible(false)}
+        footer={[
+          selectedProofForView?.id && (
+            <Button
+              key="download"
+              icon={<Download className="w-4 h-4" />}
+              href={repaymentApi.getSlipUrl(selectedProofForView.id)}
+              download
+            >
+              Download
+            </Button>
+          ),
+          <Button key="close" type="primary" onClick={() => setViewProofModalVisible(false)} className="bg-blue-600">
+            Close
+          </Button>,
+        ]}
+        width={560}
+      >
+        {selectedProofForView && (
+          <div className="space-y-4 pt-2">
+            <div className="flex justify-between items-center p-3 rounded-xl bg-purple-50/70 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800/40">
+              <div>
+                <span className="text-xs text-purple-700 dark:text-purple-300 font-semibold block">
+                  Verification Status
+                </span>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                  {selectedProofForView.status === 'PENDING_VERIFICATION'
+                    ? 'Awaiting Finance Officer review'
+                    : selectedProofForView.status === 'APPROVED'
+                    ? 'Verified & Approved'
+                    : 'Rejected'}
+                </span>
+              </div>
+              <Tag color={selectedProofForView.status === 'PENDING_VERIFICATION' ? 'purple' : selectedProofForView.status === 'APPROVED' ? 'success' : 'error'}>
+                {selectedProofForView.status}
+              </Tag>
+            </div>
+
+            {selectedProofForView.rejectionReason && (
+              <Alert
+                type="error"
+                showIcon
+                message="Officer Rejection Reason"
+                description={selectedProofForView.rejectionReason}
+                className="rounded-xl text-xs"
+              />
+            )}
+
+            {/* Slip Document Viewer */}
+            <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 flex items-center justify-center p-2 max-h-[300px]">
+              {selectedProofForView.slipFileType?.startsWith('image/') || selectedProofForView.slipFileName?.match(/\.(jpg|jpeg|png|webp)$/i) ? (
+                <img
+                  src={repaymentApi.getSlipUrl(selectedProofForView.id)}
+                  alt="Slip Preview"
+                  className="max-h-[280px] max-w-full object-contain cursor-pointer"
+                  onClick={() => window.open(repaymentApi.getSlipUrl(selectedProofForView.id), '_blank')}
+                />
+              ) : (
+                <div className="text-center p-6">
+                  <FileText className="w-10 h-10 text-slate-400 mx-auto mb-2" />
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 block">
+                    {selectedProofForView.slipFileName}
+                  </span>
+                  <a
+                    href={repaymentApi.getSlipUrl(selectedProofForView.id)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs text-blue-500 underline mt-2 inline-flex items-center gap-1"
+                  >
+                    <ExternalLink className="w-3 h-3" /> Open Document
+                  </a>
+                </div>
+              )}
+            </div>
+
+            <Descriptions column={2} size="small" bordered className="text-xs">
+              <Descriptions.Item label="Amount Claimed">
+                <span className="font-mono font-bold text-emerald-600">
+                  LKR {Number(selectedProofForView.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                </span>
+              </Descriptions.Item>
+              <Descriptions.Item label="Slip Reference #">
+                <span className="font-mono font-semibold text-blue-600">
+                  {selectedProofForView.referenceNumber}
+                </span>
+              </Descriptions.Item>
+              <Descriptions.Item label="Deposit Date">
+                {selectedProofForView.paymentDate ? dayjs(selectedProofForView.paymentDate).format('DD MMM YYYY') : 'N/A'}
+              </Descriptions.Item>
+              <Descriptions.Item label="Payment Channel">
+                <Tag color="cyan">{selectedProofForView.paymentMethod}</Tag>
+              </Descriptions.Item>
+              {selectedProofForView.borrowerRemarks && (
+                <Descriptions.Item label="My Remarks" span={2}>
+                  {selectedProofForView.borrowerRemarks}
+                </Descriptions.Item>
+              )}
             </Descriptions>
           </div>
         )}

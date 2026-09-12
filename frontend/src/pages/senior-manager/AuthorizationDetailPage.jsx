@@ -118,16 +118,16 @@ const AuthorizationDetailPage = () => {
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-3">
           <Button
             onClick={() => navigate('/approvals')}
             icon={<ArrowLeft className="w-4 h-4" />}
-            className="bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700 flex items-center justify-center h-10 w-10 p-0 rounded-xl"
+            className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 dark:border-slate-700 flex items-center justify-center h-10 w-10 p-0 rounded-xl shadow-sm"
           />
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight m-0 font-mono">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight m-0 font-mono">
                 {application.applicationNumber}
               </h1>
               <Tag color={application.type === 'LOAN' ? 'blue' : 'purple'} className="font-semibold text-xs">
@@ -135,8 +135,8 @@ const AuthorizationDetailPage = () => {
               </Tag>
               <StatusBadge status={application.status} />
             </div>
-            <p className="text-xs text-slate-400 mt-1 m-0">
-              Borrower: <span className="text-slate-200 font-semibold">{application.applicantName}</span> | NIC: {application.applicantNic}
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 m-0">
+              Borrower: <span className="text-slate-800 dark:text-slate-200 font-semibold">{application.applicantName}</span> | NIC: {application.applicantNic}
             </p>
           </div>
         </div>
@@ -167,58 +167,58 @@ const AuthorizationDetailPage = () => {
         <Alert
           type="warning"
           showIcon
-          icon={<AlertTriangle className="w-5 h-5 text-amber-400" />}
+          icon={<AlertTriangle className="w-5 h-5 text-amber-500 dark:text-amber-400" />}
           message={
-            <span className="font-bold text-amber-300 text-sm">
-              Higher-Level Executive Sanction Required (US10)
+            <span className="font-bold text-amber-900 dark:text-amber-300 text-sm">
+              Higher-Level Executive Sanction Required
             </span>
           }
           description={
-            <span className="text-xs text-slate-300 leading-relaxed block mt-1">
-              Facility request of <strong className="text-white">LKR {requestedAmount.toLocaleString()}</strong> requires executive committee approval under Credit Policy (exceeds delegated LKR 500,000 threshold or referred by Credit Management).
+            <span className="text-xs text-amber-950/80 dark:text-slate-300 leading-relaxed block mt-1">
+              Facility request of <strong className="text-amber-950 dark:text-white font-bold">LKR {requestedAmount.toLocaleString()}</strong> requires executive committee approval under Credit Policy (exceeds delegated LKR 500,000 threshold or referred by Credit Management).
             </span>
           }
-          className="bg-amber-950/30 border-amber-800/80 rounded-2xl p-4 shadow-lg"
+          className="border border-amber-200 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-800/80 rounded-2xl p-4 shadow-sm dark:shadow-lg"
         />
       )}
 
       {/* 4-Quadrant Executive Dossier */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Quadrant 1: Facility & Pricing Structure */}
-        <Card className="bg-slate-900/90 border-slate-800 rounded-2xl shadow-lg">
-          <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-emerald-400" />
+        <Card className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-lg">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+            <DollarSign className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             1. Facility & Pricing Terms
           </h3>
 
           <div className="space-y-2 text-xs">
-            <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-              <span className="text-slate-400">Sanction Amount:</span>
-              <span className="text-base font-bold text-white">
+            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/80">
+              <span className="text-slate-500 dark:text-slate-400">Sanction Amount:</span>
+              <span className="text-base font-bold text-slate-900 dark:text-white">
                 LKR {requestedAmount.toLocaleString()}
               </span>
             </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-              <span className="text-slate-400">Tenure:</span>
-              <span className="text-slate-200 font-semibold">
+            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/80">
+              <span className="text-slate-500 dark:text-slate-400">Tenure:</span>
+              <span className="text-slate-800 dark:text-slate-200 font-semibold">
                 {application.loanDetail?.requestedTenure || application.vehicleLeaseDetail?.requestedTenure || '-'} Months
               </span>
             </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-              <span className="text-slate-400">Monthly Installment (EMI):</span>
-              <span className="text-purple-400 font-bold">
+            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/80">
+              <span className="text-slate-500 dark:text-slate-400">Monthly Installment (EMI):</span>
+              <span className="text-purple-600 dark:text-purple-400 font-bold">
                 LKR {Number(monthlyEmi).toLocaleString()}
               </span>
             </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-              <span className="text-slate-400">Interest Rate:</span>
-              <span className="text-slate-200">
+            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/80">
+              <span className="text-slate-500 dark:text-slate-400">Interest Rate:</span>
+              <span className="text-slate-800 dark:text-slate-200">
                 {application.loanDetail?.proposedInterestRate || application.vehicleLeaseDetail?.proposedInterestRate || '14.00'}% p.a.
               </span>
             </div>
             <div className="flex justify-between py-1.5">
-              <span className="text-slate-400">Facility Purpose:</span>
-              <span className="text-slate-200 max-w-[250px] text-right font-medium">
+              <span className="text-slate-500 dark:text-slate-400">Facility Purpose:</span>
+              <span className="text-slate-800 dark:text-slate-200 max-w-[250px] text-right font-medium">
                 {application.purpose || application.loanDetail?.loanPurpose || '-'}
               </span>
             </div>
@@ -226,40 +226,40 @@ const AuthorizationDetailPage = () => {
         </Card>
 
         {/* Quadrant 2: Borrower Capacity & Repayment Ratios */}
-        <Card className="bg-slate-900/90 border-slate-800 rounded-2xl shadow-lg">
-          <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-            <User className="w-4 h-4 text-blue-400" />
+        <Card className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-lg">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+            <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             2. Borrower Capacity & Ratios
           </h3>
 
           <div className="space-y-2 text-xs">
-            <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-              <span className="text-slate-400">Declared Monthly Income:</span>
-              <span className="text-emerald-400 font-bold">
+            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/80">
+              <span className="text-slate-500 dark:text-slate-400">Declared Monthly Income:</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold">
                 LKR {monthlyIncome.toLocaleString()}
               </span>
             </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-              <span className="text-slate-400">Employer / Business:</span>
-              <span className="text-slate-200 font-semibold">{application.applicantEmployer || 'Permanent'}</span>
+            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/80">
+              <span className="text-slate-500 dark:text-slate-400">Employer / Business:</span>
+              <span className="text-slate-800 dark:text-slate-200 font-semibold">{application.applicantEmployer || 'Permanent'}</span>
             </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-              <span className="text-slate-400">Existing Monthly Debt:</span>
-              <span className="text-slate-300">LKR {existingDebt.toLocaleString()}</span>
+            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/80">
+              <span className="text-slate-500 dark:text-slate-400">Existing Monthly Debt:</span>
+              <span className="text-slate-700 dark:text-slate-300">LKR {existingDebt.toLocaleString()}</span>
             </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-800/80">
-              <span className="text-slate-400">Debt-to-Income (DTI):</span>
+            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/80">
+              <span className="text-slate-500 dark:text-slate-400">Debt-to-Income (DTI):</span>
               <span
                 className={`font-bold ${
-                  Number(calculatedDti) <= 40 ? 'text-emerald-400' : 'text-amber-400'
+                  Number(calculatedDti) <= 40 ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
                 }`}
               >
                 {calculatedDti}% ({Number(calculatedDti) <= 45 ? 'Adequate Coverage' : 'Elevated DTI'})
               </span>
             </div>
             <div className="flex justify-between py-1.5">
-              <span className="text-slate-400">CRIB Score Rating:</span>
-              <span className="text-blue-400 font-bold">
+              <span className="text-slate-500 dark:text-slate-400">CRIB Score Rating:</span>
+              <span className="text-blue-600 dark:text-blue-400 font-bold">
                 {application.applicantCreditScore || 740} / 850 (Grade A)
               </span>
             </div>
@@ -267,90 +267,89 @@ const AuthorizationDetailPage = () => {
         </Card>
 
         {/* Quadrant 3: Credit Manager Appraisal & Recommendation */}
-        <Card className="bg-slate-900/90 border-slate-800 rounded-2xl shadow-lg">
+        <Card className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-lg">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-bold text-white m-0 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-purple-400" />
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white m-0 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-purple-600 dark:text-purple-400" />
               3. Credit Appraisal (Credit Manager)
             </h3>
             {ca?.overallRiskLevel && (
-              <Tag
-                color={
+              <span
+                className={`font-bold text-[11px] px-2.5 py-0.5 rounded-full border ${
                   ca.overallRiskLevel === 'LOW'
-                    ? 'emerald'
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/50 dark:text-emerald-300 dark:border-emerald-800'
                     : ca.overallRiskLevel === 'MEDIUM'
-                    ? 'amber'
-                    : 'rose'
-                }
-                className="font-bold text-[11px]"
+                    ? 'bg-amber-50 text-amber-700 border-amber-300 dark:bg-amber-950/50 dark:text-amber-300 dark:border-amber-800'
+                    : 'bg-rose-50 text-rose-700 border-rose-300 dark:bg-rose-950/50 dark:text-rose-300 dark:border-rose-800'
+                }`}
               >
                 {ca.overallRiskLevel} RISK
-              </Tag>
+              </span>
             )}
           </div>
 
           {ca ? (
             <div className="space-y-2 text-xs">
-              <div className="flex justify-between py-1 border-b border-slate-800/60">
-                <span className="text-slate-400">Appraised By:</span>
-                <span className="text-slate-200 font-semibold">{ca.assessedByName || 'Credit Manager'}</span>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-500 dark:text-slate-400">Appraised By:</span>
+                <span className="text-slate-800 dark:text-slate-200 font-semibold">{ca.assessedByName || 'Credit Manager'}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/60">
-                <span className="text-slate-400">Income Verification:</span>
-                <span className={ca.incomeVerified ? 'text-emerald-400 font-semibold' : 'text-slate-400'}>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-500 dark:text-slate-400">Income Verification:</span>
+                <span className={ca.incomeVerified ? 'text-emerald-600 dark:text-emerald-400 font-semibold' : 'text-slate-400'}>
                   {ca.incomeVerified ? 'Verified via Payslip & Statements' : 'Unverified'}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/60">
-                <span className="text-slate-400">Employment Verification:</span>
-                <span className={ca.employmentVerified ? 'text-emerald-400 font-semibold' : 'text-slate-400'}>
+              <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-500 dark:text-slate-400">Employment Verification:</span>
+                <span className={ca.employmentVerified ? 'text-emerald-600 dark:text-emerald-400 font-semibold' : 'text-slate-400'}>
                   {ca.employmentVerified ? 'Confirmed with Employer' : 'Pending'}
                 </span>
               </div>
               {ca.debtToIncomeNotes && (
-                <div className="py-1 border-b border-slate-800/60">
-                  <span className="text-slate-400 block mb-0.5">DTI Analysis:</span>
-                  <span className="text-slate-300 text-[11px]">{ca.debtToIncomeNotes}</span>
+                <div className="py-1 border-b border-slate-100 dark:border-slate-800/60">
+                  <span className="text-slate-500 dark:text-slate-400 block mb-0.5">DTI Analysis:</span>
+                  <span className="text-slate-700 dark:text-slate-300 text-[11px]">{ca.debtToIncomeNotes}</span>
                 </div>
               )}
               {ca.creditHistoryNotes && (
-                <div className="py-1 border-b border-slate-800/60">
-                  <span className="text-slate-400 block mb-0.5">CRIB Evaluation:</span>
-                  <span className="text-slate-300 text-[11px]">{ca.creditHistoryNotes}</span>
+                <div className="py-1 border-b border-slate-100 dark:border-slate-800/60">
+                  <span className="text-slate-500 dark:text-slate-400 block mb-0.5">CRIB Evaluation:</span>
+                  <span className="text-slate-700 dark:text-slate-300 text-[11px]">{ca.creditHistoryNotes}</span>
                 </div>
               )}
               {ca.collateralNotes && (
                 <div className="py-1">
-                  <span className="text-slate-400 block mb-0.5">Security Evaluation:</span>
-                  <span className="text-slate-300 text-[11px]">{ca.collateralNotes}</span>
+                  <span className="text-slate-500 dark:text-slate-400 block mb-0.5">Security Evaluation:</span>
+                  <span className="text-slate-700 dark:text-slate-300 text-[11px]">{ca.collateralNotes}</span>
                 </div>
               )}
             </div>
           ) : (
-            <p className="text-xs text-slate-400 italic">No formal credit assessment recorded yet.</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 italic">No formal credit assessment recorded yet.</p>
           )}
         </Card>
 
         {/* Quadrant 4: Security (Guarantors & Inspection) */}
-        <Card className="bg-slate-900/90 border-slate-800 rounded-2xl shadow-lg">
-          <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-            <Users className="w-4 h-4 text-amber-400" />
+        <Card className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-lg">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+            <Users className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             4. Security & Collateral Coverage
           </h3>
 
           <div className="space-y-3 text-xs">
             {/* Guarantors */}
             <div>
-              <span className="text-slate-400 font-semibold block mb-1.5">Attached Guarantors:</span>
+              <span className="text-slate-500 dark:text-slate-400 font-semibold block mb-1.5">Attached Guarantors:</span>
               <div className="space-y-1.5">
                 {application.guarantors?.map((g) => (
                   <div
                     key={g.id}
-                    className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800"
+                    className="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800"
                   >
                     <div>
-                      <span className="text-slate-200 font-bold block">{g.fullName} ({g.relationship})</span>
-                      <span className="text-[10px] text-slate-400">Income: LKR {Number(g.monthlyIncome || 0).toLocaleString()} | {g.employerName}</span>
+                      <span className="text-slate-900 dark:text-slate-200 font-bold block">{g.fullName} ({g.relationship})</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">Income: LKR {Number(g.monthlyIncome || 0).toLocaleString()} | {g.employerName}</span>
                     </div>
                     <StatusBadge status={g.verificationStatus} />
                   </div>
@@ -360,23 +359,23 @@ const AuthorizationDetailPage = () => {
 
             {/* Vehicle Inspection if present */}
             {isVehicleLease && vi && (
-              <div className="pt-2 border-t border-slate-800">
+              <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-slate-400 font-semibold">Vehicle Valuation (Field Report):</span>
+                  <span className="text-slate-500 dark:text-slate-400 font-semibold">Vehicle Valuation (Field Report):</span>
                   <Tag color="emerald" className="text-[10px] font-bold">{vi.overallRating}</Tag>
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 space-y-1 text-[11px]">
+                <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-1 text-[11px]">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Vehicle:</span>
-                    <span className="text-white font-semibold">{application.vehicleLeaseDetail?.make} {application.vehicleLeaseDetail?.model} ({application.vehicleLeaseDetail?.registrationNumber || 'NEW'})</span>
+                    <span className="text-slate-500 dark:text-slate-400">Vehicle:</span>
+                    <span className="text-slate-900 dark:text-white font-semibold">{application.vehicleLeaseDetail?.make} {application.vehicleLeaseDetail?.model} ({application.vehicleLeaseDetail?.registrationNumber || 'NEW'})</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Market Value:</span>
-                    <span className="text-emerald-400 font-bold">LKR {Number(vi.estimatedMarketValue || 0).toLocaleString()}</span>
+                    <span className="text-slate-500 dark:text-slate-400">Market Value:</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">LKR {Number(vi.estimatedMarketValue || 0).toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Recommended Loan Ceiling:</span>
-                    <span className="text-white font-bold">LKR {Number(vi.recommendedValue || 0).toLocaleString()}</span>
+                    <span className="text-slate-500 dark:text-slate-400">Recommended Loan Ceiling:</span>
+                    <span className="text-slate-900 dark:text-white font-bold">LKR {Number(vi.recommendedValue || 0).toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -386,9 +385,9 @@ const AuthorizationDetailPage = () => {
       </div>
 
       {/* Status History */}
-      <Card className="bg-slate-900/90 border-slate-800 rounded-2xl shadow-lg">
-        <h3 className="text-base font-bold text-white mb-3 flex items-center gap-2">
-          <Clock className="w-4 h-4 text-slate-400" />
+      <Card className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-lg">
+        <h3 className="text-base font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+          <Clock className="w-4 h-4 text-slate-500 dark:text-slate-400" />
           Underwriting Decision & Audit Trail
         </h3>
         <StatusTimeline history={application.statusHistory} />
@@ -397,14 +396,14 @@ const AuthorizationDetailPage = () => {
       {/* Decision Confirmation Modal */}
       <Modal
         title={
-          <span className="text-base font-bold text-white flex items-center gap-2">
+          <span className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
             {isApproved ? (
               <>
-                <CheckCircle2 className="w-5 h-5 text-emerald-400" /> Executive Sanction Authorization
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> Executive Sanction Authorization
               </>
             ) : (
               <>
-                <XCircle className="w-5 h-5 text-rose-400" /> Decline / Reject Sanction
+                <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400" /> Decline / Reject Sanction
               </>
             )}
           </span>
@@ -418,18 +417,16 @@ const AuthorizationDetailPage = () => {
           danger: !isApproved,
           className: isApproved ? 'bg-emerald-600 hover:bg-emerald-500 font-bold' : '',
         }}
-        cancelButtonProps={{ className: 'bg-slate-800 border-slate-700 text-slate-300' }}
-        className="dark-modal"
       >
         <div className="space-y-4 py-3">
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
             {isApproved
               ? `You are about to authorize executive approval for ${application.applicantName} for LKR ${requestedAmount.toLocaleString()}. This transitions the facility to APPROVED stage for agreement drafting.`
               : `You are declining executive sanction for ${application.applicantName}. Please provide formal grounds for rejection.`}
           </p>
 
           <div>
-            <label className="text-xs font-semibold text-slate-300 block mb-1">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
               {isApproved ? 'Executive Notes & Sanction Covenants' : 'Grounds for Rejection *'}
             </label>
             <TextArea
@@ -441,7 +438,7 @@ const AuthorizationDetailPage = () => {
               }
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
-              className="bg-slate-950 border-slate-700 text-slate-200 text-xs rounded-lg"
+              className="bg-white dark:bg-slate-950 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-200 text-xs rounded-lg"
             />
           </div>
         </div>

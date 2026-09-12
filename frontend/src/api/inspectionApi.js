@@ -15,6 +15,11 @@ export const inspectionApi = {
     const res = await axiosClient.get(`/vehicle-inspections/${applicationId}`);
     return res.data;
   },
+
+  getAllInspections: async () => {
+    const res = await axiosClient.get('/vehicle-inspections');
+    return res.data;
+  },
 };
 
 export default inspectionApi;

@@ -21,6 +21,7 @@ import {
   Eye,
   ExternalLink,
   Banknote,
+  Calculator,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import dashboardApi from '../../api/dashboardApi';
@@ -326,17 +327,35 @@ const RoleDashboardHub = () => {
                 >
                   <Banknote className="w-4 h-4 text-emerald-300" /> My Repayments
                 </Button>
+                <Button
+                  size="large"
+                  onClick={() => navigate('/documents')}
+                  className="bg-white/15 hover:bg-white/25 text-white border-white/20 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:border-slate-700 flex items-center gap-2 h-11"
+                >
+                  <FolderLock className="w-4 h-4 text-blue-200" /> Document Vault
+                </Button>
               </div>
             ) : (
-              <Button
-                type="primary"
-                size="large"
-                onClick={handlePrimaryAction}
-                className="bg-white hover:bg-blue-50 text-blue-700 font-semibold border-0 shadow-lg flex items-center gap-2 h-11"
-              >
-                <FileText className="w-4 h-4 text-blue-700" />
-                {effectiveRole === 'ADMIN' ? 'Manage Users' : 'Open Desk Queue'}
-              </Button>
+              <div className="flex items-center gap-2">
+                {effectiveRole === 'LOAN_OFFICER' && (
+                  <Button
+                    size="large"
+                    onClick={() => navigate('/calculator')}
+                    className="bg-white/15 hover:bg-white/25 text-white border-white/20 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:border-slate-700 flex items-center gap-2 h-11"
+                  >
+                    <Calculator className="w-4 h-4 text-blue-200" /> Loan Calculator
+                  </Button>
+                )}
+                <Button
+                  type="primary"
+                  size="large"
+                  onClick={handlePrimaryAction}
+                  className="bg-white hover:bg-blue-50 text-blue-700 font-semibold border-0 shadow-lg flex items-center gap-2 h-11"
+                >
+                  <FileText className="w-4 h-4 text-blue-700" />
+                  {effectiveRole === 'ADMIN' ? 'Manage Users' : 'Open Desk Queue'}
+                </Button>
+              </div>
             )}
           </div>
         </div>

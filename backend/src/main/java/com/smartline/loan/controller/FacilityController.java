@@ -31,7 +31,7 @@ public class FacilityController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('APPLICANT', 'FINANCE_OFFICER', 'CREDIT_CONTROL_OFFICER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'FINANCE_OFFICER', 'CREDIT_CONTROL_OFFICER', 'ADMIN', 'SENIOR_MANAGER', 'CREDIT_MANAGER', 'LOAN_OFFICER', 'LEGAL_OFFICER')")
     @Operation(summary = "Get list of facilities (active/completed)")
     public ResponseEntity<ApiResponse<List<FacilityResponse>>> getFacilities(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -42,7 +42,7 @@ public class FacilityController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('APPLICANT', 'FINANCE_OFFICER', 'CREDIT_CONTROL_OFFICER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('APPLICANT', 'FINANCE_OFFICER', 'CREDIT_CONTROL_OFFICER', 'ADMIN', 'SENIOR_MANAGER', 'CREDIT_MANAGER', 'LOAN_OFFICER', 'LEGAL_OFFICER')")
     @Operation(summary = "Get facility details by ID")
     public ResponseEntity<ApiResponse<FacilityResponse>> getFacilityById(
             @AuthenticationPrincipal UserPrincipal userPrincipal,

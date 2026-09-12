@@ -191,7 +191,7 @@ const ApplicationDetailPage = () => {
         <Button
           icon={<ArrowLeft className="w-4 h-4" />}
           onClick={() => navigate(-1)}
-          className="border-slate-800 text-slate-300 hover:text-white"
+          className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 dark:border-slate-700 shadow-sm"
         >
           Back
         </Button>
@@ -226,24 +226,24 @@ const ApplicationDetailPage = () => {
       </div>
 
       {/* Header Overview Card */}
-      <Card className="bg-slate-900/90 border-slate-800 shadow-xl rounded-2xl">
+      <Card className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl rounded-2xl">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xl font-black text-white">{app.applicationNumber}</span>
+              <span className="font-mono text-xl font-black text-slate-900 dark:text-white">{app.applicationNumber}</span>
               <StatusBadge status={app.status} />
               <Tag color={app.type === 'LOAN' ? 'blue' : 'purple'}>
                 {app.type === 'LOAN' ? 'Money Loan' : 'Vehicle Lease'}
               </Tag>
             </div>
-            <p className="text-slate-400 text-xs mt-1">
-              Lodged by <span className="text-slate-200 font-semibold">{app.applicantName}</span> (NIC: {app.applicantNic}) on {dayjs(app.createdAt).format('YYYY-MM-DD HH:mm')}
+            <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">
+              Lodged by <span className="text-slate-800 dark:text-slate-200 font-semibold">{app.applicantName}</span> (NIC: {app.applicantNic}) on {dayjs(app.createdAt).format('YYYY-MM-DD HH:mm')}
             </p>
           </div>
 
           <div className="text-right">
-            <span className="text-xs uppercase tracking-wider text-slate-400">Total Requested Financing</span>
-            <p className="text-2xl font-mono font-black text-blue-400 m-0">
+            <span className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-medium">Total Requested Financing</span>
+            <p className="text-2xl font-mono font-black text-blue-600 dark:text-blue-400 m-0">
               LKR {Number(app.requestedAmount || 0).toLocaleString()}
             </p>
           </div>
@@ -251,7 +251,7 @@ const ApplicationDetailPage = () => {
 
         {/* Lifecycle Stepper */}
         {!isCancelled && (
-          <div className="mt-8 pt-6 border-t border-slate-800">
+          <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
             <Steps
               current={currentStepIdx}
               status={isRejected ? 'error' : 'process'}
@@ -269,25 +269,25 @@ const ApplicationDetailPage = () => {
             description={app.rejectionReason}
             type="error"
             showIcon
-            className="mt-6 bg-red-950/40 border-red-800/80 text-red-200"
+            className="mt-6 bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-800/80 text-red-700 dark:text-red-200"
           />
         )}
       </Card>
 
       {/* Down-Payment Notification Banner */}
       {app.status === 'PENDING_DOWN_PAYMENT' && (
-        <div className="p-4 bg-amber-950/30 border border-amber-500/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-500/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+            <div className="p-2.5 rounded-xl bg-amber-100 text-amber-600 border border-amber-300 dark:bg-amber-500/20 dark:text-amber-400 dark:border-amber-500/30">
               <Receipt className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-sm font-bold text-slate-100">
+              <div className="text-sm font-bold text-slate-900 dark:text-slate-100">
                 Pre-Disbursal Down-Payment Required
               </div>
-              <div className="text-xs text-slate-300 mt-0.5">
+              <div className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
                 Required Deposit:{' '}
-                <span className="font-mono font-bold text-amber-400">
+                <span className="font-mono font-bold text-amber-600 dark:text-amber-400">
                   LKR {Number(app.downPayment?.requiredAmount || app.agreement?.downPaymentRequired || 0).toLocaleString()}
                 </span>{' '}
                 — Please transfer funds to Smart Line BOC Account (009841284) and notify your finance officer.
@@ -302,33 +302,33 @@ const ApplicationDetailPage = () => {
 
       {/* Active Facility Notification Banner */}
       {app.facility && (
-        <div className="p-5 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-blue-950/40 border border-emerald-500/40 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+        <div className="p-5 bg-gradient-to-r from-emerald-50 via-white to-blue-50 dark:from-emerald-950/40 dark:via-slate-900 dark:to-blue-950/40 border border-emerald-200 dark:border-emerald-500/40 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm dark:shadow-xl">
           <div className="flex items-center gap-3.5">
-            <div className="p-3 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            <div className="p-3 rounded-xl bg-emerald-100 text-emerald-600 border border-emerald-300 dark:bg-emerald-500/20 dark:text-emerald-400 dark:border-emerald-500/30">
               <CheckCircle2 className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-base font-bold text-slate-100">Active Credit Facility</span>
-                <span className="font-mono font-bold text-emerald-400 text-sm bg-emerald-950/60 px-2.5 py-0.5 rounded-md border border-emerald-500/30">
+                <span className="text-base font-bold text-slate-900 dark:text-slate-100">Active Credit Facility</span>
+                <span className="font-mono font-bold text-emerald-700 dark:text-emerald-400 text-sm bg-emerald-100 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-500/30">
                   {app.facility.facilityNumber}
                 </span>
                 <Tag color="success" className="font-semibold text-xs">
                   {app.facility.status}
                 </Tag>
               </div>
-              <div className="text-xs text-slate-300 mt-1 flex flex-wrap gap-x-4 gap-y-1">
+              <div className="text-xs text-slate-600 dark:text-slate-300 mt-1 flex flex-wrap gap-x-4 gap-y-1">
                 <span>
-                  Principal: <strong className="text-slate-100 font-mono">LKR {Number(app.facility.principalAmount).toLocaleString()}</strong>
+                  Principal: <strong className="text-slate-900 dark:text-slate-100 font-mono">LKR {Number(app.facility.principalAmount).toLocaleString()}</strong>
                 </span>
                 <span>
-                  Outstanding: <strong className="text-emerald-400 font-mono">LKR {Number(app.facility.outstandingBalance).toLocaleString()}</strong>
+                  Outstanding: <strong className="text-emerald-600 dark:text-emerald-400 font-mono">LKR {Number(app.facility.outstandingBalance).toLocaleString()}</strong>
                 </span>
                 <span>
-                  Monthly EMI: <strong className="text-blue-400 font-mono">LKR {Number(app.facility.installmentAmount).toLocaleString()}/mo</strong>
+                  Monthly EMI: <strong className="text-blue-600 dark:text-blue-400 font-mono">LKR {Number(app.facility.installmentAmount).toLocaleString()}/mo</strong>
                 </span>
                 <span>
-                  Matures: <strong className="text-slate-200">{dayjs(app.facility.endDate).format('DD MMM YYYY')}</strong>
+                  Matures: <strong className="text-slate-800 dark:text-slate-200">{dayjs(app.facility.endDate).format('DD MMM YYYY')}</strong>
                 </span>
               </div>
             </div>
@@ -337,7 +337,7 @@ const ApplicationDetailPage = () => {
       )}
 
       {/* Tabs of detailed sections */}
-      <Card className="bg-slate-900/80 border-slate-800 shadow-xl rounded-2xl">
+      <Card className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl rounded-2xl">
         <Tabs
           defaultActiveKey="1"
           items={[
@@ -350,14 +350,14 @@ const ApplicationDetailPage = () => {
               ),
               children: (
                 <div className="space-y-6 pt-2">
-                  <Descriptions title={<span className="text-slate-200 text-sm font-semibold">Borrower Profile</span>} bordered column={{ xs: 1, sm: 2, md: 3 }} size="small">
+                  <Descriptions title={<span className="text-slate-900 dark:text-slate-200 text-sm font-semibold">Borrower Profile</span>} bordered column={{ xs: 1, sm: 2, md: 3 }} size="small">
                     <Descriptions.Item label="Full Name">{app.applicantName}</Descriptions.Item>
                     <Descriptions.Item label="NIC Number">{app.applicantNic}</Descriptions.Item>
                     <Descriptions.Item label="Contact Phone">{app.applicantPhone}</Descriptions.Item>
                     <Descriptions.Item label="Email">{app.applicantEmail}</Descriptions.Item>
                     <Descriptions.Item label="Employment Status">{app.applicantEmployment}</Descriptions.Item>
                     <Descriptions.Item label="Monthly Net Income">
-                      <span className="font-mono text-emerald-400 font-semibold">
+                      <span className="font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
                         LKR {Number(app.applicantMonthlyIncome || 0).toLocaleString()}
                       </span>
                     </Descriptions.Item>
@@ -365,20 +365,20 @@ const ApplicationDetailPage = () => {
                     <Descriptions.Item label="Residential Address" span={2}>{app.applicantAddress}</Descriptions.Item>
                   </Descriptions>
 
-                  <Divider className="border-slate-800" />
+                  <Divider className="border-slate-200 dark:border-slate-800" />
 
                   {app.type === 'LOAN' && app.loanDetail && (
-                    <Descriptions title={<span className="text-slate-200 text-sm font-semibold">Money Loan Terms</span>} bordered column={{ xs: 1, sm: 2, md: 3 }} size="small">
+                    <Descriptions title={<span className="text-slate-900 dark:text-slate-200 text-sm font-semibold">Money Loan Terms</span>} bordered column={{ xs: 1, sm: 2, md: 3 }} size="small">
                       <Descriptions.Item label="Loan Purpose">{app.loanDetail.loanPurpose}</Descriptions.Item>
                       <Descriptions.Item label="Requested Tenure">{app.loanDetail.requestedTenure} Months</Descriptions.Item>
                       <Descriptions.Item label="Interest Rate">{app.loanDetail.proposedInterestRate}% p.a.</Descriptions.Item>
                       <Descriptions.Item label="Monthly EMI">
-                        <span className="font-mono text-blue-400 font-bold">
+                        <span className="font-mono text-blue-600 dark:text-blue-400 font-bold">
                           LKR {Number(app.loanDetail.calculatedMonthlyEmi || 0).toLocaleString()}
                         </span>
                       </Descriptions.Item>
                       <Descriptions.Item label="Total Repayable">
-                        <span className="font-mono text-slate-200 font-medium">
+                        <span className="font-mono text-slate-800 dark:text-slate-200 font-medium">
                           LKR {Number(app.loanDetail.calculatedTotalRepayable || 0).toLocaleString()}
                         </span>
                       </Descriptions.Item>
@@ -389,7 +389,7 @@ const ApplicationDetailPage = () => {
                   )}
 
                   {app.type === 'VEHICLE_LEASE' && app.vehicleLeaseDetail && (
-                    <Descriptions title={<span className="text-slate-200 text-sm font-semibold">Vehicle Lease Terms & Asset Specification</span>} bordered column={{ xs: 1, sm: 2, md: 3 }} size="small">
+                    <Descriptions title={<span className="text-slate-900 dark:text-slate-200 text-sm font-semibold">Vehicle Lease Terms & Asset Specification</span>} bordered column={{ xs: 1, sm: 2, md: 3 }} size="small">
                       <Descriptions.Item label="Category">{app.vehicleLeaseDetail.vehicleCategory}</Descriptions.Item>
                       <Descriptions.Item label="Make & Model">{app.vehicleLeaseDetail.make} {app.vehicleLeaseDetail.model}</Descriptions.Item>
                       <Descriptions.Item label="Year of Manufacture">{app.vehicleLeaseDetail.yearOfManufacture}</Descriptions.Item>
@@ -400,12 +400,12 @@ const ApplicationDetailPage = () => {
                         LKR {Number(app.vehicleLeaseDetail.downPaymentAmount || 0).toLocaleString()}
                       </Descriptions.Item>
                       <Descriptions.Item label="Financed Amount (Lease)">
-                        <span className="font-mono text-blue-400 font-bold">
+                        <span className="font-mono text-blue-600 dark:text-blue-400 font-bold">
                           LKR {Number(app.requestedAmount || 0).toLocaleString()}
                         </span>
                       </Descriptions.Item>
                       <Descriptions.Item label="Monthly Lease Installment">
-                        <span className="font-mono text-emerald-400 font-bold">
+                        <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">
                           LKR {Number(app.vehicleLeaseDetail.calculatedMonthlyEmi || 0).toLocaleString()}
                         </span>
                       </Descriptions.Item>
@@ -429,32 +429,32 @@ const ApplicationDetailPage = () => {
                   {app.guarantors && app.guarantors.length > 0 ? (
                     app.guarantors.map((g) => (
                       <Col xs={24} md={12} key={g.id}>
-                        <Card className="bg-slate-800/60 border-slate-700/80 rounded-xl">
+                        <Card className="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 rounded-xl shadow-sm">
                           <div className="flex justify-between items-start mb-2">
                             <div>
-                              <h4 className="text-white font-semibold text-sm m-0">{g.fullName}</h4>
-                              <span className="text-xs text-slate-400">{g.relationship}</span>
+                              <h4 className="text-slate-900 dark:text-white font-semibold text-sm m-0">{g.fullName}</h4>
+                              <span className="text-xs text-slate-500 dark:text-slate-400">{g.relationship}</span>
                             </div>
                             <Tag color={g.verificationStatus === 'VERIFIED' ? 'success' : g.verificationStatus === 'REJECTED' ? 'error' : 'warning'}>
                               {g.verificationStatus}
                             </Tag>
                           </div>
-                          <div className="space-y-1.5 text-xs text-slate-300 pt-2 border-t border-slate-700/60">
+                          <div className="space-y-1.5 text-xs text-slate-700 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700/60">
                             <div className="flex justify-between">
-                              <span className="text-slate-400">NIC:</span>
-                              <span className="font-mono">{g.nic}</span>
+                              <span className="text-slate-500 dark:text-slate-400">NIC:</span>
+                              <span className="font-mono text-slate-800 dark:text-slate-200">{g.nic}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-slate-400">Phone:</span>
-                              <span className="font-mono">{g.phone}</span>
+                              <span className="text-slate-500 dark:text-slate-400">Phone:</span>
+                              <span className="font-mono text-slate-800 dark:text-slate-200">{g.phone}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-slate-400">Employer:</span>
-                              <span>{g.employerName} ({g.occupation})</span>
+                              <span className="text-slate-500 dark:text-slate-400">Employer:</span>
+                              <span className="text-slate-800 dark:text-slate-200">{g.employerName} ({g.occupation})</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-slate-400">Monthly Net Income:</span>
-                              <span className="font-mono text-emerald-400 font-semibold">
+                              <span className="text-slate-500 dark:text-slate-400">Monthly Net Income:</span>
+                              <span className="font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
                                 LKR {Number(g.monthlyIncome || 0).toLocaleString()}
                               </span>
                             </div>
@@ -464,7 +464,7 @@ const ApplicationDetailPage = () => {
                     ))
                   ) : (
                     <Col span={24}>
-                      <div className="text-center py-8 text-slate-400">No guarantors attached</div>
+                      <div className="text-center py-8 text-slate-500 dark:text-slate-400">No guarantors attached</div>
                     </Col>
                   )}
                 </Row>
@@ -482,7 +482,7 @@ const ApplicationDetailPage = () => {
                   {app.documents && app.documents.length > 0 ? (
                     app.documents.map((doc) => (
                       <Col xs={24} md={12} key={doc.id}>
-                        <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700/80 flex items-center justify-between">
+                        <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between shadow-sm">
                           <div className="truncate max-w-[280px]">
                             <div className="flex items-center gap-2">
                               <Tag color="blue" className="text-[11px] font-mono">{doc.documentType}</Tag>
@@ -490,8 +490,8 @@ const ApplicationDetailPage = () => {
                                 {doc.verificationStatus}
                               </Tag>
                             </div>
-                            <p className="text-xs font-semibold text-white truncate mt-1 mb-0">{doc.originalFilename}</p>
-                            <span className="text-[10px] text-slate-400">
+                            <p className="text-xs font-semibold text-slate-900 dark:text-white truncate mt-1 mb-0">{doc.originalFilename}</p>
+                            <span className="text-[10px] text-slate-500 dark:text-slate-400">
                               {(doc.fileSize / 1024).toFixed(1)} KB • {dayjs(doc.uploadedAt).format('YYYY-MM-DD HH:mm')}
                             </span>
                           </div>
@@ -510,7 +510,7 @@ const ApplicationDetailPage = () => {
                     ))
                   ) : (
                     <Col span={24}>
-                      <div className="text-center py-8 text-slate-400">No documents uploaded yet</div>
+                      <div className="text-center py-8 text-slate-500 dark:text-slate-400">No documents uploaded yet</div>
                     </Col>
                   )}
                 </Row>
@@ -527,9 +527,9 @@ const ApplicationDetailPage = () => {
                 <div className="pt-2">
                   {app.creditAssessment ? (
                     <div className="space-y-6">
-                      <div className="flex flex-wrap gap-3 items-center p-3 rounded-xl bg-slate-800/40 border border-slate-700/60">
+                      <div className="flex flex-wrap gap-3 items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-slate-400">Risk Assessment:</span>
+                          <span className="text-xs text-slate-500 dark:text-slate-400">Risk Assessment:</span>
                           <Tag
                             color={
                               app.creditAssessment.overallRiskLevel === 'LOW'
@@ -545,27 +545,27 @@ const ApplicationDetailPage = () => {
                         </div>
                         {app.creditAssessment.recommendation && (
                           <div className="flex items-center gap-2">
-                            <span className="text-xs text-slate-400">Recommendation:</span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">Recommendation:</span>
                             <Tag color="purple">{app.creditAssessment.recommendation}</Tag>
                           </div>
                         )}
                         {app.creditAssessment.decision && (
                           <div className="flex items-center gap-2">
-                            <span className="text-xs text-slate-400">Decision:</span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">Decision:</span>
                             <Tag color={app.creditAssessment.decision === 'APPROVED' ? 'success' : 'error'}>
                               {app.creditAssessment.decision}
                             </Tag>
                           </div>
                         )}
                         {app.creditAssessment.assessedByName && (
-                          <span className="text-xs text-slate-400 ml-auto">
-                            Assessed by: <span className="text-slate-200">{app.creditAssessment.assessedByName}</span>
+                          <span className="text-xs text-slate-500 dark:text-slate-400 ml-auto">
+                            Assessed by: <span className="text-slate-800 dark:text-slate-200 font-medium">{app.creditAssessment.assessedByName}</span>
                           </span>
                         )}
                       </div>
 
                       <Descriptions
-                        title={<span className="text-slate-200 text-sm font-semibold">Underwriting Evaluation</span>}
+                        title={<span className="text-slate-900 dark:text-slate-200 text-sm font-semibold">Underwriting Evaluation</span>}
                         bordered
                         column={{ xs: 1, sm: 2 }}
                         size="small"
@@ -575,7 +575,7 @@ const ApplicationDetailPage = () => {
                             <Tag color={app.creditAssessment.incomeVerified ? 'success' : 'error'}>
                               {app.creditAssessment.incomeVerified ? 'Verified' : 'Not Verified'}
                             </Tag>
-                            <span className="text-xs text-slate-300">{app.creditAssessment.incomeRemarks || '—'}</span>
+                            <span className="text-xs text-slate-700 dark:text-slate-300">{app.creditAssessment.incomeRemarks || '—'}</span>
                           </div>
                         </Descriptions.Item>
                         <Descriptions.Item label="Employment Check">
@@ -583,27 +583,27 @@ const ApplicationDetailPage = () => {
                             <Tag color={app.creditAssessment.employmentVerified ? 'success' : 'error'}>
                               {app.creditAssessment.employmentVerified ? 'Confirmed' : 'Unconfirmed'}
                             </Tag>
-                            <span className="text-xs text-slate-300">{app.creditAssessment.employmentRemarks || '—'}</span>
+                            <span className="text-xs text-slate-700 dark:text-slate-300">{app.creditAssessment.employmentRemarks || '—'}</span>
                           </div>
                         </Descriptions.Item>
                         <Descriptions.Item label="Debt-to-Income (DTI) Assessment" span={2}>
-                          {app.creditAssessment.debtToIncomeNotes || '—'}
+                          <span className="text-slate-700 dark:text-slate-300">{app.creditAssessment.debtToIncomeNotes || '—'}</span>
                         </Descriptions.Item>
                         <Descriptions.Item label="CRIB / Credit History Notes" span={2}>
-                          {app.creditAssessment.creditHistoryNotes || '—'}
+                          <span className="text-slate-700 dark:text-slate-300">{app.creditAssessment.creditHistoryNotes || '—'}</span>
                         </Descriptions.Item>
                         <Descriptions.Item label="Collateral & Valuation Notes" span={2}>
-                          {app.creditAssessment.collateralNotes || '—'}
+                          <span className="text-slate-700 dark:text-slate-300">{app.creditAssessment.collateralNotes || '—'}</span>
                         </Descriptions.Item>
                         {app.creditAssessment.decisionReason && (
                           <Descriptions.Item label="Decision Remarks" span={2}>
-                            <span className="text-amber-400">{app.creditAssessment.decisionReason}</span>
+                            <span className="text-amber-600 dark:text-amber-400 font-medium">{app.creditAssessment.decisionReason}</span>
                           </Descriptions.Item>
                         )}
                       </Descriptions>
                     </div>
                   ) : (
-                    <div className="text-center py-8 text-slate-400">
+                    <div className="text-center py-8 text-slate-500 dark:text-slate-400">
                       Credit appraisal has not yet been conducted for this application.
                     </div>
                   )}
@@ -623,9 +623,9 @@ const ApplicationDetailPage = () => {
                       <div className="pt-2">
                         {app.vehicleInspection ? (
                           <div className="space-y-6">
-                            <div className="flex flex-wrap gap-3 items-center p-3 rounded-xl bg-slate-800/40 border border-slate-700/60">
+                            <div className="flex flex-wrap gap-3 items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60">
                               <div className="flex items-center gap-2">
-                                <span className="text-xs text-slate-400">Rating:</span>
+                                <span className="text-xs text-slate-500 dark:text-slate-400">Rating:</span>
                                 <Tag
                                   color={
                                     app.vehicleInspection.overallRating === 'EXCELLENT' ||
@@ -639,53 +639,53 @@ const ApplicationDetailPage = () => {
                                 </Tag>
                               </div>
                               <div className="flex items-center gap-2">
-                                <span className="text-xs text-slate-400">Inspection Date:</span>
-                                <span className="text-xs font-mono text-slate-200">
+                                <span className="text-xs text-slate-500 dark:text-slate-400">Inspection Date:</span>
+                                <span className="text-xs font-mono text-slate-800 dark:text-slate-200">
                                   {app.vehicleInspection.inspectionDate}
                                 </span>
                               </div>
                               {app.vehicleInspection.inspectedByName && (
-                                <span className="text-xs text-slate-400 ml-auto">
+                                <span className="text-xs text-slate-500 dark:text-slate-400 ml-auto">
                                   Inspector:{' '}
-                                  <span className="text-slate-200">{app.vehicleInspection.inspectedByName}</span>
+                                  <span className="text-slate-800 dark:text-slate-200 font-medium">{app.vehicleInspection.inspectedByName}</span>
                                 </span>
                               )}
                             </div>
 
                             <Descriptions
-                              title={<span className="text-slate-200 text-sm font-semibold">Technical Valuation Report</span>}
+                              title={<span className="text-slate-900 dark:text-slate-200 text-sm font-semibold">Technical Valuation Report</span>}
                               bordered
                               column={{ xs: 1, sm: 2, md: 3 }}
                               size="small"
                             >
                               <Descriptions.Item label="Market Valuation">
-                                <span className="font-mono text-emerald-400 font-bold">
+                                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">
                                   LKR {Number(app.vehicleInspection.estimatedMarketValue || 0).toLocaleString()}
                                 </span>
                               </Descriptions.Item>
                               <Descriptions.Item label="Forced Sale Value">
-                                <span className="font-mono text-amber-400 font-bold">
+                                <span className="font-mono text-amber-600 dark:text-amber-400 font-bold">
                                   LKR {Number(app.vehicleInspection.forcedSaleValue || 0).toLocaleString()}
                                 </span>
                               </Descriptions.Item>
                               <Descriptions.Item label="Recommended Max Financing">
-                                <span className="font-mono text-blue-400 font-bold">
+                                <span className="font-mono text-blue-600 dark:text-blue-400 font-bold">
                                   LKR {Number(app.vehicleInspection.recommendedValue || 0).toLocaleString()}
                                 </span>
                               </Descriptions.Item>
                               <Descriptions.Item label="Physical Condition" span={2}>
-                                {app.vehicleInspection.physicalCondition || '—'}
+                                <span className="text-slate-700 dark:text-slate-300">{app.vehicleInspection.physicalCondition || '—'}</span>
                               </Descriptions.Item>
                               <Descriptions.Item label="Mechanical Condition">
-                                {app.vehicleInspection.mechanicalCondition || '—'}
+                                <span className="text-slate-700 dark:text-slate-300">{app.vehicleInspection.mechanicalCondition || '—'}</span>
                               </Descriptions.Item>
                               <Descriptions.Item label="Inspector Remarks" span={3}>
-                                {app.vehicleInspection.remarks || '—'}
+                                <span className="text-slate-700 dark:text-slate-300">{app.vehicleInspection.remarks || '—'}</span>
                               </Descriptions.Item>
                             </Descriptions>
                           </div>
                         ) : (
-                          <div className="text-center py-8 text-slate-400">
+                          <div className="text-center py-8 text-slate-500 dark:text-slate-400">
                             Vehicle inspection has been scheduled and is pending field officer review.
                           </div>
                         )}
@@ -705,21 +705,21 @@ const ApplicationDetailPage = () => {
                 <div className="pt-2">
                   {app.agreement ? (
                     <div className="space-y-6">
-                      <div className="flex flex-wrap gap-3 items-center justify-between p-4 rounded-xl bg-slate-800/40 border border-slate-700/60">
+                      <div className="flex flex-wrap gap-3 items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60 shadow-sm">
                         <div className="flex items-center gap-3">
-                          <div className="p-2 rounded-lg bg-blue-600/20 text-blue-400 border border-blue-500/30">
+                          <div className="p-2 rounded-lg bg-blue-100 text-blue-600 border border-blue-200 dark:bg-blue-600/20 dark:text-blue-400 dark:border-blue-500/30">
                             <Scale className="w-5 h-5" />
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="text-sm font-bold text-slate-100">
+                              <span className="text-sm font-bold text-slate-900 dark:text-slate-100">
                                 {app.agreement.agreementNumber}
                               </span>
                               <Tag color={app.agreement.status === 'VERIFIED' ? 'success' : 'warning'}>
                                 {app.agreement.status}
                               </Tag>
                             </div>
-                            <div className="text-xs text-slate-400">
+                            <div className="text-xs text-slate-500 dark:text-slate-400">
                               Prepared by {app.agreement.preparedByName || 'Legal Officer'} on{' '}
                               {dayjs(app.agreement.preparedDate).format('DD MMM YYYY')}
                             </div>
@@ -737,49 +737,49 @@ const ApplicationDetailPage = () => {
                       </div>
 
                       <Descriptions
-                        title={<span className="text-slate-200 text-sm font-semibold">Legally Binding Parameters</span>}
+                        title={<span className="text-slate-900 dark:text-slate-200 text-sm font-semibold">Legally Binding Parameters</span>}
                         bordered
                         column={{ xs: 1, sm: 2, md: 3 }}
                         size="small"
                       >
                         <Descriptions.Item label="Principal Amount">
-                          <span className="font-mono text-slate-100 font-bold">
+                          <span className="font-mono text-slate-900 dark:text-slate-100 font-bold">
                             LKR {Number(app.agreement.principalAmount || 0).toLocaleString()}
                           </span>
                         </Descriptions.Item>
                         <Descriptions.Item label="Interest Rate">
-                          <span className="font-mono text-slate-200 font-semibold">
+                          <span className="font-mono text-slate-800 dark:text-slate-200 font-semibold">
                             {app.agreement.interestRate}% p.a.
                           </span>
                         </Descriptions.Item>
                         <Descriptions.Item label="Tenor">
-                          {app.agreement.tenureMonths} Months
+                          <span className="text-slate-800 dark:text-slate-200">{app.agreement.tenureMonths} Months</span>
                         </Descriptions.Item>
                         <Descriptions.Item label="Monthly Installment">
-                          <span className="font-mono text-blue-400 font-bold">
+                          <span className="font-mono text-blue-600 dark:text-blue-400 font-bold">
                             LKR {Number(app.agreement.installmentAmount || 0).toLocaleString()}/mo
                           </span>
                         </Descriptions.Item>
                         <Descriptions.Item label="Gross Total Payable">
-                          <span className="font-mono text-slate-100 font-bold">
+                          <span className="font-mono text-slate-900 dark:text-slate-100 font-bold">
                             LKR {Number(app.agreement.totalPayable || 0).toLocaleString()}
                           </span>
                         </Descriptions.Item>
                         <Descriptions.Item label="Required Down-Payment">
-                          <span className="font-mono text-amber-400 font-bold">
+                          <span className="font-mono text-amber-600 dark:text-amber-400 font-bold">
                             LKR {Number(app.agreement.downPaymentRequired || 0).toLocaleString()}
                           </span>
                         </Descriptions.Item>
                         {app.agreement.termsAndConditions && (
                           <Descriptions.Item label="Standard Covenants" span={3}>
-                            <div className="text-xs text-slate-300 font-mono whitespace-pre-line leading-relaxed max-h-48 overflow-y-auto p-2 bg-slate-950/60 rounded border border-slate-800">
+                            <div className="text-xs text-slate-700 dark:text-slate-300 font-mono whitespace-pre-line leading-relaxed max-h-48 overflow-y-auto p-3 bg-white dark:bg-slate-950/60 rounded-xl border border-slate-200 dark:border-slate-800 shadow-inner">
                               {app.agreement.termsAndConditions}
                             </div>
                           </Descriptions.Item>
                         )}
                         {app.agreement.specialConditions && (
                           <Descriptions.Item label="Special Conditions" span={3}>
-                            <div className="text-xs text-amber-300/90 font-mono whitespace-pre-line leading-relaxed p-2 bg-slate-950/60 rounded border border-slate-800">
+                            <div className="text-xs text-amber-800 dark:text-amber-300/90 font-mono whitespace-pre-line leading-relaxed p-3 bg-amber-50/60 dark:bg-slate-950/60 rounded-xl border border-amber-200 dark:border-slate-800 shadow-inner">
                               {app.agreement.specialConditions}
                             </div>
                           </Descriptions.Item>
@@ -787,8 +787,8 @@ const ApplicationDetailPage = () => {
                       </Descriptions>
                     </div>
                   ) : (
-                    <div className="text-center py-10 text-slate-400">
-                      <Scale className="w-10 h-10 mx-auto mb-2 opacity-30 text-slate-400" />
+                    <div className="text-center py-10 text-slate-500 dark:text-slate-400">
+                      <Scale className="w-10 h-10 mx-auto mb-2 opacity-30 text-slate-400 dark:text-slate-500" />
                       <div>Legal agreement has not been prepared yet.</div>
                       <div className="text-xs text-slate-500 mt-1">
                         The Legal Officer will prepare the financing contract upon final credit appraisal approval.
@@ -819,14 +819,14 @@ const ApplicationDetailPage = () => {
                         <div>
                           <div className="flex items-center gap-2">
                             <Tag color="blue">{h.toStatus}</Tag>
-                            <span className="text-xs text-slate-400 font-mono">
+                            <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                               {dayjs(h.changedAt).format('YYYY-MM-DD HH:mm:ss')}
                             </span>
                           </div>
-                          <p className="text-xs text-slate-200 mt-1 mb-0 font-medium">
+                          <p className="text-xs text-slate-800 dark:text-slate-200 mt-1 mb-0 font-medium">
                             {h.remarks || 'Status transition'}
                           </p>
-                          <span className="text-[11px] text-slate-500">
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400">
                             Action performed by: {h.changedByName} ({h.changedByRole})
                           </span>
                         </div>

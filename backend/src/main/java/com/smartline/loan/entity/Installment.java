@@ -61,6 +61,9 @@ public class Installment {
     @OneToMany(mappedBy = "installment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CollectionFollowUp> collectionFollowUps = new ArrayList<>();
 
+    @OneToMany(mappedBy = "installment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PaymentProof> paymentProofs = new ArrayList<>();
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -195,6 +198,14 @@ public class Installment {
 
     public void setCollectionFollowUps(List<CollectionFollowUp> collectionFollowUps) {
         this.collectionFollowUps = collectionFollowUps;
+    }
+
+    public List<PaymentProof> getPaymentProofs() {
+        return paymentProofs;
+    }
+
+    public void setPaymentProofs(List<PaymentProof> paymentProofs) {
+        this.paymentProofs = paymentProofs;
     }
 
     public LocalDateTime getCreatedAt() {
