@@ -19,7 +19,6 @@ import {
   ArrowUpRight,
   TrendingDown,
 } from 'lucide-react';
-import dayjs from 'dayjs';
 import repaymentApi from '../../api/repaymentApi';
 import { useAuth } from '../../contexts/AuthContext';
 

@@ -34,11 +34,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import financeApi from '../../api/financeApi';
-import StatCard from '../../components/common/StatCard';
 import StatusBadge from '../../components/common/StatusBadge';
-import dayjs from 'dayjs';
-
-const { Option } = Select;
 
 const FinanceDisbursalDesk = () => {
   const [activeTab, setActiveTab] = useState('downPayment');
