@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build output (rebuilt inside container)
+dist/
+dist-ssr/
+
+# Vite cache
+.vite/
+
+# IDE
+.vscode/
+
+# Git
+.git/
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tests (not needed in production image)
+src/test/
+coverage/
+
+# Environment files
+.env
+.env.*

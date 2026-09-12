@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import dayjs from 'dayjs';
 import { Table, Card, Button, Tag, Input, Select, Modal, Form, DatePicker, message, Drawer, Timeline, Badge, Tooltip } from 'antd';
 import {
   AlertTriangle,
@@ -435,7 +436,7 @@ const DelinquentAccountsDesk = () => {
 
                 <Form.Item
                   name="contactOutcome"
-                  label={<span className="text-slate-300 font-medium">Borrower Response / Outcome</span>}
+                  label={<span className="text-slate-700 dark:text-slate-300 font-medium">Borrower Response / Outcome</span>}
                   rules={[{ required: true }]}
                 >
                   <Select
@@ -453,25 +454,28 @@ const DelinquentAccountsDesk = () => {
 
               <Form.Item
                 name="nextFollowUpDate"
-                label={<span className="text-slate-300 font-medium">Next Callback / Action Date</span>}
+                label={<span className="text-slate-700 dark:text-slate-300 font-medium">Next Callback / Action Date</span>}
               >
-                <DatePicker className="w-full bg-slate-900 border-slate-700 text-slate-100 rounded-lg" />
+                <DatePicker className="w-full bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg" disabledDate={(current) => current && current < dayjs().startOf('day')} />
               </Form.Item>
 
               <Form.Item
                 name="notes"
-                label={<span className="text-slate-300 font-medium">Conversation Notes & Commitments</span>}
-                rules={[{ required: true, message: 'Please enter notes on borrower response' }]}
+                label={<span className="text-slate-700 dark:text-slate-300 font-medium">Conversation Notes & Commitments</span>}
+                rules={[
+                  { required: true, message: 'Please enter notes on borrower response' },
+                  { min: 5, message: 'Notes must be at least 5 characters for meaningful records' },
+                ]}
               >
                 <Input.TextArea
                   rows={3}
                   placeholder="e.g. Borrower confirmed salary credited on 15th, will transfer full EMI via BOC online..."
-                  className="bg-slate-900 border-slate-700 text-slate-100 rounded-lg"
+                  className="bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-lg"
                 />
               </Form.Item>
 
-              <div className="flex justify-end gap-3 pt-2 border-t border-slate-800">
-                <Button onClick={() => setFollowUpModalVisible(false)} className="border-slate-700 text-slate-300">
+              <div className="flex justify-end gap-3 pt-2 border-t border-slate-200 dark:border-slate-800">
+                <Button onClick={() => setFollowUpModalVisible(false)} className="border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
                   Cancel
                 </Button>
                 <Button

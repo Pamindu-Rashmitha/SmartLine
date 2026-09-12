@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import {
   Card,
   Tabs,
@@ -509,7 +510,17 @@ const FinanceDisbursalDesk = () => {
           <Form.Item
             name="paidAmount"
             label="Paid / Received Amount (LKR)"
-            rules={[{ required: true, message: 'Amount is required' }]}
+            rules={[
+              { required: true, message: 'Amount is required' },
+              {
+                validator: (_, value) => {
+                  if (value !== undefined && value !== null && value <= 0) {
+                    return Promise.reject(new Error('Amount must be greater than zero'));
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
           >
             <InputNumber
               min={0}
@@ -539,7 +550,7 @@ const FinanceDisbursalDesk = () => {
                 label="Receipt Date"
                 rules={[{ required: true, message: 'Date is required' }]}
               >
-                <DatePicker className="w-full" format="YYYY-MM-DD" />
+                <DatePicker className="w-full" format="YYYY-MM-DD" disabledDate={(current) => current && current > dayjs().endOf('day')} />
               </Form.Item>
             </Col>
           </Row>
@@ -627,7 +638,11 @@ const FinanceDisbursalDesk = () => {
               <Form.Item
                 name="disbursementReference"
                 label="Transaction / Cheque No."
-                rules={[{ required: true, message: 'Reference number is required' }]}
+                rules={[
+                  { required: true, message: 'Reference number is required' },
+                  { min: 3, message: 'Reference must be at least 3 characters' },
+                  { whitespace: true, message: 'Cannot be blank spaces' },
+                ]}
               >
                 <Input placeholder="e.g. SL-TXN-98412" />
               </Form.Item>
@@ -641,7 +656,7 @@ const FinanceDisbursalDesk = () => {
                 label="Disbursement Date"
                 rules={[{ required: true, message: 'Date is required' }]}
               >
-                <DatePicker className="w-full" format="YYYY-MM-DD" />
+                <DatePicker className="w-full" format="YYYY-MM-DD" disabledDate={(current) => current && current > dayjs().endOf('day')} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -650,7 +665,17 @@ const FinanceDisbursalDesk = () => {
                 label="First Repayment Due"
                 rules={[{ required: true, message: 'First installment date is required' }]}
               >
-                <DatePicker className="w-full" format="YYYY-MM-DD" />
+                <DatePicker
+                  className="w-full"
+                  format="YYYY-MM-DD"
+                  disabledDate={(current) => {
+                    const disbDate = disbursalForm.getFieldValue('disbursementDate');
+                    if (disbDate && current) {
+                      return current.isBefore(disbDate, 'day');
+                    }
+                    return false;
+                  }}
+                />
               </Form.Item>
             </Col>
           </Row>

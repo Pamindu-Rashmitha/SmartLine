@@ -302,7 +302,10 @@ const SystemConfigPage = () => {
           <Form.Item
             label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Parameter Value</span>}
             name="configValue"
-            rules={[{ required: true, message: 'Please enter parameter value' }]}
+            rules={[
+              { required: true, message: 'Please enter parameter value' },
+              { whitespace: true, message: 'Value cannot be blank spaces' },
+            ]}
           >
             <Input className="font-mono text-sm" />
           </Form.Item>

@@ -88,7 +88,11 @@ const RegisterPage = () => {
               <Form.Item
                 name="fullName"
                 label={<span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Full Name</span>}
-                rules={[{ required: true, message: 'Full name is required' }]}
+                rules={[
+                  { required: true, message: 'Full name is required' },
+                  { min: 2, message: 'Name must be at least 2 characters' },
+                  { pattern: /^[a-zA-Z\s.'-]+$/, message: 'Name can only contain letters, spaces, and hyphens' },
+                ]}
               >
                 <Input
                   prefix={<User className="w-4 h-4 text-slate-400 mr-1.5" />}
@@ -113,7 +117,11 @@ const RegisterPage = () => {
               <Form.Item
                 name="username"
                 label={<span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Username</span>}
-                rules={[{ required: true, message: 'Username is required' }]}
+                rules={[
+                  { required: true, message: 'Username is required' },
+                  { min: 3, max: 30, message: 'Username must be 3–30 characters' },
+                  { pattern: /^[a-zA-Z0-9_]+$/, message: 'Only letters, numbers, and underscores allowed' },
+                ]}
               >
                 <Input
                   placeholder="kasun123"
@@ -126,6 +134,7 @@ const RegisterPage = () => {
                 rules={[
                   { required: true, message: 'Password is required' },
                   { min: 6, message: 'Minimum 6 characters' },
+                  { pattern: /^(?=.*[a-zA-Z])(?=.*\d).+$/, message: 'Must contain at least 1 letter and 1 number' },
                 ]}
               >
                 <Input.Password
@@ -137,7 +146,10 @@ const RegisterPage = () => {
               <Form.Item
                 name="phoneNumber"
                 label={<span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Mobile Phone</span>}
-                rules={[{ required: true, message: 'Phone number is required' }]}
+                rules={[
+                  { required: true, message: 'Phone number is required' },
+                  { pattern: /^(\+94|0)[0-9]{9}$/, message: 'Enter a valid Sri Lankan phone (e.g. +94771234567 or 0771234567)' },
+                ]}
               >
                 <Input
                   prefix={<Phone className="w-4 h-4 text-slate-400 mr-1.5" />}
@@ -148,7 +160,10 @@ const RegisterPage = () => {
               <Form.Item
                 name="nicNumber"
                 label={<span className="text-xs text-slate-700 dark:text-slate-300 font-medium">National Identity Card (NIC)</span>}
-                rules={[{ required: true, message: 'NIC is required' }]}
+                rules={[
+                  { required: true, message: 'NIC is required' },
+                  { pattern: /^([0-9]{9}[vVxX]|[0-9]{12})$/, message: 'Enter a valid NIC (e.g. 199512345678 or 951234567V)' },
+                ]}
               >
                 <Input
                   prefix={<CreditCard className="w-4 h-4 text-slate-400 mr-1.5" />}
@@ -173,7 +188,11 @@ const RegisterPage = () => {
               <Form.Item
                 name="monthlyIncome"
                 label={<span className="text-xs text-slate-700 dark:text-slate-300 font-medium">Monthly Gross Income (LKR)</span>}
-                rules={[{ required: true, message: 'Income is required' }]}
+                rules={[
+                  { required: true, message: 'Income is required' },
+                  { type: 'number', min: 1, message: 'Income must be greater than zero' },
+                  { type: 'number', max: 50000000, message: 'Income cannot exceed LKR 50,000,000' },
+                ]}
               >
                 <InputNumber
                   className="w-full"

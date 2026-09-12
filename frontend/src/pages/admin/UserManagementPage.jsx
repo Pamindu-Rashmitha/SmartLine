@@ -504,7 +504,11 @@ const UserManagementPage = () => {
               <Form.Item
                 label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Full Name</span>}
                 name="fullName"
-                rules={[{ required: true, message: 'Please enter staff member full name' }]}
+                rules={[
+                  { required: true, message: 'Please enter staff member full name' },
+                  { min: 2, message: 'Name must be at least 2 characters' },
+                  { pattern: /^[a-zA-Z\s.'-]+$/, message: 'Name can only contain letters, spaces, and hyphens' },
+                ]}
               >
                 <Input placeholder="e.g. Kasun Fernando" />
               </Form.Item>
@@ -513,7 +517,11 @@ const UserManagementPage = () => {
               <Form.Item
                 label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Username</span>}
                 name="username"
-                rules={[{ required: true, message: 'Please specify unique username' }]}
+                rules={[
+                  { required: true, message: 'Please specify unique username' },
+                  { min: 3, max: 30, message: 'Username must be 3–30 characters' },
+                  { pattern: /^[a-zA-Z0-9_]+$/, message: 'Only letters, numbers, and underscores allowed' },
+                ]}
               >
                 <Input placeholder="e.g. kasunf" />
               </Form.Item>
@@ -537,6 +545,9 @@ const UserManagementPage = () => {
               <Form.Item
                 label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Phone Number</span>}
                 name="phoneNumber"
+                rules={[
+                  { pattern: /^(\+94|0)[0-9]{9}$/, message: 'Enter a valid Sri Lankan phone (e.g. +94771234567 or 0771234567)' },
+                ]}
               >
                 <Input placeholder="+94 77 123 4567" />
               </Form.Item>
@@ -566,6 +577,7 @@ const UserManagementPage = () => {
                 rules={[
                   { required: true, message: 'Set initial password' },
                   { min: 6, message: 'Minimum 6 characters' },
+                  { pattern: /^(?=.*[a-zA-Z])(?=.*\d).+$/, message: 'Must contain at least 1 letter and 1 number' },
                 ]}
               >
                 <Input.Password placeholder="Min. 6 characters" />
@@ -599,7 +611,11 @@ const UserManagementPage = () => {
           <Form.Item
             label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Full Name</span>}
             name="fullName"
-            rules={[{ required: true, message: 'Please enter name' }]}
+            rules={[
+              { required: true, message: 'Please enter name' },
+              { min: 2, message: 'Name must be at least 2 characters' },
+              { pattern: /^[a-zA-Z\s.'-]+$/, message: 'Name can only contain letters, spaces, and hyphens' },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -674,6 +690,7 @@ const UserManagementPage = () => {
             rules={[
               { required: true, message: 'Please enter new password' },
               { min: 6, message: 'Password must be at least 6 characters' },
+              { pattern: /^(?=.*[a-zA-Z])(?=.*\d).+$/, message: 'Must contain at least 1 letter and 1 number' },
             ]}
           >
             <Input.Password placeholder="Min. 6 characters" />
@@ -682,7 +699,17 @@ const UserManagementPage = () => {
           <Form.Item
             label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Confirm New Password</span>}
             name="confirmPassword"
-            rules={[{ required: true, message: 'Please confirm password' }]}
+            rules={[
+              { required: true, message: 'Please confirm password' },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('newPassword') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('Passwords do not match'));
+                },
+              }),
+            ]}
           >
             <Input.Password placeholder="Re-enter password" />
           </Form.Item>

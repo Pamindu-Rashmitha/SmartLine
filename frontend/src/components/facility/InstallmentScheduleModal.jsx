@@ -306,7 +306,7 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
                       name="startDate"
                       label={<span className="text-slate-700 dark:text-slate-300 font-medium">First Due Date</span>}
                     >
-                      <DatePicker className="w-full" />
+                      <DatePicker className="w-full" disabledDate={(current) => current && current < dayjs().startOf('day')} />
                     </Form.Item>
                   </div>
 

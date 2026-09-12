@@ -1,0 +1,85 @@
+# ==============================================================================
+# Smart Line Investment — Loan Management System
+# Docker Compose Configuration
+# ==============================================================================
+# Usage:
+#   1. Copy .env.docker to .env (or rename it)
+#   2. docker-compose up --build -d
+#   3. Open http://localhost in your browser
+#   4. Swagger UI: http://localhost/swagger-ui.html
+# ==============================================================================
+
+services:
+  # ---- MySQL Database ----
+  db:
+    image: mysql:8.0
+    container_name: smartline-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-loan_management_db}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_USER: ${MYSQL_USER:-smartline}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-smartline123}
+    ports:
+      - "${DB_PORT:-3307}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - smartline-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpassword}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  # ---- Spring Boot Backend ----
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: smartline-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE:-loan_management_db}?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      DB_USERNAME: ${MYSQL_USER:-smartline}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-smartline123}
+      JWT_SECRET: ${JWT_SECRET:-404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970337336763979244226452948404D6351655468576D5A7134743777217A25432A}
+      UPLOAD_DIR: /app/uploads/documents
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    volumes:
+      - smartline-uploads:/app/uploads
+    networks:
+      - smartline-network
+
+  # ---- React Frontend (Nginx) ----
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: smartline-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    networks:
+      - smartline-network
+
+# ---- Volumes ----
+volumes:
+  mysql_data:
+    driver: local
+  smartline-uploads:
+    driver: local
+
+# ---- Networks ----
+networks:
+  smartline-network:
+    driver: bridge

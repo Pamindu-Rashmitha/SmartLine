@@ -208,6 +208,40 @@ html:not(.dark) .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   font-weight: 600;
 }
 
+/* Light mode form inputs (Input, TextArea, Select, DatePicker) */
+html:not(.dark) .ant-input,
+html:not(.dark) .ant-input-affix-wrapper,
+html:not(.dark) .ant-input-textarea textarea {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html:not(.dark) .ant-input::placeholder,
+html:not(.dark) .ant-input-textarea textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+html:not(.dark) .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html:not(.dark) .ant-picker {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html:not(.dark) .ant-picker-input > input {
+  color: #0f172a !important;
+}
+
+html:not(.dark) .ant-form-item-label > label {
+  color: #334155 !important;
+}
+
 .ant-btn-primary {
   box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.25);
   font-weight: 500;

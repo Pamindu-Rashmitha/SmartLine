@@ -1,0 +1,19 @@
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://db:3306/loan_management_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:smartline}
+    password: ${DB_PASSWORD:smartline123}
+
+  jpa:
+    show-sql: false
+
+app:
+  file:
+    upload-dir: ${UPLOAD_DIR:/app/uploads/documents}
+
+logging:
+  level:
+    root: INFO
+    com.smartline.loan: INFO
+    org.springframework.security: WARN

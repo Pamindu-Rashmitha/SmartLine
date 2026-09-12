@@ -133,7 +133,7 @@ const PaymentRecordModal = ({ visible, installment, facility, onClose, onSuccess
                 label={<span className="text-slate-700 dark:text-slate-300 font-medium">Payment Date</span>}
                 rules={[{ required: true, message: 'Payment date is required' }]}
               >
-                <DatePicker className="w-full h-10 rounded-lg" />
+                <DatePicker className="w-full h-10 rounded-lg" disabledDate={(current) => current && current > dayjs().endOf('day')} />
               </Form.Item>
 
               <Form.Item

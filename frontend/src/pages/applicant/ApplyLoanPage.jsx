@@ -457,12 +457,18 @@ const ApplyLoanPage = () => {
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={8}>
-                      <Form.Item name="make" label={<span className="text-slate-700 dark:text-slate-300 font-medium">Make (Brand)</span>} rules={[{ required: true, message: 'Make is required' }]}>
+                      <Form.Item name="make" label={<span className="text-slate-700 dark:text-slate-300 font-medium">Make (Brand)</span>} rules={[
+                        { required: true, message: 'Make is required' },
+                        { min: 2, message: 'Make must be at least 2 characters' },
+                      ]}>
                         <Input placeholder="e.g. Yamaha, Honda, Suzuki" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={8}>
-                      <Form.Item name="model" label={<span className="text-slate-700 dark:text-slate-300 font-medium">Model</span>} rules={[{ required: true, message: 'Model is required' }]}>
+                      <Form.Item name="model" label={<span className="text-slate-700 dark:text-slate-300 font-medium">Model</span>} rules={[
+                        { required: true, message: 'Model is required' },
+                        { min: 2, message: 'Model must be at least 2 characters' },
+                      ]}>
                         <Input placeholder="e.g. FZ-S, Alto, WagonR" />
                       </Form.Item>
                     </Col>
@@ -473,7 +479,7 @@ const ApplyLoanPage = () => {
                         rules={[{ required: true }]}
                         initialValue={2023}
                       >
-                        <InputNumber min={2000} max={2026} className="w-full" />
+                        <InputNumber min={1980} max={new Date().getFullYear() + 1} className="w-full" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={8}>
@@ -611,17 +617,27 @@ const ApplyLoanPage = () => {
               okText="Add Guarantor"
             >
               <Form form={guarantorForm} layout="vertical" onFinish={handleAddGuarantor} className="mt-4">
-                <Form.Item name="fullName" label="Guarantor Full Name" rules={[{ required: true, message: 'Required' }]}>
+                <Form.Item name="fullName" label="Guarantor Full Name" rules={[
+                  { required: true, message: 'Full name is required' },
+                  { min: 2, message: 'Name must be at least 2 characters' },
+                  { pattern: /^[a-zA-Z\s.'-]+$/, message: 'Name can only contain letters, spaces, and hyphens' },
+                ]}>
                   <Input placeholder="e.g. Sunil Kumara" />
                 </Form.Item>
                 <Row gutter={12}>
                   <Col span={12}>
-                    <Form.Item name="nic" label="NIC Number" rules={[{ required: true, message: 'Required' }]}>
+                    <Form.Item name="nic" label="NIC Number" rules={[
+                      { required: true, message: 'NIC is required' },
+                      { pattern: /^([0-9]{9}[vVxX]|[0-9]{12})$/, message: 'Enter valid NIC (e.g. 199512345678 or 951234567V)' },
+                    ]}>
                       <Input placeholder="198512301234 or 851234567V" />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <Form.Item name="phone" label="Phone Number" rules={[{ required: true, message: 'Required' }]}>
+                    <Form.Item name="phone" label="Phone Number" rules={[
+                      { required: true, message: 'Phone number is required' },
+                      { pattern: /^(\+94|0)[0-9]{9}$/, message: 'Enter valid Sri Lankan phone (e.g. +94771234567)' },
+                    ]}>
                       <Input placeholder="+94771234567" />
                     </Form.Item>
                   </Col>
@@ -640,15 +656,22 @@ const ApplyLoanPage = () => {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <Form.Item name="monthlyIncome" label="Monthly Income (LKR)" rules={[{ required: true }]}>
-                      <InputNumber className="w-full" min={20000} placeholder="85,000" />
+                    <Form.Item name="monthlyIncome" label="Monthly Income (LKR)" rules={[
+                      { required: true, message: 'Monthly income is required' },
+                      { type: 'number', min: 1, message: 'Income must be greater than zero' },
+                      { type: 'number', max: 50000000, message: 'Income cannot exceed LKR 50,000,000' },
+                    ]}>
+                      <InputNumber className="w-full" min={1} max={50000000} placeholder="85,000" />
                     </Form.Item>
                   </Col>
                 </Row>
                 <Form.Item name="employerName" label="Employer / Company Name">
                   <Input placeholder="e.g. Sri Lanka Telecom" />
                 </Form.Item>
-                <Form.Item name="address" label="Residential Address" rules={[{ required: true }]}>
+                <Form.Item name="address" label="Residential Address" rules={[
+                  { required: true, message: 'Address is required' },
+                  { min: 10, message: 'Please enter a complete address (at least 10 characters)' },
+                ]}>
                   <Input.TextArea rows={2} placeholder="No. 12, Temple Road, Colombo" />
                 </Form.Item>
               </Form>

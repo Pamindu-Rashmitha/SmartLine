@@ -196,6 +196,14 @@ const PaymentProofUploadModal = ({ visible, installment, facility, onClose, onSu
                 rules={[
                   { required: true, message: 'Please enter payment amount' },
                   { type: 'number', min: 1, message: 'Amount must be greater than zero' },
+                  {
+                    validator: (_, value) => {
+                      if (value && remaining > 0 && value > remaining) {
+                        return Promise.reject(new Error(`Amount cannot exceed remaining balance of LKR ${remaining.toLocaleString()}`));
+                      }
+                      return Promise.resolve();
+                    },
+                  },
                 ]}
               >
                 <InputNumber

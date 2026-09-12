@@ -124,7 +124,10 @@ const LoginPage = () => {
           <Form form={form} layout="vertical" onFinish={onFinish} requiredMark={false}>
             <Form.Item
               name="usernameOrEmail"
-              rules={[{ required: true, message: 'Please enter your username or email' }]}
+              rules={[
+                { required: true, message: 'Please enter your username or email' },
+                { whitespace: true, message: 'Cannot be blank spaces' },
+              ]}
             >
               <Input
                 prefix={<User className="w-4 h-4 text-slate-400 mr-2" />}
@@ -136,7 +139,10 @@ const LoginPage = () => {
 
             <Form.Item
               name="password"
-              rules={[{ required: true, message: 'Please enter your password' }]}
+              rules={[
+                { required: true, message: 'Please enter your password' },
+                { whitespace: true, message: 'Cannot be blank spaces' },
+              ]}
             >
               <Input.Password
                 prefix={<Lock className="w-4 h-4 text-slate-400 mr-2" />}

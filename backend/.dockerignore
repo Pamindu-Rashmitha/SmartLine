@@ -1,0 +1,25 @@
+# Build artifacts
+target/
+
+# Environment files
+.env
+.env.*
+
+# Uploaded files (runtime data, not build input)
+uploads/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Git
+.git/
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Maven wrapper JAR is needed, but not these
+!.mvn/wrapper/maven-wrapper.jar
