@@ -34,6 +34,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import financeApi from '../../api/financeApi';
+import StatCard from '../../components/common/StatCard';
 import StatusBadge from '../../components/common/StatusBadge';
 
 const FinanceDisbursalDesk = () => {
