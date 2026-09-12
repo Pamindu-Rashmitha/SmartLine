@@ -607,14 +607,14 @@ const AgreementPreparationPage = () => {
 
           {/* Verification Attestation Footer */}
           {isVerified && (
-            <div className="p-4 bg-emerald-950/20 border border-emerald-500/30 rounded-xl flex items-center justify-between">
+            <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/30 rounded-xl flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-emerald-400" />
+                <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                 <div>
-                  <div className="text-sm font-bold text-slate-200">
+                  <div className="text-sm font-bold text-slate-900 dark:text-slate-200">
                     Official Agreement Attestation Complete
                   </div>
-                  <div className="text-xs text-slate-400">
+                  <div className="text-xs text-slate-600 dark:text-slate-400">
                     Agreement {agreement?.agreementNumber} is verified and sealed. A copy is available in the applicant's portal.
                   </div>
                 </div>
