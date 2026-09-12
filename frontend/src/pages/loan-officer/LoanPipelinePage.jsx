@@ -72,7 +72,7 @@ const LoanPipelinePage = () => {
       key: 'applicationNumber',
       render: (text, record) => (
         <span
-          className="font-mono text-xs font-bold text-blue-400 cursor-pointer hover:underline"
+          className="font-mono text-xs font-bold text-blue-600 dark:text-blue-400 cursor-pointer hover:underline"
           onClick={() => navigate(`/applications/${record.id}/verify`)}
         >
           {text}
@@ -85,8 +85,8 @@ const LoanPipelinePage = () => {
       key: 'applicantName',
       render: (name, record) => (
         <div>
-          <span className="font-semibold text-slate-200 text-xs block">{name}</span>
-          <span className="text-[11px] text-slate-400 font-mono">NIC: {record.applicantNic}</span>
+          <span className="font-semibold text-slate-900 dark:text-slate-200 text-xs block">{name}</span>
+          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">NIC: {record.applicantNic}</span>
         </div>
       ),
     },
@@ -105,7 +105,7 @@ const LoanPipelinePage = () => {
       dataIndex: 'requestedAmount',
       key: 'requestedAmount',
       render: (val) => (
-        <span className="font-mono text-xs font-bold text-slate-200">
+        <span className="font-mono text-xs font-bold text-slate-900 dark:text-slate-200">
           LKR {Number(val || 0).toLocaleString()}
         </span>
       ),
@@ -115,7 +115,7 @@ const LoanPipelinePage = () => {
       dataIndex: 'monthlyEmi',
       key: 'monthlyEmi',
       render: (val) => (
-        <span className="font-mono text-xs text-emerald-400">
+        <span className="font-mono text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
           {val ? `LKR ${Number(val).toLocaleString()}` : '—'}
         </span>
       ),
@@ -131,7 +131,7 @@ const LoanPipelinePage = () => {
       dataIndex: 'documentCount',
       key: 'documentCount',
       render: (count, record) => (
-        <span className="text-xs text-slate-300">
+        <span className="text-xs text-slate-600 dark:text-slate-300">
           {count} Docs • {record.guarantorCount} Guarantor(s)
         </span>
       ),
@@ -141,7 +141,7 @@ const LoanPipelinePage = () => {
       dataIndex: 'submittedAt',
       key: 'submittedAt',
       render: (date) => (
-        <span className="text-xs text-slate-400 font-mono">
+        <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
           {date ? dayjs(date).format('YYYY-MM-DD') : 'Draft'}
         </span>
       ),
@@ -154,7 +154,7 @@ const LoanPipelinePage = () => {
           type="primary"
           size="small"
           onClick={() => navigate(`/applications/${record.id}/verify`)}
-          className="bg-blue-600 hover:bg-blue-500 font-medium text-xs"
+          className="bg-blue-600 hover:bg-blue-500 font-medium text-xs shadow-sm"
         >
           Review & Verify
         </Button>
@@ -165,19 +165,19 @@ const LoanPipelinePage = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-900/80 p-6 rounded-2xl border border-slate-800 shadow-xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900/80 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl transition-colors duration-200">
         <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-            <span className="p-2 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+            <span className="p-2 rounded-xl bg-blue-50 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30">
               <CheckSquare className="w-6 h-6" />
             </span>
             Loan & Lease Underwriting Pipeline
           </h2>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
             Application verification queue for Loan Officers and Credit Analysts
           </p>
         </div>
-        <Button onClick={fetchPipeline} className="border-slate-800 text-slate-300">
+        <Button onClick={fetchPipeline} className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 font-medium">
           Refresh Queue
         </Button>
       </div>
@@ -223,7 +223,7 @@ const LoanPipelinePage = () => {
       </Row>
 
       {/* Search & Filter Bar */}
-      <Card className="bg-slate-900/60 border-slate-800 rounded-2xl">
+      <Card className="bg-white dark:bg-slate-900/60 border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-xl transition-colors duration-200">
         <div className="flex flex-col md:flex-row gap-4 justify-between">
           <Input
             prefix={<Search className="w-4 h-4 text-slate-400" />}
@@ -231,7 +231,7 @@ const LoanPipelinePage = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onPressEnter={handleSearch}
-            className="md:w-80 bg-slate-950 border-slate-800 text-slate-200"
+            className="md:w-80 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200"
             allowClear
           />
 
@@ -260,7 +260,7 @@ const LoanPipelinePage = () => {
               <Option value="VEHICLE_LEASE">Vehicle Lease</Option>
             </Select>
 
-            <Button type="primary" onClick={handleSearch} className="bg-blue-600">
+            <Button type="primary" onClick={handleSearch} className="bg-blue-600 hover:bg-blue-500 font-medium shadow-sm">
               Filter
             </Button>
           </div>
@@ -268,7 +268,7 @@ const LoanPipelinePage = () => {
       </Card>
 
       {/* Pipeline Table */}
-      <Card className="bg-slate-900/80 border-slate-800 rounded-2xl shadow-xl overflow-hidden p-0">
+      <Card className="bg-white dark:bg-slate-900/80 border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-xl overflow-hidden p-0 transition-colors duration-200">
         <Table
           dataSource={applications}
           columns={columns}

@@ -97,7 +97,7 @@ const ApplicantRepaymentsPage = () => {
       dataIndex: 'installmentNumber',
       key: 'installmentNumber',
       width: 50,
-      render: (num) => <span className="font-mono text-xs font-bold text-slate-300">{num}</span>,
+      render: (num) => <span className="font-mono text-xs font-bold text-slate-700 dark:text-slate-300">{num}</span>,
     },
     {
       title: 'Due Date',
@@ -105,11 +105,11 @@ const ApplicantRepaymentsPage = () => {
       key: 'dueDate',
       render: (date, record) => (
         <div>
-          <span className="text-slate-200 font-medium text-xs block">
+          <span className="text-slate-900 dark:text-slate-200 font-medium text-xs block">
             {dayjs(date).format('DD MMM YYYY')}
           </span>
           {record.status === 'OVERDUE' && (
-            <span className="text-[10px] text-rose-400 font-semibold">
+            <span className="text-[10px] text-rose-600 dark:text-rose-400 font-semibold">
               Payment overdue
             </span>
           )}
@@ -122,7 +122,7 @@ const ApplicantRepaymentsPage = () => {
       key: 'principalPortion',
       align: 'right',
       render: (val) => (
-        <span className="text-slate-300 text-xs font-mono">
+        <span className="text-slate-700 dark:text-slate-300 text-xs font-mono">
           LKR {Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -133,7 +133,7 @@ const ApplicantRepaymentsPage = () => {
       key: 'interestPortion',
       align: 'right',
       render: (val) => (
-        <span className="text-slate-400 text-xs font-mono">
+        <span className="text-slate-500 dark:text-slate-400 text-xs font-mono">
           LKR {Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -144,7 +144,7 @@ const ApplicantRepaymentsPage = () => {
       key: 'totalAmount',
       align: 'right',
       render: (val) => (
-        <span className="text-slate-100 font-bold text-xs font-mono">
+        <span className="text-slate-900 dark:text-slate-100 font-bold text-xs font-mono">
           LKR {Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -156,11 +156,11 @@ const ApplicantRepaymentsPage = () => {
       align: 'right',
       render: (val, record) => (
         <div>
-          <span className={`text-xs font-mono font-medium ${val > 0 ? 'text-emerald-400' : 'text-slate-500'}`}>
+          <span className={`text-xs font-mono font-medium ${val > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500'}`}>
             LKR {Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </span>
           {record.paidDate && (
-            <span className="text-[10px] text-slate-400 block">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 block">
               on {dayjs(record.paidDate).format('DD MMM YYYY')}
             </span>
           )}
@@ -181,19 +181,19 @@ const ApplicantRepaymentsPage = () => {
       title: 'Receipt / Ref #',
       dataIndex: 'referenceNumber',
       key: 'referenceNumber',
-      render: (text) => <span className="font-mono text-xs font-bold text-blue-400">{text || 'N/A'}</span>,
+      render: (text) => <span className="font-mono text-xs font-bold text-blue-600 dark:text-blue-400">{text || 'N/A'}</span>,
     },
     {
       title: 'Settled Installment',
       dataIndex: 'installmentNumber',
       key: 'installmentNumber',
-      render: (num) => <span className="text-xs text-slate-200">EMI #{num}</span>,
+      render: (num) => <span className="text-xs text-slate-800 dark:text-slate-200">EMI #{num}</span>,
     },
     {
       title: 'Payment Date',
       dataIndex: 'paymentDate',
       key: 'paymentDate',
-      render: (date) => <span className="text-xs text-slate-300">{dayjs(date).format('DD MMM YYYY')}</span>,
+      render: (date) => <span className="text-xs text-slate-700 dark:text-slate-300">{dayjs(date).format('DD MMM YYYY')}</span>,
     },
     {
       title: 'Payment Channel',
@@ -207,7 +207,7 @@ const ApplicantRepaymentsPage = () => {
       key: 'amount',
       align: 'right',
       render: (val) => (
-        <span className="font-mono text-emerald-400 font-bold text-xs">
+        <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold text-xs">
           LKR {Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -219,7 +219,7 @@ const ApplicantRepaymentsPage = () => {
       render: (_, record) => (
         <Button
           size="small"
-          className="border-slate-700 text-slate-300 hover:text-white text-xs flex items-center gap-1"
+          className="border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-blue-600 text-xs flex items-center gap-1"
           onClick={() => handleOpenReceipt(record)}
         >
           <Receipt className="w-3 h-3" />
@@ -238,11 +238,11 @@ const ApplicantRepaymentsPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight m-0">
+          <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight m-0">
             My Loan Repayments & Dues
           </h1>
-          <p className="text-xs text-slate-400 m-0">
-            EP04 — US18: Real-time Installment Schedules & Payment Transaction Receipts
+          <p className="text-xs text-slate-500 dark:text-slate-400 m-0">
+            Real-time Installment Schedules & Payment Transaction Receipts
           </p>
         </div>
       </div>
@@ -250,15 +250,15 @@ const ApplicantRepaymentsPage = () => {
       {loading ? (
         <div className="py-20 text-center">
           <Spin size="large" />
-          <span className="text-slate-400 text-sm block mt-3">Loading active facilities...</span>
+          <span className="text-slate-500 dark:text-slate-400 text-sm block mt-3">Loading active facilities...</span>
         </div>
       ) : facilities.length === 0 ? (
-        <Card className="bg-slate-900 border-slate-800 text-center py-12 rounded-2xl">
-          <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center mx-auto text-blue-400 mb-3">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-center py-12 rounded-2xl shadow-sm">
+          <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center mx-auto text-blue-500 dark:text-blue-400 mb-3">
             <CreditCard className="w-8 h-8" />
           </div>
-          <h3 className="text-base font-bold text-white mb-1">No Active Facilities Found</h3>
-          <p className="text-xs text-slate-400 max-w-sm mx-auto">
+          <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">No Active Facilities Found</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             Once your loan or vehicle leasing application is approved and disbursed, your active repayment schedule will appear here.
           </p>
         </Card>
@@ -273,8 +273,8 @@ const ApplicantRepaymentsPage = () => {
                   onClick={() => setSelectedFacility(fac)}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
                     selectedFacility?.id === fac.id
-                      ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-600/30'
-                      : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700'
+                      ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-600/20'
+                      : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                   }`}
                 >
                   {fac.facilityNumber} ({fac.type})
@@ -287,13 +287,13 @@ const ApplicantRepaymentsPage = () => {
           {selectedFacility && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               {/* Left 2 Cols: Facility Overview & Progress */}
-              <Card className="lg:col-span-2 bg-gradient-to-br from-slate-900 via-slate-900/90 to-slate-950 border-slate-800 rounded-2xl">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 pb-3 border-b border-slate-800">
+              <Card className="lg:col-span-2 bg-gradient-to-br from-white via-slate-50 to-blue-50/30 dark:from-slate-900 dark:via-slate-900/90 dark:to-slate-950 border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
                   <div>
-                    <span className="text-xs font-mono text-blue-400 font-bold tracking-wider">
+                    <span className="text-xs font-mono text-blue-600 dark:text-blue-400 font-bold tracking-wider">
                       {selectedFacility.facilityNumber}
                     </span>
-                    <h2 className="text-lg font-bold text-white m-0">
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white m-0">
                       {selectedFacility.type === 'VEHICLE_LEASE' ? 'Vehicle Lease Facility' : 'Personal Loan Facility'}
                     </h2>
                   </div>
@@ -304,26 +304,26 @@ const ApplicantRepaymentsPage = () => {
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
                   <div>
-                    <span className="text-xs text-slate-400 block">Sanctioned Amount</span>
-                    <span className="text-base font-bold text-white font-mono">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 block">Sanctioned Amount</span>
+                    <span className="text-base font-bold text-slate-900 dark:text-white font-mono">
                       LKR {Number(selectedFacility.principalAmount || 0).toLocaleString()}
                     </span>
                   </div>
                   <div>
-                    <span className="text-xs text-slate-400 block">Monthly EMI</span>
-                    <span className="text-base font-bold text-emerald-400 font-mono">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 block">Monthly EMI</span>
+                    <span className="text-base font-bold text-emerald-600 dark:text-emerald-400 font-mono">
                       LKR {Number(selectedFacility.installmentAmount || 0).toLocaleString()}
                     </span>
                   </div>
                   <div>
-                    <span className="text-xs text-slate-400 block">Total Paid</span>
-                    <span className="text-base font-bold text-blue-400 font-mono">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 block">Total Paid</span>
+                    <span className="text-base font-bold text-blue-600 dark:text-blue-400 font-mono">
                       LKR {Number(selectedFacility.totalPaid || 0).toLocaleString()}
                     </span>
                   </div>
                   <div>
-                    <span className="text-xs text-slate-400 block">Outstanding</span>
-                    <span className="text-base font-bold text-slate-200 font-mono">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 block">Outstanding</span>
+                    <span className="text-base font-bold text-slate-800 dark:text-slate-200 font-mono">
                       LKR {Number(selectedFacility.outstandingBalance || 0).toLocaleString()}
                     </span>
                   </div>
@@ -331,12 +331,12 @@ const ApplicantRepaymentsPage = () => {
 
                 {/* Progress Bar */}
                 <div className="pt-2">
-                  <div className="flex justify-between text-xs text-slate-400 mb-1">
+                  <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
                     <span>
-                      Repayment Completion: <strong className="text-white">{schedule?.paidInstallmentsCount || 0}</strong> of{' '}
+                      Repayment Completion: <strong className="text-slate-900 dark:text-white">{schedule?.paidInstallmentsCount || 0}</strong> of{' '}
                       <strong>{schedule?.totalInstallments || selectedFacility.tenureMonths || 12}</strong> EMIs settled
                     </span>
-                    <span className="font-semibold text-emerald-400">
+                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">
                       {Math.round(
                         ((schedule?.paidInstallmentsCount || 0) /
                           (schedule?.totalInstallments || selectedFacility.tenureMonths || 1)) *
@@ -355,30 +355,29 @@ const ApplicantRepaymentsPage = () => {
                       '0%': '#3b82f6',
                       '100%': '#10b981',
                     }}
-                    trailColor="#334155"
                   />
                 </div>
               </Card>
 
               {/* Right Col: Next Due Date Alert Card */}
-              <Card className="bg-slate-900 border-slate-800 rounded-2xl flex flex-col justify-between">
+              <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col justify-between shadow-sm">
                 <div>
-                  <span className="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1">
+                  <span className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold block mb-1">
                     Next Payment Due
                   </span>
                   {nextDueInstallment ? (
                     <div>
                       <div className="flex items-center gap-2 mb-2">
-                        <Clock className={`w-5 h-5 ${nextDueInstallment.status === 'OVERDUE' ? 'text-rose-400' : 'text-amber-400'}`} />
-                        <span className={`text-xl font-bold font-mono ${nextDueInstallment.status === 'OVERDUE' ? 'text-rose-400' : 'text-white'}`}>
+                        <Clock className={`w-5 h-5 ${nextDueInstallment.status === 'OVERDUE' ? 'text-rose-500 dark:text-rose-400' : 'text-amber-500 dark:text-amber-400'}`} />
+                        <span className={`text-xl font-bold font-mono ${nextDueInstallment.status === 'OVERDUE' ? 'text-rose-600 dark:text-rose-400' : 'text-slate-900 dark:text-white'}`}>
                           LKR {Number(nextDueInstallment.remainingAmount || nextDueInstallment.totalAmount).toLocaleString()}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-300 m-0">
-                        Due by <strong className="text-white">{dayjs(nextDueInstallment.dueDate).format('DD MMMM YYYY')}</strong> (EMI #{nextDueInstallment.installmentNumber})
+                      <p className="text-xs text-slate-600 dark:text-slate-300 m-0">
+                        Due by <strong className="text-slate-900 dark:text-white">{dayjs(nextDueInstallment.dueDate).format('DD MMMM YYYY')}</strong> (EMI #{nextDueInstallment.installmentNumber})
                       </p>
                       {nextDueInstallment.status === 'OVERDUE' && (
-                        <div className="mt-2 p-2 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-1.5">
+                        <div className="mt-2 p-2 rounded-lg bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs flex items-center gap-1.5">
                           <AlertCircle className="w-4 h-4 flex-shrink-0" />
                           <span>Account overdue. Please deposit immediately to avoid penalty charges.</span>
                         </div>
@@ -386,14 +385,14 @@ const ApplicantRepaymentsPage = () => {
                     </div>
                   ) : (
                     <div className="py-4 text-center">
-                      <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto mb-2" />
-                      <span className="text-sm font-bold text-white block">All Installments Settled</span>
-                      <span className="text-xs text-slate-400">Congratulations, your facility is fully paid!</span>
+                      <CheckCircle2 className="w-10 h-10 text-emerald-500 dark:text-emerald-400 mx-auto mb-2" />
+                      <span className="text-sm font-bold text-slate-900 dark:text-white block">All Installments Settled</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Congratulations, your facility is fully paid!</span>
                     </div>
                   )}
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400">
+                <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400">
                   <span>Direct deposit bank: <strong>Bank of Ceylon (BOC)</strong></span>
                   <br />
                   <span>A/C: <strong>728100291</strong> (Smart Line Corporate)</span>
@@ -403,7 +402,7 @@ const ApplicantRepaymentsPage = () => {
           )}
 
           {/* Tabbed View: Installment Schedule vs Payment Receipts */}
-          <Card className="bg-slate-900 border-slate-800 rounded-2xl">
+          <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
             <Tabs
               defaultActiveKey="schedule"
               items={[
@@ -424,10 +423,9 @@ const ApplicantRepaymentsPage = () => {
                       rowKey="id"
                       pagination={false}
                       size="small"
-                      className="dark-table"
                     />
                   ) : (
-                    <div className="py-8 text-center text-slate-500 text-xs italic">
+                    <div className="py-8 text-center text-slate-400 dark:text-slate-500 text-xs italic">
                       No schedule generated yet. Contact your assigned Loan Officer.
                     </div>
                   ),
@@ -443,7 +441,7 @@ const ApplicantRepaymentsPage = () => {
                   children: scheduleLoading ? (
                     <div className="py-12 text-center text-slate-400 text-xs">Loading payment records...</div>
                   ) : payments.length === 0 ? (
-                    <div className="py-8 text-center text-slate-500 text-xs italic">
+                    <div className="py-8 text-center text-slate-400 dark:text-slate-500 text-xs italic">
                       No payments recorded yet for this facility.
                     </div>
                   ) : (
@@ -453,7 +451,6 @@ const ApplicantRepaymentsPage = () => {
                       rowKey="id"
                       pagination={{ pageSize: 8 }}
                       size="small"
-                      className="dark-table"
                     />
                   ),
                 },
@@ -466,39 +463,38 @@ const ApplicantRepaymentsPage = () => {
       {/* Official Payment Receipt Modal */}
       <Modal
         title={
-          <div className="flex items-center gap-2 text-slate-100">
-            <Receipt className="w-5 h-5 text-emerald-400" />
+          <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+            <Receipt className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
             <span>Official Payment Receipt</span>
           </div>
         }
         open={receiptModalVisible}
         onCancel={() => setReceiptModalVisible(false)}
         footer={[
-          <Button key="close" onClick={() => setReceiptModalVisible(false)} className="border-slate-700 text-slate-300">
+          <Button key="close" onClick={() => setReceiptModalVisible(false)} className="border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
             Close
           </Button>,
         ]}
         width={480}
-        className="dark-modal"
       >
         {selectedReceipt && (
           <div className="space-y-4 pt-2">
-            <div className="text-center p-4 bg-slate-800/80 rounded-2xl border border-slate-700/60">
-              <span className="text-[11px] text-slate-400 uppercase tracking-widest block">Payment Confirmed</span>
-              <span className="text-2xl font-bold font-mono text-emerald-400 block mt-1">
+            <div className="text-center p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700/60">
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-widest block font-semibold">Payment Confirmed</span>
+              <span className="text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 block mt-1">
                 LKR {Number(selectedReceipt.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
               </span>
-              <span className="text-xs text-slate-300 block mt-1">
+              <span className="text-xs text-slate-600 dark:text-slate-300 block mt-1">
                 Settled Installment #{selectedReceipt.installmentNumber}
               </span>
             </div>
 
-            <Descriptions column={1} size="small" bordered className="dark-descriptions">
+            <Descriptions column={1} size="small" bordered>
               <Descriptions.Item label="Receipt / Ref #">
-                <span className="font-mono text-blue-400 font-bold">{selectedReceipt.referenceNumber}</span>
+                <span className="font-mono text-blue-600 dark:text-blue-400 font-bold">{selectedReceipt.referenceNumber}</span>
               </Descriptions.Item>
               <Descriptions.Item label="Facility #">
-                <span className="font-mono text-slate-300">{selectedReceipt.facilityNumber}</span>
+                <span className="font-mono text-slate-700 dark:text-slate-300">{selectedReceipt.facilityNumber}</span>
               </Descriptions.Item>
               <Descriptions.Item label="Payment Date">
                 {dayjs(selectedReceipt.paymentDate).format('DD MMMM YYYY')}

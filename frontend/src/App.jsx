@@ -1,11 +1,10 @@
 import React from 'react';
-import { ConfigProvider } from 'antd';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import AppRoutes from './routes/AppRoutes';
-import { customThemeConfig } from './styles/antdTheme';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +18,7 @@ export const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider theme={customThemeConfig}>
+      <ThemeProvider>
         <AuthProvider>
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <NotificationProvider>
@@ -27,10 +26,9 @@ function App() {
             </NotificationProvider>
           </BrowserRouter>
         </AuthProvider>
-      </ConfigProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
 
 export default App;
-

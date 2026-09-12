@@ -34,20 +34,20 @@ const STEPS = [
 
 const ProcessSection = () => {
   return (
-    <section id="process" className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden">
+    <section id="process" className="py-20 lg:py-28 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800/60 relative overflow-hidden transition-colors duration-200">
       {/* Background glow accent */}
       <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2">
+          <p className="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2">
             Simple, Transparent & Fast
           </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             How Smart Line Works in 3 Quick Steps
           </h2>
-          <p className="text-base text-slate-400 mt-4 leading-relaxed">
+          <p className="text-base text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">
             Eliminating cumbersome paperwork, physical queues, and months of waiting. Experience an agile, digitized lending experience from intake to disbursal.
           </p>
         </div>
@@ -55,48 +55,48 @@ const ProcessSection = () => {
         {/* 3 Step Process Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
           {/* Connecting line on desktop */}
-          <div className="hidden lg:block absolute top-1/2 left-16 right-16 h-0.5 bg-gradient-to-r from-blue-600/40 via-indigo-600/40 to-teal-600/40 -translate-y-12 pointer-events-none" />
+          <div className="hidden lg:block absolute top-1/2 left-16 right-16 h-0.5 bg-gradient-to-r from-blue-300 via-indigo-300 to-teal-300 dark:from-blue-600/40 dark:via-indigo-600/40 dark:to-teal-600/40 -translate-y-12 pointer-events-none" />
 
           {STEPS.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.step}
-                className="relative rounded-2xl bg-slate-900/80 border border-slate-800 p-8 flex flex-col justify-between hover:border-blue-500/50 hover:bg-slate-900 transition-all hover:shadow-xl hover:shadow-blue-900/10 group"
+                className="relative rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-8 flex flex-col justify-between hover:border-blue-400 dark:hover:border-blue-500/50 hover:bg-white dark:hover:bg-slate-900 transition-all shadow-sm hover:shadow-lg dark:hover:shadow-blue-900/10 group"
               >
                 <div>
                   {/* Step number badge & Icon */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600/10 border border-blue-500/30 text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-md">
+                    <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-600/10 border border-blue-200 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm">
                       <Icon className="w-7 h-7" />
                     </div>
-                    <span className="text-4xl font-black text-slate-700/60 group-hover:text-blue-500/40 transition-colors font-mono">
+                    <span className="text-4xl font-black text-slate-200 dark:text-slate-700/60 group-hover:text-blue-500/30 transition-colors font-mono">
                       {item.step}
                     </span>
                   </div>
 
-                  <span className="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-800 text-slate-300 mb-3 border border-slate-700/60">
+                  <span className="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 mb-3 border border-slate-200 dark:border-slate-700/60">
                     {item.badge}
                   </span>
 
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     {item.title}
                   </h3>
 
-                  <p className="text-xs text-blue-400/90 font-medium mb-3">
+                  <p className="text-xs text-blue-600 dark:text-blue-400/90 font-medium mb-3">
                     {item.subtitle}
                   </p>
 
-                  <p className="text-sm text-slate-400 leading-relaxed">
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
 
-                <div className="pt-6 mt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                  <span className="flex items-center gap-1 text-emerald-400 font-medium">
+                <div className="pt-6 mt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+                  <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
                     <ShieldCheck className="w-3.5 h-3.5" /> Secure & Encrypted
                   </span>
-                  <span className="font-semibold text-slate-500">Step {idx + 1} of 3</span>
+                  <span className="font-semibold text-slate-400 dark:text-slate-500">Step {idx + 1} of 3</span>
                 </div>
               </div>
             );

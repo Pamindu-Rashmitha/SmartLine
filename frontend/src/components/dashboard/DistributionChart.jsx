@@ -38,10 +38,10 @@ const DistributionChart = ({ title, subtitle, data = {}, type = 'bar' }) => {
 
   if (entries.length === 0 || total === 0) {
     return (
-      <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-5 shadow-lg">
-        <h4 className="text-sm font-bold text-white mb-1">{title}</h4>
-        {subtitle && <p className="text-xs text-slate-400 mb-4">{subtitle}</p>}
-        <div className="py-8 text-center text-xs text-slate-500">
+      <div className="rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 p-5 shadow-sm">
+        <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1">{title}</h4>
+        {subtitle && <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">{subtitle}</p>}
+        <div className="py-8 text-center text-xs text-slate-400 dark:text-slate-500">
           No distribution data available
         </div>
       </div>
@@ -65,13 +65,13 @@ const DistributionChart = ({ title, subtitle, data = {}, type = 'bar' }) => {
     const circumference = 2 * Math.PI * radius;
 
     return (
-      <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-5 shadow-lg">
+      <div className="rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 p-5 shadow-sm">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h4 className="text-sm font-bold text-white m-0">{title}</h4>
-            {subtitle && <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>}
+            <h4 className="text-sm font-bold text-slate-900 dark:text-white m-0">{title}</h4>
+            {subtitle && <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{subtitle}</p>}
           </div>
-          <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+          <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
             {total} Total
           </span>
         </div>
@@ -85,7 +85,8 @@ const DistributionChart = ({ title, subtitle, data = {}, type = 'bar' }) => {
                 cy={size / 2}
                 r={radius}
                 fill="transparent"
-                stroke="#1e293b"
+                stroke="currentColor"
+                className="text-slate-100 dark:text-slate-800"
                 strokeWidth={strokeWidth}
               />
               {items.map((item, i) => {
@@ -110,8 +111,8 @@ const DistributionChart = ({ title, subtitle, data = {}, type = 'bar' }) => {
               })}
             </svg>
             <div className="absolute flex flex-col items-center justify-center text-center">
-              <span className="text-xl font-bold text-white">{total}</span>
-              <span className="text-[10px] uppercase tracking-wider text-slate-400">Total</span>
+              <span className="text-xl font-bold text-slate-900 dark:text-white">{total}</span>
+              <span className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500">Total</span>
             </div>
           </div>
 
@@ -121,11 +122,11 @@ const DistributionChart = ({ title, subtitle, data = {}, type = 'bar' }) => {
               <div key={i} className="flex items-center justify-between text-xs gap-3">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
-                  <span className="text-slate-300 capitalize">{item.label.toLowerCase()}</span>
+                  <span className="text-slate-700 dark:text-slate-300 capitalize">{item.label.toLowerCase()}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-white">{item.count}</span>
-                  <span className="text-slate-500 text-[11px]">({item.percent}%)</span>
+                  <span className="font-semibold text-slate-900 dark:text-white">{item.count}</span>
+                  <span className="text-slate-400 dark:text-slate-500 text-[11px]">({item.percent}%)</span>
                 </div>
               </div>
             ))}
@@ -137,19 +138,19 @@ const DistributionChart = ({ title, subtitle, data = {}, type = 'bar' }) => {
 
   // Horizontal Segmented Bar View
   return (
-    <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-5 shadow-lg">
+    <div className="rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 p-5 shadow-sm">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <h4 className="text-sm font-bold text-white m-0">{title}</h4>
-          {subtitle && <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>}
+          <h4 className="text-sm font-bold text-slate-900 dark:text-white m-0">{title}</h4>
+          {subtitle && <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{subtitle}</p>}
         </div>
-        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
           {total} Total
         </span>
       </div>
 
       {/* Multi-segment Bar */}
-      <div className="w-full h-3 rounded-full overflow-hidden bg-slate-800 flex gap-0.5 my-3">
+      <div className="w-full h-3 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 flex gap-0.5 my-3">
         {items.map((item, i) => (
           <div
             key={i}
@@ -168,13 +169,13 @@ const DistributionChart = ({ title, subtitle, data = {}, type = 'bar' }) => {
         {items.map((item, i) => (
           <div
             key={i}
-            className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/80 text-xs"
+            className="flex items-center justify-between p-2 rounded-lg bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800/80 text-xs"
           >
             <div className="flex items-center gap-1.5 truncate">
               <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
-              <span className="text-slate-300 truncate">{item.label}</span>
+              <span className="text-slate-700 dark:text-slate-300 truncate">{item.label}</span>
             </div>
-            <span className="font-mono font-semibold text-white ml-2">{item.count}</span>
+            <span className="font-mono font-semibold text-slate-900 dark:text-white ml-2">{item.count}</span>
           </div>
         ))}
       </div>

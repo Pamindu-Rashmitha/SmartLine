@@ -79,8 +79,8 @@ const InspectionQueuePage = () => {
       key: 'applicantName',
       render: (name, record) => (
         <div>
-          <span className="font-semibold text-slate-200 text-xs block">{name}</span>
-          <span className="text-[11px] text-slate-400 font-mono">NIC: {record.applicantNic}</span>
+          <span className="font-semibold text-slate-900 dark:text-slate-200 text-xs block">{name}</span>
+          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">NIC: {record.applicantNic}</span>
         </div>
       ),
     },
@@ -99,7 +99,7 @@ const InspectionQueuePage = () => {
       dataIndex: 'requestedAmount',
       key: 'requestedAmount',
       render: (amount) => (
-        <span className="font-bold text-slate-100 text-xs">
+        <span className="font-bold text-slate-900 dark:text-slate-100 text-xs font-mono">
           LKR {Number(amount || 0).toLocaleString()}
         </span>
       ),
@@ -115,7 +115,7 @@ const InspectionQueuePage = () => {
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (date) => (
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
           {date ? dayjs(date).format('YYYY-MM-DD HH:mm') : '-'}
         </span>
       ),
@@ -141,17 +141,17 @@ const InspectionQueuePage = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="rounded-2xl bg-gradient-to-r from-emerald-950/60 via-slate-900/90 to-slate-900 border border-emerald-500/20 p-6 shadow-xl">
+      <div className="rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-emerald-500/20 p-6 shadow-sm dark:shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-semibold mb-2">
               <Compass className="w-3.5 h-3.5" />
               <span>FIELD OPERATIONS & VEHICLE INSPECTION DESK</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight m-0">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight m-0">
               Vehicle Inspection Queue (US07)
             </h1>
-            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed m-0">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 max-w-2xl leading-relaxed m-0">
               Assigned site and showroom visits for leased vehicles. Conduct physical & mechanical inspections, verify chassis/engine numbers, and evaluate collateral values.
             </p>
           </div>
@@ -160,7 +160,7 @@ const InspectionQueuePage = () => {
             <Button
               onClick={fetchQueue}
               loading={loading}
-              className="bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 font-semibold text-xs"
+              className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 font-semibold text-xs"
             >
               Refresh Queue
             </Button>
@@ -194,8 +194,8 @@ const InspectionQueuePage = () => {
       </div>
 
       {/* Main Table Card */}
-      <Card className="bg-slate-900/80 border-slate-800 shadow-xl rounded-2xl">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-800">
+      <Card className="bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl rounded-2xl">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100 dark:border-slate-800">
           <div className="w-full sm:w-80">
             <Input
               prefix={<Search className="w-4 h-4 text-slate-400 mr-1" />}
@@ -203,7 +203,7 @@ const InspectionQueuePage = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               allowClear
-              className="bg-slate-950 border-slate-700 text-slate-200 placeholder-slate-500 rounded-lg text-xs"
+              className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 rounded-lg text-xs"
             />
           </div>
         </div>
@@ -218,7 +218,7 @@ const InspectionQueuePage = () => {
             total: pagination.total,
             onChange: (p) => setPagination((prev) => ({ ...prev, page: p - 1 })),
             showTotal: (total) => `Total ${total} inspections pending`,
-            className: 'text-slate-400 text-xs',
+            className: 'text-slate-600 dark:text-slate-400 text-xs',
           }}
           size="middle"
           scroll={{ x: 900 }}

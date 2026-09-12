@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 :root {
+  --bg-primary: #F8FAFC;
+  --bg-secondary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --border-subtle: #E2E8F0;
+  --accent-blue: #2563EB;
+}
+
+html.dark {
   --bg-primary: #070C18;
   --bg-secondary: #0F172A;
   --bg-card: #131E36;
@@ -18,14 +26,17 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #070c18;
-  color: #f1f5f9;
+  background-color: var(--bg-primary);
+  color: #0F172A;
   -webkit-font-smoothing: antialiased;
 }
 
-a,
-a:visited {
-  color: inherit;
+html.dark body {
+  background-color: #070C18;
+  color: #F1F5F9;
+}
+
+a {
   text-decoration: none;
 }
 
@@ -36,31 +47,54 @@ a:visited {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B1120;
+  background: #F1F5F9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #CBD5E1;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #0B1120;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 9999px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
 
 /* Glassmorphism effects */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+html.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-card {
-  background: rgba(19, 30, 54, 0.65);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(226, 232, 240, 0.8);
   transition: all 0.25s ease-in-out;
+}
+
+html.dark .glass-card {
+  background: rgba(19, 30, 54, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .glass-card:hover {
@@ -69,21 +103,25 @@ a:visited {
   transform: translateY(-2px);
 }
 
-/* Ant Design Global Overrides for Dark Financial Aesthetics */
+/* Ant Design Global Overrides */
 .ant-layout {
+  background: var(--bg-primary) !important;
+}
+
+html.dark .ant-layout {
   background: #070C18 !important;
 }
 
-.ant-layout-sider {
+html.dark .ant-layout-sider {
   background: #0B1120 !important;
   border-right: 1px solid #1E293B;
 }
 
-.ant-menu-dark {
+html.dark .ant-menu-dark {
   background: #0B1120 !important;
 }
 
-.ant-menu-dark .ant-menu-item-selected {
+html.dark .ant-menu-dark .ant-menu-item-selected {
   background-color: #1D4ED8 !important;
 }
 
@@ -91,12 +129,87 @@ a:visited {
   border-radius: 12px;
 }
 
-.ant-card-head {
-  border-bottom: 1px solid #1E293B !important;
+/* Light mode defaults for Ant Design Card, Table, Modal containers */
+html:not(.dark) .ant-card {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+html:not(.dark) .ant-card-head {
+  border-bottom: 1px solid #F1F5F9 !important;
+}
+
+html:not(.dark) .ant-card-head-title {
+  color: #0F172A !important;
+}
+
+html:not(.dark) .ant-table {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+}
+
+html:not(.dark) .ant-table-thead > tr > th {
+  background-color: #F8FAFC !important;
+  color: #475569 !important;
+  font-weight: 600;
+  border-bottom: 1px solid #E2E8F0 !important;
+}
+
+html:not(.dark) .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #F1F5F9 !important;
+  color: #1E293B !important;
+}
+
+html:not(.dark) .ant-table-tbody > tr:hover > td {
+  background-color: #F8FAFC !important;
+}
+
+html:not(.dark) .ant-modal-content {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+html:not(.dark) .ant-modal-header {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #F1F5F9 !important;
+}
+
+html:not(.dark) .ant-modal-title {
+  color: #0F172A !important;
+}
+
+html:not(.dark) .ant-dropdown-menu {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+html:not(.dark) .ant-descriptions-item-label {
+  color: #475569 !important;
+  background-color: #F8FAFC !important;
+}
+
+html:not(.dark) .ant-descriptions-item-content {
+  color: #0F172A !important;
+}
+
+html:not(.dark) .ant-tabs-nav {
+  border-bottom: 1px solid #E2E8F0 !important;
+}
+
+html:not(.dark) .ant-tabs-tab {
+  color: #64748B !important;
+}
+
+html:not(.dark) .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #2563EB !important;
+  font-weight: 600;
 }
 
 .ant-btn-primary {
-  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.35);
+  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.25);
   font-weight: 500;
 }
 

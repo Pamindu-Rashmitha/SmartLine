@@ -36,39 +36,39 @@ const CalculatorSection = () => {
   }, [facilityType, amount, tenureMonths, downPaymentPercent, ANNUAL_RATE]);
 
   return (
-    <section id="calculator" className="py-20 lg:py-28 bg-slate-900/90 border-t border-slate-800/80 relative">
+    <section id="calculator" className="py-20 lg:py-28 bg-slate-50 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800/80 relative transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-semibold uppercase tracking-wider mb-3">
             <Calculator className="w-3.5 h-3.5" />
             <span>Interactive Financial Tool</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Estimate Your Monthly Installment
           </h2>
-          <p className="text-base text-slate-400 mt-4 leading-relaxed">
+          <p className="text-base text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">
             Plan your repayment effortlessly with zero surprises. Adjust the amount and duration sliders below to find a comfortable plan tailored to your monthly budget.
           </p>
         </div>
 
         {/* Calculator Main Box */}
-        <div className="rounded-3xl bg-slate-950 border border-slate-800 shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+        <div className="rounded-3xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-xl dark:shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
           {/* Left Column: Sliders & Controls */}
           <div className="lg:col-span-7 p-6 sm:p-10 space-y-8">
             {/* Facility Switcher */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
                 Select Facility Type
               </label>
-              <div className="grid grid-cols-2 gap-3 p-1.5 bg-slate-900 rounded-2xl border border-slate-800">
+              <div className="grid grid-cols-2 gap-3 p-1.5 bg-slate-100 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setFacilityType('LOAN')}
                   className={`flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${
                     facilityType === 'LOAN'
                       ? 'bg-blue-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   <Banknote className="w-4 h-4" />
@@ -80,7 +80,7 @@ const CalculatorSection = () => {
                   className={`flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${
                     facilityType === 'VEHICLE_LEASE'
                       ? 'bg-blue-600 text-white shadow-md'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   <Percent className="w-4 h-4" />
@@ -92,10 +92,10 @@ const CalculatorSection = () => {
             {/* Slider 1: Facility Amount */}
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <label className="text-sm font-semibold text-slate-300">
+                <label className="text-sm font-semibold text-slate-800 dark:text-slate-300">
                   {facilityType === 'LOAN' ? 'Required Loan Amount' : 'Vehicle Total Value'}
                 </label>
-                <div className="px-4 py-1.5 rounded-xl bg-blue-600/10 border border-blue-500/20 text-blue-400 font-mono font-bold text-base">
+                <div className="px-4 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-600/10 border border-blue-200 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 font-mono font-bold text-base">
                   LKR {amount.toLocaleString()}
                 </div>
               </div>
@@ -107,10 +107,10 @@ const CalculatorSection = () => {
                 step={10000}
                 value={amount}
                 onChange={(e) => setAmount(Number(e.target.value))}
-                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-600"
               />
 
-              <div className="flex justify-between text-xs text-slate-500 font-mono">
+              <div className="flex justify-between text-xs text-slate-400 dark:text-slate-500 font-mono">
                 <span>LKR 50,000</span>
                 <span>LKR 1,250,000</span>
                 <span>LKR 2,500,000</span>
@@ -121,10 +121,10 @@ const CalculatorSection = () => {
             {facilityType === 'VEHICLE_LEASE' && (
               <div className="space-y-3 pt-2">
                 <div className="flex justify-between items-center">
-                  <label className="text-sm font-semibold text-slate-300">
+                  <label className="text-sm font-semibold text-slate-800 dark:text-slate-300">
                     Down-Payment Percentage
                   </label>
-                  <div className="px-3.5 py-1 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-400 font-mono font-bold text-sm">
+                  <div className="px-3.5 py-1 rounded-xl bg-teal-50 dark:bg-teal-500/10 border border-teal-200 dark:border-teal-500/20 text-teal-600 dark:text-teal-400 font-mono font-bold text-sm">
                     {downPaymentPercent}% (LKR {calculations.downPaymentAmount.toLocaleString()})
                   </div>
                 </div>
@@ -138,7 +138,7 @@ const CalculatorSection = () => {
                       className={`py-2 rounded-xl text-xs font-semibold border transition-all ${
                         downPaymentPercent === pct
                           ? 'bg-teal-600 text-white border-teal-500'
-                          : 'bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700'
+                          : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                       }`}
                     >
                       {pct}%
@@ -151,10 +151,10 @@ const CalculatorSection = () => {
             {/* Slider 2: Tenure Months */}
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <label className="text-sm font-semibold text-slate-300">
+                <label className="text-sm font-semibold text-slate-800 dark:text-slate-300">
                   Repayment Duration
                 </label>
-                <div className="px-4 py-1.5 rounded-xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 font-mono font-bold text-base">
+                <div className="px-4 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-600/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-mono font-bold text-base">
                   {tenureMonths} Months ({Math.round((tenureMonths / 12) * 10) / 10} Yrs)
                 </div>
               </div>
@@ -166,10 +166,10 @@ const CalculatorSection = () => {
                 step={1}
                 value={tenureMonths}
                 onChange={(e) => setTenureMonths(Number(e.target.value))}
-                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-600"
               />
 
-              <div className="flex justify-between text-xs text-slate-500 font-mono">
+              <div className="flex justify-between text-xs text-slate-400 dark:text-slate-500 font-mono">
                 <span>3 Months</span>
                 <span>24 Months</span>
                 <span>60 Months</span>
@@ -177,7 +177,7 @@ const CalculatorSection = () => {
             </div>
 
             {/* Quick Presets */}
-            <div className="pt-2 flex items-center gap-2 flex-wrap text-xs text-slate-400">
+            <div className="pt-2 flex items-center gap-2 flex-wrap text-xs text-slate-500 dark:text-slate-400">
               <span className="font-semibold text-slate-500">Popular tenures:</span>
               {[6, 12, 24, 36, 48].map((m) => (
                 <button
@@ -186,8 +186,8 @@ const CalculatorSection = () => {
                   onClick={() => setTenureMonths(m)}
                   className={`px-3 py-1 rounded-lg border text-xs font-medium transition-colors ${
                     tenureMonths === m
-                      ? 'bg-indigo-600/20 text-indigo-300 border-indigo-500/40'
-                      : 'bg-slate-900 border-slate-800 hover:bg-slate-800 text-slate-300'
+                      ? 'bg-indigo-50 dark:bg-indigo-600/20 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-500/40 font-semibold'
+                      : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
                   }`}
                 >
                   {m}m

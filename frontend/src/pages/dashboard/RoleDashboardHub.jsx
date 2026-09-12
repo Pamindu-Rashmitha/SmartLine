@@ -133,7 +133,7 @@ const RoleDashboardHub = () => {
       title: 'Reference #',
       dataIndex: 'applicationNumber',
       key: 'applicationNumber',
-      render: (text) => <span className="font-mono text-xs font-semibold text-blue-400">{text}</span>,
+      render: (text) => <span className="font-mono text-xs font-semibold text-blue-600 dark:text-blue-400">{text}</span>,
     },
     {
       title: 'Borrower',
@@ -141,7 +141,7 @@ const RoleDashboardHub = () => {
       key: 'applicantName',
       render: (text, record) => (
         <div>
-          <span className="font-medium text-slate-200 block text-xs">{text || 'Applicant'}</span>
+          <span className="font-medium text-slate-900 dark:text-slate-200 block text-xs">{text || 'Applicant'}</span>
           {record.applicantNic && <span className="text-[11px] text-slate-500">{record.applicantNic}</span>}
         </div>
       ),
@@ -151,7 +151,7 @@ const RoleDashboardHub = () => {
       dataIndex: 'type',
       key: 'type',
       render: (type) => (
-        <span className="text-slate-300 text-xs">
+        <span className="text-slate-600 dark:text-slate-300 text-xs">
           {type === 'VEHICLE_LEASING' ? 'Vehicle Lease' : 'Money Loan'}
         </span>
       ),
@@ -160,7 +160,7 @@ const RoleDashboardHub = () => {
       title: 'Requested Amount',
       dataIndex: 'requestedAmount',
       key: 'requestedAmount',
-      render: (amt) => <span className="font-semibold text-white text-xs">{formatLkr(amt)}</span>,
+      render: (amt) => <span className="font-semibold text-slate-900 dark:text-white text-xs">{formatLkr(amt)}</span>,
     },
     {
       title: 'Status',
@@ -199,7 +199,7 @@ const RoleDashboardHub = () => {
           <Button
             type="link"
             size="small"
-            className="text-blue-400 hover:text-blue-300 p-0 flex items-center gap-1 text-xs"
+            className="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 p-0 flex items-center gap-1 text-xs font-medium"
             onClick={() => navigate(targetUrl)}
           >
             {actionLabel} <ArrowRight className="w-3 h-3" />
@@ -215,14 +215,14 @@ const RoleDashboardHub = () => {
       title: 'Inst #',
       dataIndex: 'installmentNumber',
       key: 'installmentNumber',
-      render: (num) => <span className="font-mono text-xs font-semibold text-amber-400">#{num}</span>,
+      render: (num) => <span className="font-mono text-xs font-semibold text-amber-600 dark:text-amber-400">#{num}</span>,
     },
     {
       title: 'Due Date',
       dataIndex: 'dueDate',
       key: 'dueDate',
       render: (date) => (
-        <span className="text-slate-300 text-xs font-mono">
+        <span className="text-slate-600 dark:text-slate-300 text-xs font-mono">
           {date ? dayjs(date).format('YYYY-MM-DD') : '-'}
         </span>
       ),
@@ -231,13 +231,13 @@ const RoleDashboardHub = () => {
       title: 'Total Due',
       dataIndex: 'totalAmount',
       key: 'totalAmount',
-      render: (amt) => <span className="font-semibold text-white text-xs">{formatLkr(amt)}</span>,
+      render: (amt) => <span className="font-semibold text-slate-900 dark:text-white text-xs">{formatLkr(amt)}</span>,
     },
     {
       title: 'Paid',
       dataIndex: 'paidAmount',
       key: 'paidAmount',
-      render: (amt) => <span className="text-emerald-400 text-xs">{formatLkr(amt)}</span>,
+      render: (amt) => <span className="text-emerald-600 dark:text-emerald-400 text-xs">{formatLkr(amt)}</span>,
     },
     {
       title: 'Status',
@@ -252,7 +252,7 @@ const RoleDashboardHub = () => {
         <Button
           type="link"
           size="small"
-          className="text-amber-400 hover:text-amber-300 p-0 flex items-center gap-1 text-xs"
+          className="text-amber-600 dark:text-amber-400 hover:text-amber-500 dark:hover:text-amber-300 p-0 flex items-center gap-1 text-xs font-medium"
           onClick={() => navigate(effectiveRole === 'APPLICANT' ? '/my-repayments' : '/collections')}
         >
           {effectiveRole === 'APPLICANT' ? 'Repay' : 'Follow Up'} <ArrowRight className="w-3 h-3" />
@@ -264,32 +264,32 @@ const RoleDashboardHub = () => {
   return (
     <div className="space-y-6">
       {/* Welcome & Command Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900/70 via-slate-900/90 to-slate-900 border border-blue-500/20 p-6 sm:p-8 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 dark:from-slate-900 dark:via-blue-950/60 dark:to-slate-900 border border-blue-500/30 dark:border-slate-800 p-6 sm:p-8 shadow-lg text-white">
         {/* Top-Right Corner Icon-Only Refresh Button */}
         <Button
-          icon={<RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-blue-400' : ''}`} />}
+          icon={<RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin' : ''}`} />}
           onClick={() => refetch()}
           title="Refresh Dashboard"
           aria-label="Refresh Dashboard"
-          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 h-9 w-9 p-0 flex items-center justify-center rounded-lg shadow-sm"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 bg-white/15 hover:bg-white/25 text-white border-white/20 dark:bg-slate-800/80 dark:hover:bg-slate-700 dark:text-slate-300 dark:border-slate-700/80 h-9 w-9 p-0 flex items-center justify-center rounded-lg shadow-sm"
         />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 pr-12 md:pr-14">
           <div>
             <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-semibold">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 border border-white/25 text-white dark:bg-blue-500/10 dark:border-blue-500/30 dark:text-blue-400 text-xs font-semibold">
                 <span>ACTIVE DESK: {effectiveRole.replace(/_/g, ' ')}</span>
               </div>
 
               {/* Admin Multi-Role Switcher */}
               {user?.role === 'ADMIN' && (
-                <div className="flex items-center gap-2 bg-slate-950/80 px-2.5 py-1 rounded-full border border-purple-500/40">
-                  <span className="text-[11px] text-purple-300 font-semibold">Admin View As:</span>
+                <div className="flex items-center gap-2 bg-white/10 dark:bg-slate-950/80 px-2.5 py-1 rounded-full border border-white/20 dark:border-purple-500/40">
+                  <span className="text-[11px] text-purple-100 dark:text-purple-300 font-semibold">Admin View As:</span>
                   <Select
                     size="small"
                     value={selectedRole}
                     onChange={(val) => setSelectedRole(val)}
-                    className="w-40"
+                    className="w-40 custom-role-select"
                     bordered={false}
                     options={ALL_ROLES.map((r) => ({
                       value: r,
@@ -303,29 +303,28 @@ const RoleDashboardHub = () => {
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white m-0">
               Welcome back, {user?.fullName || 'User'}
             </h2>
-            <p className="text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+            <p className="text-sm text-blue-100 dark:text-slate-300 mt-1 max-w-2xl leading-relaxed">
               Smart Line Investment Management System. Operational metrics, credit portfolio, and workflow queues are synchronized in real time.
             </p>
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
-
             {effectiveRole === 'APPLICANT' ? (
               <div className="flex items-center gap-2">
                 <Button
                   type="primary"
                   size="large"
                   onClick={() => navigate('/applications/new')}
-                  className="bg-blue-600 hover:bg-blue-500 font-semibold border-0 shadow-lg shadow-blue-600/30 flex items-center gap-2 h-11"
+                  className="bg-white hover:bg-blue-50 text-blue-700 font-semibold border-0 shadow-lg flex items-center gap-2 h-11"
                 >
-                  <Plus className="w-4 h-4" /> Apply for Loan
+                  <Plus className="w-4 h-4 text-blue-700" /> Apply for Loan
                 </Button>
                 <Button
                   size="large"
                   onClick={() => navigate('/my-repayments')}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 flex items-center gap-2 h-11"
+                  className="bg-white/15 hover:bg-white/25 text-white border-white/20 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 dark:border-slate-700 flex items-center gap-2 h-11"
                 >
-                  <Banknote className="w-4 h-4 text-emerald-400" /> My Repayments
+                  <Banknote className="w-4 h-4 text-emerald-300" /> My Repayments
                 </Button>
               </div>
             ) : (
@@ -333,9 +332,9 @@ const RoleDashboardHub = () => {
                 type="primary"
                 size="large"
                 onClick={handlePrimaryAction}
-                className="bg-blue-600 hover:bg-blue-500 font-semibold border-0 shadow-lg shadow-blue-600/30 flex items-center gap-2 h-11"
+                className="bg-white hover:bg-blue-50 text-blue-700 font-semibold border-0 shadow-lg flex items-center gap-2 h-11"
               >
-                <FileText className="w-4 h-4" />
+                <FileText className="w-4 h-4 text-blue-700" />
                 {effectiveRole === 'ADMIN' ? 'Manage Users' : 'Open Desk Queue'}
               </Button>
             )}
@@ -409,18 +408,18 @@ const RoleDashboardHub = () => {
         <div className={`${hasRightColumn ? 'lg:col-span-2' : 'lg:col-span-1'} space-y-6`}>
           {effectiveRole === 'CREDIT_CONTROL_OFFICER' ? (
             /* Delinquent Installments Table */
-            <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-5 shadow-lg">
-              <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+            <div className="rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div>
-                  <h3 className="text-base font-bold text-white m-0 flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 text-amber-400" /> High-Priority Delinquent Installments
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white m-0 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 text-amber-500 dark:text-amber-400" /> High-Priority Delinquent Installments
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">Overdue loan/lease installments requiring collection follow-ups</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Overdue loan/lease installments requiring collection follow-ups</p>
                 </div>
                 <Button
                   type="link"
                   size="small"
-                  className="text-blue-400 hover:text-blue-300"
+                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
                   onClick={() => navigate('/collections')}
                 >
                   View All Delinquencies
@@ -433,20 +432,20 @@ const RoleDashboardHub = () => {
                   dataSource={recentInstallments.map((item) => ({ ...item, key: item.id }))}
                   pagination={false}
                   size="middle"
-                  locale={{ emptyText: <div className="py-6 text-xs text-slate-500">No overdue installments currently on file</div> }}
+                  locale={{ emptyText: <div className="py-6 text-xs text-slate-400 dark:text-slate-500">No overdue installments currently on file</div> }}
                 />
               </div>
             </div>
           ) : (
             /* Applications Queue Table */
-            <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-5 shadow-lg">
-              <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+            <div className="rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div>
-                  <h3 className="text-base font-bold text-white m-0 flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-blue-400" />
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white m-0 flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     {effectiveRole === 'APPLICANT' ? 'My Recent Applications' : 'Operational Workflow Queue'}
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     {effectiveRole === 'APPLICANT'
                       ? 'Live tracking of your submitted loan & lease requests'
                       : 'Applications currently requiring attention at this operational stage'}
@@ -455,7 +454,7 @@ const RoleDashboardHub = () => {
                 <Button
                   type="link"
                   size="small"
-                  className="text-blue-400 hover:text-blue-300"
+                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
                   onClick={handlePrimaryAction}
                 >
                   View All
@@ -468,7 +467,7 @@ const RoleDashboardHub = () => {
                   dataSource={recentApplications.map((item) => ({ ...item, key: item.id }))}
                   pagination={false}
                   size="middle"
-                  locale={{ emptyText: <div className="py-6 text-xs text-slate-500">No applications currently in this queue</div> }}
+                  locale={{ emptyText: <div className="py-6 text-xs text-slate-400 dark:text-slate-500">No applications currently in this queue</div> }}
                 />
               </div>
             </div>
@@ -476,18 +475,18 @@ const RoleDashboardHub = () => {
 
           {/* If applicant, also show upcoming installments */}
           {effectiveRole === 'APPLICANT' && recentInstallments?.length > 0 && (
-            <div className="rounded-xl bg-slate-900/80 border border-slate-800 p-5 shadow-lg">
-              <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+            <div className="rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div>
-                  <h3 className="text-base font-bold text-white m-0 flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-amber-400" /> Upcoming Installments Schedule
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white m-0 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-amber-500 dark:text-amber-400" /> Upcoming Installments Schedule
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">Scheduled repayments for your active facilities</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Scheduled repayments for your active facilities</p>
                 </div>
                 <Button
                   type="link"
                   size="small"
-                  className="text-blue-400 hover:text-blue-300"
+                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
                   onClick={() => navigate('/my-repayments')}
                 >
                   View All Repayments
@@ -516,25 +515,25 @@ const RoleDashboardHub = () => {
 
             {/* Contextual Info Box: Customer Support for Applicant */}
             {effectiveRole === 'APPLICANT' && (
-              <div className="rounded-xl bg-gradient-to-br from-slate-900 to-blue-950/40 border border-slate-800 p-5">
-                <h4 className="text-sm font-bold text-white mb-1 flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Borrower Support & Help Desk
+              <div className="rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50/50 dark:from-slate-900 dark:to-blue-950/40 border border-blue-100 dark:border-slate-800 p-5 shadow-sm">
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> Borrower Support & Help Desk
                 </h4>
-                <p className="text-xs text-slate-300 leading-relaxed mb-3">
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
                   Have questions regarding your loan application, vehicle lease, or upcoming repayment schedule? Our customer service team is ready to assist.
                 </p>
-                <div className="text-xs text-slate-400 bg-slate-950/80 p-3 rounded-lg border border-slate-800 space-y-2">
+                <div className="text-xs text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-950/80 p-3 rounded-lg border border-blue-100 dark:border-slate-800 space-y-2 shadow-xs">
                   <div className="flex items-center justify-between">
                     <span className="text-slate-500">Customer Hotline:</span>
-                    <span className="font-semibold text-slate-200">+94 11 234 5678</span>
+                    <span className="font-semibold text-slate-900 dark:text-slate-200">+94 11 234 5678</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-500">Documentation Email:</span>
-                    <span className="font-semibold text-blue-400">support@smartline.lk</span>
+                    <span className="font-semibold text-blue-600 dark:text-blue-400">support@smartline.lk</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-500">Working Hours:</span>
-                    <span className="text-slate-300">Mon - Fri (8:30 AM - 5:00 PM)</span>
+                    <span className="text-slate-700 dark:text-slate-300">Mon - Fri (8:30 AM - 5:00 PM)</span>
                   </div>
                 </div>
               </div>

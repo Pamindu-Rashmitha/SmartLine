@@ -21,26 +21,26 @@ dayjs.extend(relativeTime);
 const TYPE_CONFIG = {
   ACTION_REQUIRED: {
     icon: AlertCircle,
-    color: 'text-amber-400',
-    bgColor: 'bg-amber-500/10 border-amber-500/20',
+    color: 'text-amber-500 dark:text-amber-400',
+    bgColor: 'bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20',
     tagText: 'Action',
   },
   WARNING: {
     icon: AlertTriangle,
-    color: 'text-rose-400',
-    bgColor: 'bg-rose-500/10 border-rose-500/20',
+    color: 'text-rose-500 dark:text-rose-400',
+    bgColor: 'bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20',
     tagText: 'Alert',
   },
   STATUS_UPDATE: {
     icon: CheckCircle2,
-    color: 'text-emerald-400',
-    bgColor: 'bg-emerald-500/10 border-emerald-500/20',
+    color: 'text-emerald-600 dark:text-emerald-400',
+    bgColor: 'bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/20',
     tagText: 'Update',
   },
   INFO: {
     icon: Info,
-    color: 'text-blue-400',
-    bgColor: 'bg-blue-500/10 border-blue-500/20',
+    color: 'text-blue-600 dark:text-blue-400',
+    bgColor: 'bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20',
     tagText: 'Info',
   },
 };
@@ -69,15 +69,15 @@ const NotificationBell = () => {
   });
 
   const popoverContent = (
-    <div className="w-[380px] max-w-[90vw] -mx-4 -my-3 flex flex-col bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl text-slate-100">
+    <div className="w-[380px] max-w-[90vw] -mx-4 -my-3 flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-2xl text-slate-800 dark:text-slate-100">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-900/90">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50/90 dark:bg-slate-900/90">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-sm text-slate-100">Notifications</span>
+          <span className="font-semibold text-sm text-slate-900 dark:text-slate-100">Notifications</span>
           <div
             className={`flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full border ${isConnected
-                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20'
+                : 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-500/20'
               }`}
             title={isConnected ? 'Live WebSocket Connected' : 'Reconnecting...'}
           >
@@ -89,7 +89,7 @@ const NotificationBell = () => {
         <div className="flex items-center gap-1">
           <button
             onClick={refreshNotifications}
-            className="p-1 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors border-0 bg-transparent cursor-pointer"
+            className="p-1 rounded text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border-0 bg-transparent cursor-pointer"
             title="Refresh notifications"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
@@ -97,7 +97,7 @@ const NotificationBell = () => {
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
-              className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 font-medium px-2 py-1 rounded hover:bg-blue-500/10 transition-colors border-0 bg-transparent cursor-pointer"
+              className="flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium px-2 py-1 rounded hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors border-0 bg-transparent cursor-pointer"
             >
               <CheckCheck className="w-3.5 h-3.5" />
               <span>Mark read</span>
@@ -107,7 +107,7 @@ const NotificationBell = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="px-4 border-b border-slate-800/80 bg-slate-950/40">
+      <div className="px-4 border-b border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/40">
         <Tabs
           activeKey={activeTab}
           onChange={setActiveTab}
@@ -125,7 +125,7 @@ const NotificationBell = () => {
       </div>
 
       {/* Notification List */}
-      <div className="max-h-[360px] overflow-y-auto divide-y divide-slate-800/60 custom-scrollbar">
+      <div className="max-h-[360px] overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800/60 custom-scrollbar">
         {filteredNotifications.length === 0 ? (
           <div className="py-10 text-center text-slate-400">
             <Empty
@@ -146,7 +146,7 @@ const NotificationBell = () => {
               <div
                 key={notif.id}
                 onClick={() => handleItemClick(notif)}
-                className={`flex gap-3 px-4 py-3 cursor-pointer transition-all hover:bg-slate-800/60 ${!notif.read ? 'bg-blue-950/20 border-l-2 border-blue-500' : 'opacity-80 hover:opacity-100'
+                className={`flex gap-3 px-4 py-3 cursor-pointer transition-all hover:bg-slate-50 dark:hover:bg-slate-800/60 ${!notif.read ? 'bg-blue-50/60 dark:bg-blue-950/20 border-l-2 border-blue-600 dark:border-blue-500' : 'opacity-85 hover:opacity-100'
                   }`}
               >
                 <div className={`mt-0.5 p-1.5 rounded-lg shrink-0 border ${config.bgColor}`}>
@@ -156,28 +156,28 @@ const NotificationBell = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <p
-                      className={`text-xs truncate ${!notif.read ? 'font-semibold text-slate-100' : 'font-medium text-slate-300'
+                      className={`text-xs truncate ${!notif.read ? 'font-semibold text-slate-900 dark:text-slate-100' : 'font-medium text-slate-700 dark:text-slate-300'
                         }`}
                     >
                       {notif.title}
                     </p>
-                    <span className="text-[10px] text-slate-500 shrink-0 whitespace-nowrap">
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500 shrink-0 whitespace-nowrap">
                       {dayjs(notif.createdAt).fromNow()}
                     </span>
                   </div>
 
-                  <p className="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-snug line-clamp-2">
                     {notif.message}
                   </p>
 
                   <div className="mt-2 flex items-center justify-between text-[10px]">
                     {notif.referenceType && (
-                      <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700 font-mono text-[9px]">
+                      <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 font-mono text-[9px]">
                         {notif.referenceType}
                       </span>
                     )}
                     {notif.targetUrl && (
-                      <span className="flex items-center gap-0.5 text-blue-400 font-medium ml-auto hover:underline">
+                      <span className="flex items-center gap-0.5 text-blue-600 dark:text-blue-400 font-medium ml-auto hover:underline">
                         <span>View</span>
                         <ExternalLink className="w-2.5 h-2.5" />
                       </span>
@@ -192,7 +192,7 @@ const NotificationBell = () => {
 
       {/* Footer */}
       {notifications.length > 0 && (
-        <div className="px-4 py-2 border-t border-slate-800 text-center bg-slate-950/60 text-[11px] text-slate-400">
+        <div className="px-4 py-2 border-t border-slate-200 dark:border-slate-800 text-center bg-slate-50 dark:bg-slate-950/60 text-[11px] text-slate-500 dark:text-slate-400">
           Showing recent activity
         </div>
       )}
@@ -210,7 +210,7 @@ const NotificationBell = () => {
     >
       <button
         type="button"
-        className="relative p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border-0 bg-transparent cursor-pointer"
+        className="relative p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition-colors border-0 bg-transparent cursor-pointer"
         title="Notifications"
       >
         <Bell className="w-5 h-5" />

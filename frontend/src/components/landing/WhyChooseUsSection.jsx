@@ -37,7 +37,7 @@ const ADVANTAGES = [
 
 const WhyChooseUsSection = () => {
   return (
-    <section id="why-us" className="py-20 lg:py-28 bg-slate-950 relative overflow-hidden">
+    <section id="why-us" className="py-20 lg:py-28 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800/60 relative overflow-hidden transition-colors duration-200">
       {/* Background glow accent */}
       <div className="absolute top-1/3 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -47,13 +47,13 @@ const WhyChooseUsSection = () => {
           {STATS.map((stat, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 text-center hover:border-slate-700 transition-all hover:-translate-y-0.5 shadow-lg"
+              className="p-6 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-center hover:border-slate-300 dark:hover:border-slate-700 transition-all hover:-translate-y-0.5 shadow-sm hover:shadow-md"
             >
-              <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-white font-mono tracking-tight text-blue-400">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tracking-tight text-blue-600 dark:text-blue-400">
                 {stat.value}
               </div>
-              <div className="text-sm font-bold text-slate-200 mt-2">{stat.label}</div>
-              <div className="text-xs text-slate-400 mt-1">{stat.subtitle}</div>
+              <div className="text-sm font-bold text-slate-800 dark:text-slate-200 mt-2">{stat.label}</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{stat.subtitle}</div>
             </div>
           ))}
         </div>
@@ -62,33 +62,33 @@ const WhyChooseUsSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Heading & Vision */}
           <div className="lg:col-span-5 space-y-6">
-            <p className="text-xs font-bold uppercase tracking-widest text-blue-400">
+            <p className="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
               Why Partner With Us
             </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
               A Financial Partner That Understands Your Reality
             </h2>
-            <p className="text-base text-slate-400 leading-relaxed">
+            <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
               Traditional banking can be slow, rigid, and intimidating. At Smart Line Investment, we combine modern technology with empathetic micro-lending to deliver loans and vehicle leases that empower your everyday life.
             </p>
 
-            <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800/80 space-y-4">
+            <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 space-y-4 shadow-sm">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                <div className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white m-0">Ethical & Regulated Practices</h4>
-                  <p className="text-xs text-slate-400 m-0">Standardized contracts and transparent interest policies</p>
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white m-0">Ethical & Regulated Practices</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 m-0">Standardized contracts and transparent interest policies</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400">
+                <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-600 dark:text-blue-400">
                   <Users className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white m-0">Multi-Guarantor Inclusivity</h4>
-                  <p className="text-xs text-slate-400 m-0">Flexible eligibility checks for freelancers and self-employed</p>
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white m-0">Multi-Guarantor Inclusivity</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 m-0">Flexible eligibility checks for freelancers and self-employed</p>
                 </div>
               </div>
             </div>
@@ -101,15 +101,15 @@ const WhyChooseUsSection = () => {
               return (
                 <div
                   key={idx}
-                  className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-blue-500/40 transition-all hover:bg-slate-900 group"
+                  className="p-6 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500/40 transition-all hover:bg-white dark:hover:bg-slate-900 shadow-sm hover:shadow-md group"
                 >
-                  <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-blue-600/10 border border-blue-500/20 text-blue-400 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                  <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-600/10 border border-blue-200 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-all">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="text-base font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     {adv.title}
                   </h3>
-                  <p className="text-xs text-slate-400 leading-relaxed">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                     {adv.description}
                   </p>
                 </div>

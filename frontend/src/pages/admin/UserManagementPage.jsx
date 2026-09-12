@@ -37,15 +37,15 @@ import StatCard from '../../components/common/StatCard';
 const { Option } = Select;
 
 const ROLE_CONFIG = {
-  ADMIN: { label: 'Administrator', color: 'red', bg: 'bg-rose-500/15 text-rose-300 border-rose-500/30' },
-  SENIOR_MANAGER: { label: 'Senior Manager', color: 'purple', bg: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30' },
-  CREDIT_MANAGER: { label: 'Credit Manager', color: 'geekblue', bg: 'bg-purple-500/15 text-purple-300 border-purple-500/30' },
-  LOAN_OFFICER: { label: 'Loan Officer', color: 'blue', bg: 'bg-blue-500/15 text-blue-300 border-blue-500/30' },
-  FIELD_OFFICER: { label: 'Field Officer', color: 'cyan', bg: 'bg-teal-500/15 text-teal-300 border-teal-500/30' },
-  LEGAL_OFFICER: { label: 'Legal Officer', color: 'gold', bg: 'bg-amber-500/15 text-amber-300 border-amber-500/30' },
-  FINANCE_OFFICER: { label: 'Finance Officer', color: 'green', bg: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' },
-  CREDIT_CONTROL_OFFICER: { label: 'Credit Control Officer', color: 'orange', bg: 'bg-orange-500/15 text-orange-300 border-orange-500/30' },
-  APPLICANT: { label: 'Applicant / Borrower', color: 'default', bg: 'bg-slate-700/40 text-slate-300 border-slate-600' },
+  ADMIN: { label: 'Administrator', color: 'red', bg: 'bg-rose-50 dark:bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-500/30' },
+  SENIOR_MANAGER: { label: 'Senior Manager', color: 'purple', bg: 'bg-indigo-50 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/30' },
+  CREDIT_MANAGER: { label: 'Credit Manager', color: 'geekblue', bg: 'bg-purple-50 dark:bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-500/30' },
+  LOAN_OFFICER: { label: 'Loan Officer', color: 'blue', bg: 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-500/30' },
+  FIELD_OFFICER: { label: 'Field Officer', color: 'cyan', bg: 'bg-teal-50 dark:bg-teal-500/15 text-teal-700 dark:text-teal-300 border-teal-200 dark:border-teal-500/30' },
+  LEGAL_OFFICER: { label: 'Legal Officer', color: 'gold', bg: 'bg-amber-50 dark:bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-500/30' },
+  FINANCE_OFFICER: { label: 'Finance Officer', color: 'green', bg: 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30' },
+  CREDIT_CONTROL_OFFICER: { label: 'Credit Control Officer', color: 'orange', bg: 'bg-orange-50 dark:bg-orange-500/15 text-orange-800 dark:text-orange-300 border-orange-200 dark:border-orange-500/30' },
+  APPLICANT: { label: 'Applicant / Borrower', color: 'default', bg: 'bg-slate-100 dark:bg-slate-700/40 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600' },
 };
 
 const STAFF_ROLES = [
@@ -223,10 +223,10 @@ const UserManagementPage = () => {
             {record.fullName?.charAt(0) || record.username?.charAt(0) || 'U'}
           </Avatar>
           <div>
-            <div className="font-semibold text-slate-100 text-sm leading-snug">
+            <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm leading-snug">
               {record.fullName}
             </div>
-            <div className="text-xs text-blue-400 font-mono">@{record.username}</div>
+            <div className="text-xs text-blue-600 dark:text-blue-400 font-mono">@{record.username}</div>
           </div>
         </div>
       ),
@@ -235,14 +235,14 @@ const UserManagementPage = () => {
       title: 'Contact Details',
       key: 'contact',
       render: (_, record) => (
-        <div className="space-y-0.5 text-xs text-slate-300">
+        <div className="space-y-0.5 text-xs text-slate-600 dark:text-slate-300">
           <div className="flex items-center gap-1.5">
             <Mail className="w-3 h-3 text-slate-400" />
             <span>{record.email}</span>
           </div>
           {record.phoneNumber && (
-            <div className="flex items-center gap-1.5 text-slate-400">
-              <Phone className="w-3 h-3 text-slate-500" />
+            <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+              <Phone className="w-3 h-3 text-slate-400" />
               <span>{record.phoneNumber}</span>
             </div>
           )}
@@ -254,7 +254,7 @@ const UserManagementPage = () => {
       dataIndex: 'role',
       key: 'role',
       render: (role) => {
-        const config = ROLE_CONFIG[role] || { label: role, bg: 'bg-slate-800 text-slate-300' };
+        const config = ROLE_CONFIG[role] || { label: role, bg: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300' };
         return (
           <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold border ${config.bg}`}>
             {config.label}
@@ -270,11 +270,11 @@ const UserManagementPage = () => {
         <span
           className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${
             active
-              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-              : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+              ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20'
+              : 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20'
           }`}
         >
-          <span className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-emerald-400' : 'bg-rose-400'}`} />
+          <span className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-emerald-500' : 'bg-rose-500'}`} />
           {active ? 'Active' : 'Suspended'}
         </span>
       ),
@@ -284,7 +284,7 @@ const UserManagementPage = () => {
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (date) => (
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
           {date ? dayjs(date).format('DD MMM YYYY') : '—'}
         </span>
       ),
@@ -300,7 +300,7 @@ const UserManagementPage = () => {
               size="small"
               icon={<Edit2 className="w-3.5 h-3.5" />}
               onClick={() => openEditModal(record)}
-              className="bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700"
+              className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700"
             />
           </Tooltip>
 
@@ -309,7 +309,7 @@ const UserManagementPage = () => {
               size="small"
               icon={<KeyRound className="w-3.5 h-3.5" />}
               onClick={() => openResetModal(record)}
-              className="bg-slate-800 hover:bg-slate-700 text-amber-300 border-slate-700"
+              className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-amber-600 dark:text-amber-300 border-slate-200 dark:border-slate-700"
             />
           </Tooltip>
 
@@ -328,7 +328,7 @@ const UserManagementPage = () => {
               size="small"
               icon={record.active ? <UserX className="w-3.5 h-3.5" /> : <UserCheck className="w-3.5 h-3.5" />}
               danger={record.active}
-              className={!record.active ? 'bg-emerald-950/40 text-emerald-400 border-emerald-800' : ''}
+              className={!record.active ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800' : ''}
             />
           </Popconfirm>
         </div>
@@ -339,17 +339,17 @@ const UserManagementPage = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/80 p-6 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900/80 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl backdrop-blur-sm transition-colors duration-200">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30">
+            <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30">
               <Users className="w-6 h-6" />
             </div>
-            <h1 className="text-2xl font-bold text-slate-100 tracking-tight m-0">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight m-0">
               User Directory & Staff Lifecycle Desk
             </h1>
           </div>
-          <p className="text-slate-400 text-sm mt-1.5 mb-0">
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1.5 mb-0">
             Provision staff user accounts across 9 organizational roles, modify access permissions, and manage password policies (US20).
           </p>
         </div>
@@ -359,7 +359,7 @@ const UserManagementPage = () => {
             type="primary"
             icon={<UserPlus className="w-4 h-4" />}
             onClick={() => setCreateModalOpen(true)}
-            className="bg-blue-600 hover:bg-blue-500 font-semibold border-0 shadow-lg shadow-blue-600/30 flex items-center gap-1.5"
+            className="bg-blue-600 hover:bg-blue-500 font-semibold border-0 shadow-md shadow-blue-600/20 flex items-center gap-1.5"
           >
             Add Staff Member
           </Button>
@@ -415,7 +415,7 @@ const UserManagementPage = () => {
       </Row>
 
       {/* Filter and Main Table */}
-      <Card className="bg-slate-900/80 border-slate-800 shadow-xl">
+      <Card className="bg-white dark:bg-slate-900/80 border-slate-200/80 dark:border-slate-800 shadow-sm dark:shadow-xl transition-colors duration-200">
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mb-5">
           <div className="flex flex-wrap gap-3 items-center w-full sm:w-auto">
             <Input
@@ -424,7 +424,7 @@ const UserManagementPage = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onPressEnter={handleSearch}
-              className="w-full sm:w-72 bg-slate-950 border-slate-800 text-slate-200"
+              className="w-full sm:w-72 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200"
               allowClear
             />
 
@@ -461,7 +461,7 @@ const UserManagementPage = () => {
                 fetchUsers(pagination.current, pagination.pageSize);
                 fetchStats();
               }}
-              className="bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700 text-xs"
+              className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 text-xs"
             >
               Refresh
             </Button>
@@ -479,17 +479,17 @@ const UserManagementPage = () => {
             total: pagination.total,
             showSizeChanger: true,
             onChange: (page, pageSize) => fetchUsers(page, pageSize),
-            className: 'text-slate-400',
+            className: 'text-slate-600 dark:text-slate-400',
           }}
-          className="ant-table-dark border border-slate-800/80 rounded-xl overflow-hidden"
+          className="border border-slate-200 dark:border-slate-800/80 rounded-xl overflow-hidden"
         />
       </Card>
 
       {/* Modal: Create Staff User */}
       <Modal
         title={
-          <div className="flex items-center gap-2 text-white">
-            <UserPlus className="w-5 h-5 text-blue-400" />
+          <div className="flex items-center gap-2 text-slate-900 dark:text-white font-semibold">
+            <UserPlus className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             <span>Provision New Staff Member Account</span>
           </div>
         }
@@ -497,13 +497,12 @@ const UserManagementPage = () => {
         onCancel={() => setCreateModalOpen(false)}
         footer={null}
         destroyOnClose
-        className="dark-modal"
       >
         <Form form={createForm} layout="vertical" onFinish={handleCreateStaff} className="mt-4">
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                label={<span className="text-slate-300 text-xs">Full Name</span>}
+                label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Full Name</span>}
                 name="fullName"
                 rules={[{ required: true, message: 'Please enter staff member full name' }]}
               >
@@ -512,7 +511,7 @@ const UserManagementPage = () => {
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span className="text-slate-300 text-xs">Username</span>}
+                label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Username</span>}
                 name="username"
                 rules={[{ required: true, message: 'Please specify unique username' }]}
               >
@@ -524,7 +523,7 @@ const UserManagementPage = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                label={<span className="text-slate-300 text-xs">Official Email</span>}
+                label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Official Email</span>}
                 name="email"
                 rules={[
                   { required: true, message: 'Please enter valid email' },
@@ -536,7 +535,7 @@ const UserManagementPage = () => {
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span className="text-slate-300 text-xs">Phone Number</span>}
+                label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Phone Number</span>}
                 name="phoneNumber"
               >
                 <Input placeholder="+94 77 123 4567" />
@@ -547,7 +546,7 @@ const UserManagementPage = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                label={<span className="text-slate-300 text-xs">Departmental Role</span>}
+                label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Departmental Role</span>}
                 name="role"
                 rules={[{ required: true, message: 'Select system role' }]}
               >
@@ -562,7 +561,7 @@ const UserManagementPage = () => {
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span className="text-slate-300 text-xs">Temporary Password</span>}
+                label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Temporary Password</span>}
                 name="password"
                 rules={[
                   { required: true, message: 'Set initial password' },
@@ -574,9 +573,9 @@ const UserManagementPage = () => {
             </Col>
           </Row>
 
-          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-800">
+          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
             <Button onClick={() => setCreateModalOpen(false)}>Cancel</Button>
-            <Button type="primary" htmlType="submit" loading={submitting} className="bg-blue-600 hover:bg-blue-500">
+            <Button type="primary" htmlType="submit" loading={submitting} className="bg-blue-600 hover:bg-blue-500 font-semibold">
               Provision Staff Account
             </Button>
           </div>
@@ -586,8 +585,8 @@ const UserManagementPage = () => {
       {/* Modal: Edit User */}
       <Modal
         title={
-          <div className="flex items-center gap-2 text-white">
-            <Edit2 className="w-5 h-5 text-blue-400" />
+          <div className="flex items-center gap-2 text-slate-900 dark:text-white font-semibold">
+            <Edit2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             <span>Edit User: {selectedUser?.username}</span>
           </div>
         }
@@ -595,11 +594,10 @@ const UserManagementPage = () => {
         onCancel={() => setEditModalOpen(false)}
         footer={null}
         destroyOnClose
-        className="dark-modal"
       >
         <Form form={editForm} layout="vertical" onFinish={handleEditUser} className="mt-4">
           <Form.Item
-            label={<span className="text-slate-300 text-xs">Full Name</span>}
+            label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Full Name</span>}
             name="fullName"
             rules={[{ required: true, message: 'Please enter name' }]}
           >
@@ -607,7 +605,7 @@ const UserManagementPage = () => {
           </Form.Item>
 
           <Form.Item
-            label={<span className="text-slate-300 text-xs">Email Address</span>}
+            label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Email Address</span>}
             name="email"
             rules={[
               { required: true, message: 'Please enter email' },
@@ -617,12 +615,12 @@ const UserManagementPage = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item label={<span className="text-slate-300 text-xs">Phone Number</span>} name="phoneNumber">
+          <Form.Item label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Phone Number</span>} name="phoneNumber">
             <Input />
           </Form.Item>
 
           <Form.Item
-            label={<span className="text-slate-300 text-xs">Role Assignment</span>}
+            label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Role Assignment</span>}
             name="role"
             rules={[{ required: true, message: 'Please select role' }]}
           >
@@ -636,16 +634,16 @@ const UserManagementPage = () => {
           </Form.Item>
 
           <Form.Item
-            label={<span className="text-slate-300 text-xs">Account Status</span>}
+            label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Account Status</span>}
             name="active"
             valuePropName="checked"
           >
             <Switch checkedChildren="Active" unCheckedChildren="Suspended" />
           </Form.Item>
 
-          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-800">
+          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
             <Button onClick={() => setEditModalOpen(false)}>Cancel</Button>
-            <Button type="primary" htmlType="submit" loading={submitting} className="bg-blue-600 hover:bg-blue-500">
+            <Button type="primary" htmlType="submit" loading={submitting} className="bg-blue-600 hover:bg-blue-500 font-semibold">
               Save Changes
             </Button>
           </div>
@@ -655,8 +653,8 @@ const UserManagementPage = () => {
       {/* Modal: Reset Password */}
       <Modal
         title={
-          <div className="flex items-center gap-2 text-white">
-            <KeyRound className="w-5 h-5 text-amber-400" />
+          <div className="flex items-center gap-2 text-slate-900 dark:text-white font-semibold">
+            <KeyRound className="w-5 h-5 text-amber-500 dark:text-amber-400" />
             <span>Reset Password for @{selectedUser?.username}</span>
           </div>
         }
@@ -664,15 +662,14 @@ const UserManagementPage = () => {
         onCancel={() => setResetModalOpen(false)}
         footer={null}
         destroyOnClose
-        className="dark-modal"
       >
         <Form form={resetForm} layout="vertical" onFinish={handleResetPassword} className="mt-4">
-          <p className="text-xs text-slate-400 mb-4">
-            Enter a new password for <span className="text-white font-semibold">{selectedUser?.fullName}</span>. The user will be able to log in immediately with these new credentials.
+          <p className="text-xs text-slate-600 dark:text-slate-400 mb-4">
+            Enter a new password for <span className="text-slate-900 dark:text-white font-semibold">{selectedUser?.fullName}</span>. The user will be able to log in immediately with these new credentials.
           </p>
 
           <Form.Item
-            label={<span className="text-slate-300 text-xs">New Password</span>}
+            label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">New Password</span>}
             name="newPassword"
             rules={[
               { required: true, message: 'Please enter new password' },
@@ -683,16 +680,16 @@ const UserManagementPage = () => {
           </Form.Item>
 
           <Form.Item
-            label={<span className="text-slate-300 text-xs">Confirm New Password</span>}
+            label={<span className="text-slate-700 dark:text-slate-300 text-xs font-medium">Confirm New Password</span>}
             name="confirmPassword"
             rules={[{ required: true, message: 'Please confirm password' }]}
           >
             <Input.Password placeholder="Re-enter password" />
           </Form.Item>
 
-          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-800">
+          <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
             <Button onClick={() => setResetModalOpen(false)}>Cancel</Button>
-            <Button type="primary" htmlType="submit" loading={submitting} className="bg-amber-600 hover:bg-amber-500 border-0">
+            <Button type="primary" htmlType="submit" loading={submitting} className="bg-amber-600 hover:bg-amber-500 border-0 font-semibold text-white">
               Update Password
             </Button>
           </div>

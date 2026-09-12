@@ -209,7 +209,7 @@ const FinanceDisbursalDesk = () => {
       dataIndex: 'requestedAmount',
       key: 'requestedAmount',
       render: (amount) => (
-        <div className="font-mono font-semibold text-slate-200">
+        <div className="font-mono font-semibold text-slate-900 dark:text-slate-200">
           LKR {Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
         </div>
       ),
@@ -248,8 +248,8 @@ const FinanceDisbursalDesk = () => {
       key: 'applicationNumber',
       render: (text, record) => (
         <div>
-          <span className="font-semibold text-blue-400 font-mono">{text}</span>
-          <div className="text-xs text-slate-400">
+          <span className="font-semibold text-blue-600 dark:text-blue-400 font-mono">{text}</span>
+          <div className="text-xs text-slate-500 dark:text-slate-400">
             {dayjs(record.createdAt).format('DD MMM YYYY')}
           </div>
         </div>
@@ -261,8 +261,8 @@ const FinanceDisbursalDesk = () => {
       key: 'applicantName',
       render: (text, record) => (
         <div>
-          <div className="font-medium text-slate-200">{text}</div>
-          <div className="text-xs text-slate-400 font-mono">NIC: {record.applicantNic}</div>
+          <div className="font-medium text-slate-900 dark:text-slate-200">{text}</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-mono">NIC: {record.applicantNic}</div>
         </div>
       ),
     },
@@ -271,15 +271,15 @@ const FinanceDisbursalDesk = () => {
       dataIndex: 'type',
       key: 'type',
       render: (type) => (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-800 border border-slate-700 text-slate-300">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">
           {type === 'VEHICLE_LEASE' ? (
             <>
-              <Car className="w-3.5 h-3.5 text-amber-400" />
+              <Car className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
               <span>Vehicle Lease</span>
             </>
           ) : (
             <>
-              <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+              <DollarSign className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Money Loan</span>
             </>
           )}
@@ -291,7 +291,7 @@ const FinanceDisbursalDesk = () => {
       dataIndex: 'requestedAmount',
       key: 'requestedAmount',
       render: (amount) => (
-        <div className="font-mono font-bold text-emerald-400 text-sm">
+        <div className="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-sm">
           LKR {Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
         </div>
       ),
@@ -301,11 +301,11 @@ const FinanceDisbursalDesk = () => {
       key: 'preconditions',
       render: () => (
         <div className="space-y-1">
-          <div className="flex items-center gap-1 text-[11px] text-emerald-400">
+          <div className="flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400">
             <FileCheck2 className="w-3.5 h-3.5" />
             <span>Agreement Sealed</span>
           </div>
-          <div className="flex items-center gap-1 text-[11px] text-emerald-400">
+          <div className="flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400">
             <CheckCircle2 className="w-3.5 h-3.5" />
             <span>Down-Payment Cleared</span>
           </div>
@@ -332,17 +332,17 @@ const FinanceDisbursalDesk = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900/60 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30">
+            <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-600/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30">
               <DollarSign className="w-5 h-5" />
             </div>
-            <h1 className="text-2xl font-bold text-slate-100 tracking-tight m-0">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight m-0">
               Finance & Disbursal Operations Desk
             </h1>
           </div>
-          <p className="text-slate-400 text-sm mt-1.5 mb-0">
+          <p className="text-slate-600 dark:text-slate-400 text-sm mt-1.5 mb-0">
             Verify down-payment collections, disburse approved credit funds, and activate active lending facilities (US14, US15).
           </p>
         </div>
@@ -399,7 +399,7 @@ const FinanceDisbursalDesk = () => {
       </Row>
 
       {/* Primary Workstation Card */}
-      <Card className="bg-slate-900/80 border-slate-800 shadow-xl">
+      <Card className="bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl">
         <Tabs
           activeKey={activeTab}
           onChange={setActiveTab}
@@ -424,12 +424,12 @@ const FinanceDisbursalDesk = () => {
                     rowKey="id"
                     loading={loading}
                     pagination={{ pageSize: 8 }}
-                    className="ant-table-dark border border-slate-800 rounded-xl overflow-hidden"
+                    className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden"
                     locale={{
                       emptyText: (
                         <div className="py-12 text-center text-slate-500">
-                          <CheckCircle2 className="w-12 h-12 mx-auto mb-3 opacity-30 text-emerald-400" />
-                          <div className="font-medium text-slate-400">No pending down-payments</div>
+                          <CheckCircle2 className="w-12 h-12 mx-auto mb-3 opacity-30 text-emerald-500" />
+                          <div className="font-medium text-slate-600 dark:text-slate-400">No pending down-payments</div>
                           <div className="text-xs text-slate-500 mt-1">All down-payments have been verified</div>
                         </div>
                       ),
@@ -457,12 +457,12 @@ const FinanceDisbursalDesk = () => {
                     rowKey="id"
                     loading={loading}
                     pagination={{ pageSize: 8 }}
-                    className="ant-table-dark border border-slate-800 rounded-xl overflow-hidden"
+                    className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden"
                     locale={{
                       emptyText: (
                         <div className="py-12 text-center text-slate-500">
-                          <CheckCircle2 className="w-12 h-12 mx-auto mb-3 opacity-30 text-emerald-400" />
-                          <div className="font-medium text-slate-400">No pending disbursals</div>
+                          <CheckCircle2 className="w-12 h-12 mx-auto mb-3 opacity-30 text-emerald-500" />
+                          <div className="font-medium text-slate-600 dark:text-slate-400">No pending disbursals</div>
                           <div className="text-xs text-slate-500 mt-1">All approved facilities have been funded</div>
                         </div>
                       ),
@@ -478,8 +478,8 @@ const FinanceDisbursalDesk = () => {
       {/* Down-Payment Recording Modal */}
       <Modal
         title={
-          <div className="flex items-center gap-2 text-slate-100">
-            <Receipt className="w-5 h-5 text-amber-400" />
+          <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+            <Receipt className="w-5 h-5 text-amber-500 dark:text-amber-400" />
             <span>Record Down-Payment Receipt</span>
           </div>
         }
@@ -488,18 +488,18 @@ const FinanceDisbursalDesk = () => {
         footer={null}
         destroyOnClose
       >
-        <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 mb-4 text-xs space-y-1 font-mono">
+        <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 mb-4 text-xs space-y-1 font-mono">
           <div className="flex justify-between">
-            <span className="text-slate-400">Application:</span>
-            <span className="text-blue-400 font-semibold">{selectedDownPaymentApp?.applicationNumber}</span>
+            <span className="text-slate-600 dark:text-slate-400">Application:</span>
+            <span className="text-blue-600 dark:text-blue-400 font-semibold">{selectedDownPaymentApp?.applicationNumber}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-400">Borrower:</span>
-            <span className="text-slate-200">{selectedDownPaymentApp?.applicantName}</span>
+            <span className="text-slate-600 dark:text-slate-400">Borrower:</span>
+            <span className="text-slate-900 dark:text-slate-200">{selectedDownPaymentApp?.applicantName}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-400">Facility Principal:</span>
-            <span className="text-slate-200">
+            <span className="text-slate-600 dark:text-slate-400">Facility Principal:</span>
+            <span className="text-slate-900 dark:text-slate-200">
               LKR {Number(selectedDownPaymentApp?.requestedAmount || 0).toLocaleString()}
             </span>
           </div>
@@ -513,7 +513,7 @@ const FinanceDisbursalDesk = () => {
           >
             <InputNumber
               min={0}
-              className="w-full bg-slate-950 border-slate-700 text-slate-100 font-mono"
+              className="w-full font-mono"
               formatter={(value) => `LKR ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               parser={(value) => value.replace(/\LKR\s?|(,*)/g, '')}
             />
@@ -526,7 +526,7 @@ const FinanceDisbursalDesk = () => {
                 label="Payment Instrument"
                 rules={[{ required: true, message: 'Method is required' }]}
               >
-                <Select className="bg-slate-950">
+                <Select>
                   <Option value="BANK_TRANSFER">Bank Transfer (SLIPS/CEFT)</Option>
                   <Option value="CASH">Cash Over Counter</Option>
                   <Option value="CHEQUE">Cheque / Bank Draft</Option>
@@ -539,7 +539,7 @@ const FinanceDisbursalDesk = () => {
                 label="Receipt Date"
                 rules={[{ required: true, message: 'Date is required' }]}
               >
-                <DatePicker className="w-full bg-slate-950" format="YYYY-MM-DD" />
+                <DatePicker className="w-full" format="YYYY-MM-DD" />
               </Form.Item>
             </Col>
           </Row>
@@ -547,12 +547,12 @@ const FinanceDisbursalDesk = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item name="referenceNumber" label="Bank / Receipt Reference No.">
-                <Input placeholder="e.g. BOC-TXN-98412" className="bg-slate-950 border-slate-700" />
+                <Input placeholder="e.g. BOC-TXN-98412" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item name="status" label="Receipt Status">
-                <Select className="bg-slate-950">
+                <Select>
                   <Option value="PAID">PAID (Confirmed Cleared)</Option>
                   <Option value="WAIVED">WAIVED (Waived by Credit Comm.)</Option>
                 </Select>
@@ -560,21 +560,17 @@ const FinanceDisbursalDesk = () => {
             </Col>
           </Row>
 
-          <Form.Item name="remarks" label="Finance Officer Verification Notes">
-            <Input.TextArea
-              rows={2}
-              placeholder="e.g. Confirmed via BOC corporate portal transaction statement..."
-              className="bg-slate-950 border-slate-700 text-xs"
-            />
+          <Form.Item name="remarks" label="Audit & Verification Notes">
+            <Input.TextArea rows={2} placeholder="Verification notes on fund arrival..." />
           </Form.Item>
 
-          <div className="flex justify-end gap-3 pt-3 border-t border-slate-800">
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
             <Button onClick={() => setDownPaymentModalOpen(false)}>Cancel</Button>
             <Button
               type="primary"
               htmlType="submit"
               loading={submitting}
-              className="bg-amber-600 hover:bg-amber-500 border-none"
+              className="bg-amber-600 hover:bg-amber-500 border-none font-medium"
             >
               Confirm Down-Payment
             </Button>
@@ -585,8 +581,8 @@ const FinanceDisbursalDesk = () => {
       {/* Disbursal Execution Modal */}
       <Modal
         title={
-          <div className="flex items-center gap-2 text-slate-100">
-            <Send className="w-5 h-5 text-emerald-400" />
+          <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+            <Send className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
             <span>Execute Disbursal & Activate Facility</span>
           </div>
         }
@@ -595,18 +591,18 @@ const FinanceDisbursalDesk = () => {
         footer={null}
         destroyOnClose
       >
-        <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 mb-4 text-xs space-y-1 font-mono">
+        <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 mb-4 text-xs space-y-1 font-mono">
           <div className="flex justify-between">
-            <span className="text-slate-400">Application Ref:</span>
-            <span className="text-blue-400 font-semibold">{selectedDisbursalApp?.applicationNumber}</span>
+            <span className="text-slate-600 dark:text-slate-400">Application Ref:</span>
+            <span className="text-blue-600 dark:text-blue-400 font-semibold">{selectedDisbursalApp?.applicationNumber}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-400">Borrower:</span>
-            <span className="text-slate-200">{selectedDisbursalApp?.applicantName}</span>
+            <span className="text-slate-600 dark:text-slate-400">Borrower:</span>
+            <span className="text-slate-900 dark:text-slate-200">{selectedDisbursalApp?.applicantName}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-400">Approved Principal:</span>
-            <span className="text-emerald-400 font-bold text-sm">
+            <span className="text-slate-600 dark:text-slate-400">Approved Principal:</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">
               LKR {Number(selectedDisbursalApp?.requestedAmount || 0).toLocaleString()}
             </span>
           </div>
@@ -620,7 +616,7 @@ const FinanceDisbursalDesk = () => {
                 label="Transfer Method"
                 rules={[{ required: true, message: 'Method is required' }]}
               >
-                <Select className="bg-slate-950">
+                <Select>
                   <Option value="BANK_TRANSFER">Direct Bank Transfer (CEFT)</Option>
                   <Option value="CHEQUE">Cheque Issue</Option>
                   <Option value="CASH">Cash Pay-Out</Option>
@@ -633,7 +629,7 @@ const FinanceDisbursalDesk = () => {
                 label="Transaction / Cheque No."
                 rules={[{ required: true, message: 'Reference number is required' }]}
               >
-                <Input placeholder="e.g. SL-TXN-98412" className="bg-slate-950 border-slate-700" />
+                <Input placeholder="e.g. SL-TXN-98412" />
               </Form.Item>
             </Col>
           </Row>
@@ -645,7 +641,7 @@ const FinanceDisbursalDesk = () => {
                 label="Disbursement Date"
                 rules={[{ required: true, message: 'Date is required' }]}
               >
-                <DatePicker className="w-full bg-slate-950" format="YYYY-MM-DD" />
+                <DatePicker className="w-full" format="YYYY-MM-DD" />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -654,7 +650,7 @@ const FinanceDisbursalDesk = () => {
                 label="First Repayment Due"
                 rules={[{ required: true, message: 'First installment date is required' }]}
               >
-                <DatePicker className="w-full bg-slate-950" format="YYYY-MM-DD" />
+                <DatePicker className="w-full" format="YYYY-MM-DD" />
               </Form.Item>
             </Col>
           </Row>
@@ -663,11 +659,11 @@ const FinanceDisbursalDesk = () => {
             <Input.TextArea
               rows={2}
               placeholder="e.g. Commercial Bank account credited, voucher #0912 attached..."
-              className="bg-slate-950 border-slate-700 text-xs"
+              className="text-xs"
             />
           </Form.Item>
 
-          <div className="flex justify-end gap-3 pt-3 border-t border-slate-800">
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
             <Button onClick={() => setDisbursalModalOpen(false)}>Cancel</Button>
             <Button
               type="primary"
@@ -697,45 +693,45 @@ const FinanceDisbursalDesk = () => {
         ]}
       >
         <div className="text-center py-4 space-y-3">
-          <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/30">
+          <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-500 dark:text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/30">
             <CheckCircle2 className="w-10 h-10" />
           </div>
-          <h2 className="text-xl font-bold text-slate-100 m-0">Facility Successfully Activated!</h2>
-          <p className="text-slate-400 text-xs">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 m-0">Facility Successfully Activated!</h2>
+          <p className="text-slate-600 dark:text-slate-400 text-xs">
             The loan/lease facility has been legally activated and funded. Installment schedules are now ready for servicing.
           </p>
-          <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 text-left font-mono text-xs space-y-2">
+          <div className="p-4 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 text-left font-mono text-xs space-y-2">
             <div className="flex justify-between">
-              <span className="text-slate-400">Facility Number:</span>
-              <span className="text-emerald-400 font-bold text-sm">
+              <span className="text-slate-600 dark:text-slate-400">Facility Number:</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">
                 {activatedFacility?.facilityNumber}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Application Number:</span>
-              <span className="text-slate-200">{activatedFacility?.applicationNumber}</span>
+              <span className="text-slate-600 dark:text-slate-400">Application Number:</span>
+              <span className="text-slate-900 dark:text-slate-200">{activatedFacility?.applicationNumber}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Principal Disbursed:</span>
-              <span className="text-slate-100 font-semibold">
+              <span className="text-slate-600 dark:text-slate-400">Principal Disbursed:</span>
+              <span className="text-slate-900 dark:text-slate-100 font-semibold">
                 LKR {Number(activatedFacility?.principalAmount || 0).toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Outstanding Balance:</span>
-              <span className="text-slate-100 font-semibold">
+              <span className="text-slate-600 dark:text-slate-400">Outstanding Balance:</span>
+              <span className="text-slate-900 dark:text-slate-100 font-semibold">
                 LKR {Number(activatedFacility?.outstandingBalance || 0).toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Monthly Installment:</span>
-              <span className="text-blue-400 font-semibold">
+              <span className="text-slate-600 dark:text-slate-400">Monthly Installment:</span>
+              <span className="text-blue-600 dark:text-blue-400 font-semibold">
                 LKR {Number(activatedFacility?.installmentAmount || 0).toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Tenor:</span>
-              <span className="text-slate-200">{activatedFacility?.tenureMonths} Months</span>
+              <span className="text-slate-600 dark:text-slate-400">Tenor:</span>
+              <span className="text-slate-900 dark:text-slate-200">{activatedFacility?.tenureMonths} Months</span>
             </div>
           </div>
         </div>

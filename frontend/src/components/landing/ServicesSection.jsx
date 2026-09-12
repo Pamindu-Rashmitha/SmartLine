@@ -79,17 +79,17 @@ const SERVICES = [
 
 const ServicesSection = () => {
   return (
-    <section id="services" className="py-20 lg:py-28 bg-slate-900/60 border-t border-slate-800/60 relative">
+    <section id="services" className="py-20 lg:py-28 bg-white dark:bg-slate-900/60 border-t border-slate-200 dark:border-slate-800/60 relative transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2">
+          <p className="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2">
             Tailored Financing Solutions
           </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Financial Services Crafted for Every Need
           </h2>
-          <p className="text-base text-slate-400 mt-4 leading-relaxed">
+          <p className="text-base text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">
             Whether you need liquid cash for personal ambitions or seek to lease a vehicle for daily travel or commercial trade, Smart Line Investment offers transparent, dependable products.
           </p>
         </div>
@@ -101,10 +101,10 @@ const ServicesSection = () => {
             return (
               <div
                 key={service.id}
-                className="relative rounded-2xl bg-slate-950/80 border border-slate-800/90 hover:border-slate-700/90 p-8 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-900/10 flex flex-col justify-between group"
+                className="relative rounded-2xl bg-slate-50/70 dark:bg-slate-950/80 border border-slate-200/80 dark:border-slate-800/90 hover:border-blue-400 dark:hover:border-slate-700/90 p-8 transition-all hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-blue-900/10 flex flex-col justify-between group"
               >
                 {service.popular && (
-                  <span className="absolute top-6 right-6 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                  <span className="absolute top-6 right-6 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30">
                     Most Popular
                   </span>
                 )}
@@ -115,39 +115,39 @@ const ServicesSection = () => {
                       <IconComponent className="w-6 h-6" />
                     </div>
                     <div>
-                      <span className="text-[11px] font-bold tracking-wider uppercase text-slate-400 block">
+                      <span className="text-[11px] font-bold tracking-wider uppercase text-slate-500 dark:text-slate-400 block">
                         {service.category}
                       </span>
-                      <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors m-0">
+                      <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors m-0">
                         {service.title}
                       </h3>
                     </div>
                   </div>
 
-                  <p className="text-sm text-slate-400 leading-relaxed mb-6">
+                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
                     {service.description}
                   </p>
 
                   <div className="space-y-2.5 mb-8">
                     {service.features.map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                        <span className="text-xs text-slate-300">{feature}</span>
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0 mt-0.5" />
+                        <span className="text-xs text-slate-700 dark:text-slate-300">{feature}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="pt-5 border-t border-slate-800/80 flex items-center justify-between">
+                <div className="pt-5 border-t border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between">
                   <a
                     href="#calculator"
-                    className="text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+                    className="text-xs font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
                   >
                     Calculate Installment
                   </a>
                   <Link
                     to="/register"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 group-hover:translate-x-1 transition-all"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 group-hover:translate-x-1 transition-all"
                   >
                     Apply Now <ArrowRight className="w-3.5 h-3.5" />
                   </Link>

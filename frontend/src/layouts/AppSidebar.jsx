@@ -20,6 +20,7 @@ import {
   Banknote,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { Sider } = Layout;
 
@@ -78,6 +79,7 @@ const ROLE_MENUS = {
 
 const AppSidebar = ({ collapsed }) => {
   const { user } = useAuth();
+  const { isDark } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -90,11 +92,11 @@ const AppSidebar = ({ collapsed }) => {
       collapsed={collapsed}
       width={260}
       collapsedWidth={80}
-      className="h-screen sticky top-0 left-0 bg-slate-900 border-r border-slate-800 z-30 flex flex-col justify-between"
+      className="h-screen sticky top-0 left-0 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 z-30 flex flex-col justify-between transition-colors duration-200 shadow-sm"
     >
       {/* Brand Header */}
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-slate-800/80">
-        <div className="w-10 h-10 flex items-center justify-center shadow-blue-600/30 flex-shrink-0">
+      <div className="flex items-center gap-3 px-5 py-5 border-b border-slate-200 dark:border-slate-800/80">
+        <div className="w-10 h-10 rounded-xl bg-blue-600/10 dark:bg-blue-600/20 border border-blue-500/20 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -103,17 +105,17 @@ const AppSidebar = ({ collapsed }) => {
             strokeWidth="1.2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-5 h-5 text-white"
+            className="w-5 h-5 text-blue-600 dark:text-blue-400"
           >
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
         </div>
         {!collapsed && (
           <div className="overflow-hidden transition-all">
-            <h1 className="text-base font-bold text-white tracking-tight leading-none m-0">
+            <h1 className="text-base font-bold text-slate-900 dark:text-white tracking-tight leading-none m-0">
               SMART LINE
             </h1>
-            <p className="text-[11px] font-semibold text-blue-400 tracking-wider uppercase mt-1 mb-0 leading-none">
+            <p className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 tracking-wider uppercase mt-1 mb-0 leading-none">
               Loan & Leasing Suite
             </p>
           </div>
@@ -123,7 +125,7 @@ const AppSidebar = ({ collapsed }) => {
       {/* Navigation Menu */}
       <div className="py-4 flex-1 overflow-y-auto">
         <Menu
-          theme="dark"
+          theme={isDark ? 'dark' : 'light'}
           mode="inline"
           selectedKeys={[location.pathname]}
           items={menuItems.map((item) => ({
@@ -132,7 +134,7 @@ const AppSidebar = ({ collapsed }) => {
             label: item.label,
             onClick: () => navigate(item.key),
           }))}
-          className="border-r-0 bg-transparent text-slate-300 font-medium text-sm"
+          className="border-r-0 bg-transparent text-slate-600 dark:text-slate-300 font-medium text-sm"
         />
       </div>
     </Sider>

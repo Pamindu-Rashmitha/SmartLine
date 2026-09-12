@@ -30,7 +30,7 @@ describe('StatCard Component', () => {
     );
 
     expect(screen.getByText('+12.5% vs last month')).toBeInTheDocument();
-    expect(screen.getByText('+12.5% vs last month')).toHaveClass('text-emerald-400');
+    expect(screen.getByText('+12.5% vs last month')).toHaveClass('text-emerald-600');
   });
 
   it('renders downward trend indicator correctly', () => {
@@ -45,7 +45,7 @@ describe('StatCard Component', () => {
     );
 
     expect(screen.getByText('-0.8% reduction')).toBeInTheDocument();
-    expect(screen.getByText('-0.8% reduction')).toHaveClass('text-rose-400');
+    expect(screen.getByText('-0.8% reduction')).toHaveClass('text-rose-600');
   });
 
   it('renders subtitle text when provided', () => {

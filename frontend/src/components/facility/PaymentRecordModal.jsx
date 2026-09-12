@@ -52,8 +52,8 @@ const PaymentRecordModal = ({ visible, installment, facility, onClose, onSuccess
   return (
     <Modal
       title={
-        <div className="flex items-center gap-2 text-slate-100">
-          <DollarSign className="w-5 h-5 text-emerald-400" />
+        <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+          <DollarSign className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
           <span>Record Installment Payment</span>
         </div>
       }
@@ -61,13 +61,12 @@ const PaymentRecordModal = ({ visible, installment, facility, onClose, onSuccess
       onCancel={onClose}
       footer={null}
       width={560}
-      className="dark-modal"
     >
       {installment && (
         <div className="space-y-4 pt-2">
-          <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 Installment #{installment.installmentNumber}
               </span>
               <Tag color={installment.status === 'OVERDUE' ? 'error' : 'processing'}>
@@ -76,26 +75,26 @@ const PaymentRecordModal = ({ visible, installment, facility, onClose, onSuccess
             </div>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <span className="text-xs text-slate-400 block">Facility Ref</span>
-                <span className="font-mono text-blue-400 font-medium">
+                <span className="text-xs text-slate-500 dark:text-slate-400 block">Facility Ref</span>
+                <span className="font-mono text-blue-600 dark:text-blue-400 font-medium">
                   {facility?.facilityNumber || installment.facilityNumber || 'N/A'}
                 </span>
               </div>
               <div>
-                <span className="text-xs text-slate-400 block">Due Date</span>
-                <span className="text-slate-200 font-medium">
+                <span className="text-xs text-slate-500 dark:text-slate-400 block">Due Date</span>
+                <span className="text-slate-900 dark:text-slate-200 font-medium">
                   {dayjs(installment.dueDate).format('DD MMM YYYY')}
                 </span>
               </div>
               <div>
-                <span className="text-xs text-slate-400 block">Total Installment</span>
-                <span className="text-slate-200 font-medium">
+                <span className="text-xs text-slate-500 dark:text-slate-400 block">Total Installment</span>
+                <span className="text-slate-900 dark:text-slate-200 font-medium">
                   LKR {Number(installment.totalAmount || 0).toLocaleString()}
                 </span>
               </div>
               <div>
-                <span className="text-xs text-slate-400 block">Outstanding Balance</span>
-                <span className="text-emerald-400 font-bold">
+                <span className="text-xs text-slate-500 dark:text-slate-400 block">Outstanding Balance</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">
                   LKR {Number(remaining).toLocaleString()}
                 </span>
               </div>
@@ -105,7 +104,7 @@ const PaymentRecordModal = ({ visible, installment, facility, onClose, onSuccess
           <Form form={form} layout="vertical" onFinish={handleSubmit}>
             <Form.Item
               name="amount"
-              label={<span className="text-slate-300 font-medium">Payment Amount (LKR)</span>}
+              label={<span className="text-slate-700 dark:text-slate-300 font-medium">Payment Amount (LKR)</span>}
               rules={[
                 { required: true, message: 'Please enter payment amount' },
                 {
@@ -120,7 +119,7 @@ const PaymentRecordModal = ({ visible, installment, facility, onClose, onSuccess
               ]}
             >
               <InputNumber
-                className="w-full h-10 bg-slate-900 border-slate-700 text-slate-100 rounded-lg text-base"
+                className="w-full h-10 rounded-lg text-base"
                 formatter={(val) => `${val}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 parser={(val) => val.replace(/\$\s?|(,*)/g, '')}
                 min={0.01}
@@ -131,15 +130,15 @@ const PaymentRecordModal = ({ visible, installment, facility, onClose, onSuccess
             <div className="grid grid-cols-2 gap-4">
               <Form.Item
                 name="paymentDate"
-                label={<span className="text-slate-300 font-medium">Payment Date</span>}
+                label={<span className="text-slate-700 dark:text-slate-300 font-medium">Payment Date</span>}
                 rules={[{ required: true, message: 'Payment date is required' }]}
               >
-                <DatePicker className="w-full h-10 bg-slate-900 border-slate-700 text-slate-100 rounded-lg" />
+                <DatePicker className="w-full h-10 rounded-lg" />
               </Form.Item>
 
               <Form.Item
                 name="paymentMethod"
-                label={<span className="text-slate-300 font-medium">Payment Channel</span>}
+                label={<span className="text-slate-700 dark:text-slate-300 font-medium">Payment Channel</span>}
                 rules={[{ required: true, message: 'Payment method is required' }]}
               >
                 <Select
@@ -155,28 +154,28 @@ const PaymentRecordModal = ({ visible, installment, facility, onClose, onSuccess
 
             <Form.Item
               name="referenceNumber"
-              label={<span className="text-slate-300 font-medium">Transaction Reference / Receipt #</span>}
+              label={<span className="text-slate-700 dark:text-slate-300 font-medium">Transaction Reference / Receipt #</span>}
               rules={[{ required: true, message: 'Reference number is required' }]}
             >
               <Input
                 placeholder="e.g. SLIPS-TXN-881920 or Receipt #0921"
-                className="h-10 bg-slate-900 border-slate-700 text-slate-100 rounded-lg"
+                className="h-10 rounded-lg"
               />
             </Form.Item>
 
             <Form.Item
               name="remarks"
-              label={<span className="text-slate-300 font-medium">Finance Officer Remarks</span>}
+              label={<span className="text-slate-700 dark:text-slate-300 font-medium">Finance Officer Remarks</span>}
             >
               <Input.TextArea
                 rows={2}
                 placeholder="Add audit notes or remarks..."
-                className="bg-slate-900 border-slate-700 text-slate-100 rounded-lg"
+                className="rounded-lg"
               />
             </Form.Item>
 
-            <div className="flex justify-end gap-3 pt-2 border-t border-slate-800">
-              <Button onClick={onClose} className="border-slate-700 text-slate-300">
+            <div className="flex justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <Button onClick={onClose} className="border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
                 Cancel
               </Button>
               <Button

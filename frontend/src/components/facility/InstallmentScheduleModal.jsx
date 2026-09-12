@@ -88,7 +88,7 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
       dataIndex: 'installmentNumber',
       key: 'installmentNumber',
       width: 50,
-      render: (num) => <span className="font-mono text-xs font-bold text-slate-300">{num}</span>,
+      render: (num) => <span className="font-mono text-xs font-bold text-slate-700 dark:text-slate-300">{num}</span>,
     },
     {
       title: 'Due Date',
@@ -97,11 +97,11 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
       width: 120,
       render: (date, record) => (
         <div>
-          <span className="text-slate-200 font-medium text-xs block">
+          <span className="text-slate-900 dark:text-slate-200 font-medium text-xs block">
             {dayjs(date).format('DD MMM YYYY')}
           </span>
           {record.daysOverdue > 0 && record.status === 'OVERDUE' && (
-            <span className="text-[10px] text-rose-400 font-semibold">
+            <span className="text-[10px] text-rose-600 dark:text-rose-400 font-semibold">
               {record.daysOverdue} days late
             </span>
           )}
@@ -114,7 +114,7 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
       key: 'principalPortion',
       align: 'right',
       render: (val) => (
-        <span className="text-slate-300 text-xs font-mono">
+        <span className="text-slate-700 dark:text-slate-300 text-xs font-mono">
           LKR {Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -125,7 +125,7 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
       key: 'interestPortion',
       align: 'right',
       render: (val) => (
-        <span className="text-slate-400 text-xs font-mono">
+        <span className="text-slate-500 dark:text-slate-400 text-xs font-mono">
           LKR {Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -136,7 +136,7 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
       key: 'totalAmount',
       align: 'right',
       render: (val) => (
-        <span className="text-slate-100 font-bold text-xs font-mono">
+        <span className="text-slate-900 dark:text-slate-100 font-bold text-xs font-mono">
           LKR {Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -148,11 +148,11 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
       align: 'right',
       render: (val, record) => (
         <div>
-          <span className={`text-xs font-mono font-medium ${val > 0 ? 'text-emerald-400' : 'text-slate-500'}`}>
+          <span className={`text-xs font-mono font-medium ${val > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500'}`}>
             LKR {Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </span>
           {record.paidDate && (
-            <span className="text-[10px] text-slate-400 block">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 block">
               on {dayjs(record.paidDate).format('DD/MM/YY')}
             </span>
           )}
@@ -197,9 +197,9 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
     <>
       <Modal
         title={
-          <div className="flex items-center justify-between pr-6 text-slate-100">
+          <div className="flex items-center justify-between pr-6 text-slate-900 dark:text-slate-100">
             <div className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-blue-400" />
+              <Calendar className="w-5 h-5 text-blue-500 dark:text-blue-400" />
               <span>Installment Schedule — {facility?.facilityNumber}</span>
             </div>
             {facility?.status && (
@@ -213,21 +213,20 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
         onCancel={onClose}
         footer={null}
         width={960}
-        className="dark-modal"
       >
         {loading ? (
           <div className="py-16 flex flex-col items-center justify-center gap-3">
             <Spin size="large" />
-            <span className="text-slate-400 text-sm">Loading amortization schedule...</span>
+            <span className="text-slate-500 dark:text-slate-400 text-sm">Loading amortization schedule...</span>
           </div>
         ) : hasNoSchedule ? (
           <div className="py-8 px-4 text-center space-y-6">
-            <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400">
+            <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-500 dark:text-amber-400">
               <AlertTriangle className="w-8 h-8" />
             </div>
             <div className="max-w-md mx-auto">
-              <h3 className="text-lg font-bold text-white mb-2">No Schedule Generated Yet</h3>
-              <p className="text-slate-400 text-sm mb-6">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">No Schedule Generated Yet</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">
                 This active facility has not had its installment schedule initialized. Generate the straight-line
                 amortization schedule based on the sanctioned term of {facility?.tenureMonths || 12} months.
               </p>
@@ -241,12 +240,12 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
                     frequency: 'MONTHLY',
                     startDate: dayjs().add(1, 'month'),
                   }}
-                  className="bg-slate-800/80 p-5 rounded-2xl border border-slate-700/60 text-left"
+                  className="bg-slate-50 dark:bg-slate-800/80 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 text-left"
                 >
                   <div className="grid grid-cols-2 gap-4">
                     <Form.Item
                       name="frequency"
-                      label={<span className="text-slate-300 font-medium">Payment Frequency</span>}
+                      label={<span className="text-slate-700 dark:text-slate-300 font-medium">Payment Frequency</span>}
                     >
                       <Select
                         className="w-full"
@@ -259,7 +258,7 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
                     </Form.Item>
                     <Form.Item
                       name="startDate"
-                      label={<span className="text-slate-300 font-medium">First Due Date</span>}
+                      label={<span className="text-slate-700 dark:text-slate-300 font-medium">First Due Date</span>}
                     >
                       <DatePicker className="w-full" />
                     </Form.Item>
@@ -280,7 +279,7 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
                   message="Schedule generation must be performed by a Finance Officer."
                   type="info"
                   showIcon
-                  className="bg-slate-800 border-slate-700 text-slate-300"
+                  className="bg-blue-50/50 dark:bg-slate-800 border-blue-200 dark:border-slate-700 text-slate-700 dark:text-slate-300"
                 />
               )}
             </div>
@@ -289,11 +288,11 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
           <div className="space-y-4 pt-2">
             {/* Metric KPI cards */}
             <div className="grid grid-cols-4 gap-3">
-              <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700/60">
-                <span className="text-[11px] text-slate-400 font-medium uppercase tracking-wider block">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider block">
                   Progress
                 </span>
-                <span className="text-lg font-bold text-white block mt-0.5">
+                <span className="text-lg font-bold text-slate-900 dark:text-white block mt-0.5">
                   {schedule.paidInstallmentsCount || 0} / {schedule.totalInstallments || 0} Paid
                 </span>
                 <Progress
@@ -302,49 +301,48 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
                   )}
                   size="small"
                   strokeColor="#10b981"
-                  trailColor="#334155"
                 />
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700/60">
-                <span className="text-[11px] text-slate-400 font-medium uppercase tracking-wider block">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider block">
                   Total Paid
                 </span>
-                <span className="text-lg font-bold text-emerald-400 block mt-0.5">
+                <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400 block mt-0.5">
                   LKR {Number(schedule.totalPaidAmount || 0).toLocaleString()}
                 </span>
-                <span className="text-[11px] text-slate-400">Total collected</span>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">Total collected</span>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700/60">
-                <span className="text-[11px] text-slate-400 font-medium uppercase tracking-wider block">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider block">
                   Outstanding Balance
                 </span>
-                <span className="text-lg font-bold text-blue-400 block mt-0.5">
+                <span className="text-lg font-bold text-blue-600 dark:text-blue-400 block mt-0.5">
                   LKR {Number(schedule.totalRemainingAmount || 0).toLocaleString()}
                 </span>
-                <span className="text-[11px] text-slate-400">Book value</span>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">Book value</span>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700/60">
-                <span className="text-[11px] text-slate-400 font-medium uppercase tracking-wider block">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider block">
                   Overdue EMIs
                 </span>
                 <span
                   className={`text-lg font-bold block mt-0.5 ${
-                    (schedule.overdueInstallmentsCount || 0) > 0 ? 'text-rose-400' : 'text-slate-300'
+                    (schedule.overdueInstallmentsCount || 0) > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-slate-700 dark:text-slate-300'
                   }`}
                 >
                   {schedule.overdueInstallmentsCount || 0} Overdue
                 </span>
-                <span className="text-[11px] text-slate-400">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">
                   {(schedule.overdueInstallmentsCount || 0) > 0 ? 'Action required' : 'Account current'}
                 </span>
               </div>
             </div>
 
             {/* Installment Table */}
-            <div className="border border-slate-800 rounded-xl overflow-hidden">
+            <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
               <Table
                 dataSource={schedule.installments || []}
                 columns={columns}
@@ -352,7 +350,6 @@ const InstallmentScheduleModal = ({ visible, facility, onClose, onRefreshFacilit
                 pagination={false}
                 size="small"
                 scroll={{ y: 380 }}
-                className="dark-table"
               />
             </div>
           </div>

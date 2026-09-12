@@ -84,8 +84,8 @@ const AuthorizationQueuePage = () => {
       key: 'applicantName',
       render: (name, record) => (
         <div>
-          <span className="font-semibold text-slate-200 text-xs block">{name}</span>
-          <span className="text-[11px] text-slate-400 font-mono">NIC: {record.applicantNic}</span>
+          <span className="font-semibold text-slate-900 dark:text-slate-200 text-xs block">{name}</span>
+          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">NIC: {record.applicantNic}</span>
         </div>
       ),
     },
@@ -105,11 +105,11 @@ const AuthorizationQueuePage = () => {
       key: 'requestedAmount',
       render: (amount) => (
         <div>
-          <span className="font-bold text-white text-xs">
+          <span className="font-bold text-slate-900 dark:text-white text-xs font-mono">
             LKR {Number(amount || 0).toLocaleString()}
           </span>
           {Number(amount || 0) > 500000 && (
-            <span className="text-[10px] text-amber-400 font-semibold flex items-center gap-1 mt-0.5">
+            <span className="text-[10px] text-amber-500 dark:text-amber-400 font-semibold flex items-center gap-1 mt-0.5">
               <AlertTriangle className="w-3 h-3" /> High-Value Policy Threshold
             </span>
           )}
@@ -121,7 +121,7 @@ const AuthorizationQueuePage = () => {
       dataIndex: 'monthlyEmi',
       key: 'monthlyEmi',
       render: (emi, record) => (
-        <span className="text-xs text-purple-400 font-semibold">
+        <span className="text-xs text-purple-600 dark:text-purple-400 font-semibold font-mono">
           {emi ? `LKR ${Number(emi).toLocaleString()}` : '-'}
         </span>
       ),
@@ -137,7 +137,7 @@ const AuthorizationQueuePage = () => {
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (date) => (
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
           {date ? dayjs(date).format('YYYY-MM-DD') : '-'}
         </span>
       ),
@@ -163,17 +163,17 @@ const AuthorizationQueuePage = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="rounded-2xl bg-gradient-to-r from-indigo-950/70 via-slate-900/90 to-slate-900 border border-indigo-500/30 p-6 shadow-xl">
+      <div className="rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-indigo-500/30 p-6 shadow-sm dark:shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-xs font-semibold mb-2">
               <Scale className="w-3.5 h-3.5" />
               <span>SENIOR MANAGEMENT & HIGHER-LEVEL AUTHORIZATION DESK</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight m-0">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight m-0">
               Executive Sanction Queue (US10)
             </h1>
-            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed m-0">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 max-w-2xl leading-relaxed m-0">
               Applications with facility values exceeding the delegated LKR 500,000 threshold or referred by Credit Managers for executive authorization.
             </p>
           </div>
@@ -182,7 +182,7 @@ const AuthorizationQueuePage = () => {
             <Button
               onClick={fetchQueue}
               loading={loading}
-              className="bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 font-semibold text-xs"
+              className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 font-semibold text-xs"
             >
               Refresh Queue
             </Button>
@@ -216,8 +216,8 @@ const AuthorizationQueuePage = () => {
       </div>
 
       {/* Main Table Card */}
-      <Card className="bg-slate-900/80 border-slate-800 shadow-xl rounded-2xl">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-800">
+      <Card className="bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl rounded-2xl">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100 dark:border-slate-800">
           <div className="w-full sm:w-80">
             <Input
               prefix={<Search className="w-4 h-4 text-slate-400 mr-1" />}
@@ -225,7 +225,7 @@ const AuthorizationQueuePage = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               allowClear
-              className="bg-slate-950 border-slate-700 text-slate-200 placeholder-slate-500 rounded-lg text-xs"
+              className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 rounded-lg text-xs"
             />
           </div>
         </div>
@@ -240,7 +240,7 @@ const AuthorizationQueuePage = () => {
             total: pagination.total,
             onChange: (p) => setPagination((prev) => ({ ...prev, page: p - 1 })),
             showTotal: (total) => `Total ${total} sanctions awaiting authorization`,
-            className: 'text-slate-400 text-xs',
+            className: 'text-slate-600 dark:text-slate-400 text-xs',
           }}
           size="middle"
           scroll={{ x: 900 }}

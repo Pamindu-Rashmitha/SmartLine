@@ -68,7 +68,7 @@ const FacilityListPage = () => {
       dataIndex: 'facilityNumber',
       key: 'facilityNumber',
       render: (text) => (
-        <span className="font-mono font-bold text-emerald-400">{text}</span>
+        <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">{text}</span>
       ),
     },
     {
@@ -76,29 +76,29 @@ const FacilityListPage = () => {
       dataIndex: 'applicationNumber',
       key: 'applicationNumber',
       render: (text) => (
-        <span className="font-mono text-blue-400 text-xs">{text}</span>
+        <span className="font-mono text-blue-600 dark:text-blue-400 text-xs">{text}</span>
       ),
     },
     {
       title: 'Borrower',
       dataIndex: 'applicantName',
       key: 'applicantName',
-      render: (text) => <span className="font-medium text-slate-200">{text}</span>,
+      render: (text) => <span className="font-medium text-slate-900 dark:text-slate-200">{text}</span>,
     },
     {
       title: 'Facility Type',
       dataIndex: 'type',
       key: 'type',
       render: (type) => (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-800 border border-slate-700 text-slate-300">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">
           {type === 'VEHICLE_LEASE' ? (
             <>
-              <Car className="w-3.5 h-3.5 text-amber-400" />
+              <Car className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
               <span>Vehicle Lease</span>
             </>
           ) : (
             <>
-              <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+              <DollarSign className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Money Loan</span>
             </>
           )}
@@ -110,7 +110,7 @@ const FacilityListPage = () => {
       dataIndex: 'principalAmount',
       key: 'principalAmount',
       render: (amt) => (
-        <span className="font-mono font-semibold text-slate-200">
+        <span className="font-mono font-semibold text-slate-900 dark:text-slate-200">
           LKR {Number(amt).toLocaleString('en-US', { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -121,10 +121,10 @@ const FacilityListPage = () => {
       key: 'installmentAmount',
       render: (amt, record) => (
         <div>
-          <div className="font-mono text-blue-400 text-xs font-semibold">
+          <div className="font-mono text-blue-600 dark:text-blue-400 text-xs font-semibold">
             LKR {Number(amt).toLocaleString()}/mo
           </div>
-          <div className="text-[11px] text-slate-400">{record.tenureMonths} Months</div>
+          <div className="text-[11px] text-slate-500 dark:text-slate-400">{record.tenureMonths} Months</div>
         </div>
       ),
     },
@@ -133,7 +133,7 @@ const FacilityListPage = () => {
       dataIndex: 'outstandingBalance',
       key: 'outstandingBalance',
       render: (amt) => (
-        <span className="font-mono font-bold text-slate-100">
+        <span className="font-mono font-bold text-slate-900 dark:text-slate-100">
           LKR {Number(amt).toLocaleString('en-US', { minimumFractionDigits: 2 })}
         </span>
       ),
@@ -142,7 +142,7 @@ const FacilityListPage = () => {
       title: 'Term Period',
       key: 'term',
       render: (_, record) => (
-        <div className="text-xs text-slate-400">
+        <div className="text-xs text-slate-600 dark:text-slate-400">
           <div>{dayjs(record.startDate).format('DD MMM YYYY')}</div>
           <div className="text-[11px] text-slate-500">to {dayjs(record.endDate).format('DD MMM YYYY')}</div>
         </div>
@@ -188,17 +188,17 @@ const FacilityListPage = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-6 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900/60 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30">
+            <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/30">
               <Layers className="w-5 h-5" />
             </div>
-            <h1 className="text-2xl font-bold text-slate-100 tracking-tight m-0">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight m-0">
               Active Credit & Lease Facilities
             </h1>
           </div>
-          <p className="text-slate-400 text-sm mt-1.5 mb-0">
+          <p className="text-slate-600 dark:text-slate-400 text-sm mt-1.5 mb-0">
             Portfolio monitoring of active disbursed loan and lease facilities across Smart Line Investment.
           </p>
         </div>
@@ -253,7 +253,7 @@ const FacilityListPage = () => {
       </Row>
 
       {/* Filter and Table Card */}
-      <Card className="bg-slate-900/80 border-slate-800 shadow-xl">
+      <Card className="bg-white dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl">
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mb-5">
           <div className="flex flex-wrap gap-3 items-center w-full sm:w-auto">
             <Input
@@ -261,7 +261,7 @@ const FacilityListPage = () => {
               prefix={<Search className="w-4 h-4 text-slate-400" />}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-slate-950 border-slate-700 text-slate-200 placeholder-slate-500 w-full sm:w-72"
+              className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 w-full sm:w-72"
               allowClear
             />
             <Select
@@ -289,8 +289,8 @@ const FacilityListPage = () => {
             </Select>
           </div>
 
-          <div className="text-xs text-slate-400 w-full sm:w-auto text-right">
-            Showing <span className="font-semibold text-slate-200">{filtered.length}</span> active facilities
+          <div className="text-xs text-slate-600 dark:text-slate-400 w-full sm:w-auto text-right">
+            Showing <span className="font-semibold text-slate-900 dark:text-slate-200">{filtered.length}</span> active facilities
           </div>
         </div>
 
@@ -300,7 +300,7 @@ const FacilityListPage = () => {
           rowKey="id"
           loading={loading}
           pagination={{ pageSize: 8 }}
-          className="ant-table-dark border border-slate-800 rounded-xl overflow-hidden"
+          className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden"
         />
       </Card>
 

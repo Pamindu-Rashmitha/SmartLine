@@ -3,40 +3,40 @@ import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
 const COLOR_VARIANTS = {
   blue: {
-    iconBg: 'bg-blue-600/15',
-    iconColor: 'text-blue-400',
-    borderHover: 'hover:border-blue-500/40',
-    glow: 'group-hover:shadow-[0_0_25px_rgba(37,99,235,0.15)]',
+    iconBg: 'bg-blue-50 dark:bg-blue-600/15',
+    iconColor: 'text-blue-600 dark:text-blue-400',
+    borderHover: 'hover:border-blue-400 dark:hover:border-blue-500/40',
+    glow: 'group-hover:shadow-[0_4px_20px_rgba(37,99,235,0.12)] dark:group-hover:shadow-[0_0_25px_rgba(37,99,235,0.15)]',
   },
   emerald: {
-    iconBg: 'bg-emerald-600/15',
-    iconColor: 'text-emerald-400',
-    borderHover: 'hover:border-emerald-500/40',
-    glow: 'group-hover:shadow-[0_0_25px_rgba(16,185,129,0.15)]',
+    iconBg: 'bg-emerald-50 dark:bg-emerald-600/15',
+    iconColor: 'text-emerald-600 dark:text-emerald-400',
+    borderHover: 'hover:border-emerald-400 dark:hover:border-emerald-500/40',
+    glow: 'group-hover:shadow-[0_4px_20px_rgba(16,185,129,0.12)] dark:group-hover:shadow-[0_0_25px_rgba(16,185,129,0.15)]',
   },
   purple: {
-    iconBg: 'bg-purple-600/15',
-    iconColor: 'text-purple-400',
-    borderHover: 'hover:border-purple-500/40',
-    glow: 'group-hover:shadow-[0_0_25px_rgba(168,85,247,0.15)]',
+    iconBg: 'bg-purple-50 dark:bg-purple-600/15',
+    iconColor: 'text-purple-600 dark:text-purple-400',
+    borderHover: 'hover:border-purple-400 dark:hover:border-purple-500/40',
+    glow: 'group-hover:shadow-[0_4px_20px_rgba(168,85,247,0.12)] dark:group-hover:shadow-[0_0_25px_rgba(168,85,247,0.15)]',
   },
   amber: {
-    iconBg: 'bg-amber-600/15',
-    iconColor: 'text-amber-400',
-    borderHover: 'hover:border-amber-500/40',
-    glow: 'group-hover:shadow-[0_0_25px_rgba(245,158,11,0.15)]',
+    iconBg: 'bg-amber-50 dark:bg-amber-600/15',
+    iconColor: 'text-amber-600 dark:text-amber-400',
+    borderHover: 'hover:border-amber-400 dark:hover:border-amber-500/40',
+    glow: 'group-hover:shadow-[0_4px_20px_rgba(245,158,11,0.12)] dark:group-hover:shadow-[0_0_25px_rgba(245,158,11,0.15)]',
   },
   indigo: {
-    iconBg: 'bg-indigo-600/15',
-    iconColor: 'text-indigo-400',
-    borderHover: 'hover:border-indigo-500/40',
-    glow: 'group-hover:shadow-[0_0_25px_rgba(99,102,241,0.15)]',
+    iconBg: 'bg-indigo-50 dark:bg-indigo-600/15',
+    iconColor: 'text-indigo-600 dark:text-indigo-400',
+    borderHover: 'hover:border-indigo-400 dark:hover:border-indigo-500/40',
+    glow: 'group-hover:shadow-[0_4px_20px_rgba(99,102,241,0.12)] dark:group-hover:shadow-[0_0_25px_rgba(99,102,241,0.15)]',
   },
   rose: {
-    iconBg: 'bg-rose-600/15',
-    iconColor: 'text-rose-400',
-    borderHover: 'hover:border-rose-500/40',
-    glow: 'group-hover:shadow-[0_0_25px_rgba(244,63,94,0.15)]',
+    iconBg: 'bg-rose-50 dark:bg-rose-600/15',
+    iconColor: 'text-rose-600 dark:text-rose-400',
+    borderHover: 'hover:border-rose-400 dark:hover:border-rose-500/40',
+    glow: 'group-hover:shadow-[0_4px_20px_rgba(244,63,94,0.12)] dark:group-hover:shadow-[0_0_25px_rgba(244,63,94,0.15)]',
   },
 };
 
@@ -82,12 +82,12 @@ const StatCard = ({
 
   return (
     <div
-      className={`group relative rounded-xl bg-slate-900/80 border border-slate-800 p-5 transition-all duration-300 ${scheme.borderHover} ${scheme.glow} ${className}`}
+      className={`group relative rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-all duration-300 ${scheme.borderHover} ${scheme.glow} ${className}`}
     >
       <div className="flex items-start justify-between">
         <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{title}</p>
-          <h3 className="text-2xl font-bold tracking-tight text-white">{value}</h3>
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">{title}</p>
+          <h3 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{value}</h3>
         </div>
 
         {Icon && (
@@ -98,15 +98,15 @@ const StatCard = ({
       </div>
 
       {(trendText || subtitle) && (
-        <div className="mt-4 flex items-center gap-2 pt-3 border-t border-slate-800/80 text-xs">
+        <div className="mt-4 flex items-center gap-2 pt-3 border-t border-slate-100 dark:border-slate-800/80 text-xs">
           {trendText && (
             <span
               className={`inline-flex items-center font-semibold ${
                 effectiveTrendType === 'up'
-                  ? 'text-emerald-400'
+                  ? 'text-emerald-600 dark:text-emerald-400'
                   : effectiveTrendType === 'down'
-                  ? 'text-rose-400'
-                  : 'text-slate-400'
+                  ? 'text-rose-600 dark:text-rose-400'
+                  : 'text-slate-500 dark:text-slate-400'
               }`}
             >
               {effectiveTrendType === 'up' ? (
@@ -117,7 +117,7 @@ const StatCard = ({
               {trendText}
             </span>
           )}
-          {subtitle && <span className="text-slate-400 truncate">{subtitle}</span>}
+          {subtitle && <span className="text-slate-500 dark:text-slate-400 truncate">{subtitle}</span>}
         </div>
       )}
     </div>
